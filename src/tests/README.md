@@ -6,25 +6,5 @@ test suite. This test suite is licensed under
 see file `LICENSE` in this directory or follow link.
 
 ## Code coverage
- * cmdline
- * data
-    * Grid : 100%
-    * Histogram : 100%
-    * LinearNormalizer : 100%
-    * LogarithmicPlusOneNormalizer : 100%
-    * StandardSingleByteTransitionCounter
-        * AsciiTransitionCounter: 100%
-        * ByteTransitionCounter: 100%
- * except
- * io
-    * FileReader : 100%
- * vis
-    * Image : 100%
-    * ImageBuilder : 100%
-    * StandardColormap : 100%
-    * TextHistogram : 100%
 
-## Missing tests
-Tests for the following classes are missing:  
- * options
- * BmpWriter
+TODO
