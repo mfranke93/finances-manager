@@ -2,6 +2,9 @@
 data.db
 dbcreate.sql
 
+# IntelliJ configs
+.idea/
+
 # Compiled Object files
 *.slo
 *.lo
