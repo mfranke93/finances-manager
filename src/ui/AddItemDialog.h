@@ -13,6 +13,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QCalendarWidget>
+#include <QtWidgets/QLabel>
 
 class AddItemDialog : public QDialog
 {
@@ -25,19 +26,28 @@ public:
 public slots:
     void rebuildCategoryContents();
     void rebuildRecipientContents();
+    void onClickOkay();
 
 private:
     QLineEdit * itemName;
+    QLineEdit * price;
+
+    QLabel * recipientLabel;
+    QLabel * categoryLabel;
 
     QComboBox * category;
     QComboBox * recipient;
+
     QCalendarWidget * dateEdit;
 
     QPushButton * ok;
     QPushButton * cancel;
+    QPushButton * newRecipient;
+    QPushButton * newCategory;
 
     QVBoxLayout * mainLayout;
-    QHBoxLayout * itemLayout;
+    QHBoxLayout * lineEditLayout;
+    QGridLayout * recipientCategoryLayout;
     QHBoxLayout * bottomLayout;
 };
 

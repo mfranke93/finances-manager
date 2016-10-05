@@ -1,11 +1,11 @@
 #include <QtWidgets/QApplication>
+#include <data/DbHandler.h>
 #include "ui/main_window.h"
 
 int main(int argc, char ** argv)
 {
     QApplication app (argc, argv);
-    if (!ExpenditureView::createConnection())
-        return 1;
+    DbHandler::getInstance();
 
     QMainWindow win;
     win.resize(800, 600);

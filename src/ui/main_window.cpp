@@ -3,6 +3,7 @@
 //
 
 #include <QtWidgets/QHBoxLayout>
+#include <data/DbHandler.h>
 #include "main_window.h"
 #include "AddItemDialog.h"
 
@@ -33,6 +34,7 @@ MainWindow::~MainWindow()
 void
 MainWindow::onPressCreate()
 {
+    DbHandler::getInstance()->getDatabase().transaction();
     AddItemDialog d (this, Qt::Dialog);
     d.setModal(true);
     d.exec();
@@ -40,21 +42,19 @@ MainWindow::onPressCreate()
     int result = d.result();
     if (result == QDialog::Accepted)
     {
-        // TODO: make dbhandler class
-        // do the thing
-        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-        if (!db.commit())
+        if (!DbHandler::getInstance()->getDatabase().commit())
         {
-            fprintf(stderr, "Could not commit to %s\n", db.connectionName().toStdString().c_str());
+            fprintf(stderr, "Could not commit to %s\n", DbHandler::getInstance()->getDatabase().connectionName().toStdString().c_str());
+            std::cerr << DbHandler::getInstance()->getDatabase().lastError().text().toStdString() << std::endl;
         }
+        this->table->onPressReload();
     }
     else if (result == QDialog::Rejected)
     {
         // rollback
-        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-        if (!db.rollback())
+        if (!DbHandler::getInstance()->getDatabase().rollback())
         {
-            fprintf(stderr, "Could not rollback %s\n", db.connectionName().toStdString().c_str());
+            fprintf(stderr, "Could not rollback %s\n", DbHandler::getInstance()->getDatabase().connectionName().toStdString().c_str());
         }
     }
     else
