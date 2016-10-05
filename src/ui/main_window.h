@@ -7,6 +7,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
+#include <QSqlError>
 #include "ExpenditureView.h"
 
 class MainWindow : public QWidget
