@@ -24,6 +24,7 @@ ExpenditureView::ExpenditureView(QWidget * parent)
     this->setSelectionMode(QAbstractItemView::SingleSelection);
 
     this->setSortingEnabled(true);
+    this->horizontalHeader()->setSortIndicator(2, Qt::SortOrder::AscendingOrder);
 }
 
 ExpenditureView::~ExpenditureView()

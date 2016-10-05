@@ -35,8 +35,19 @@ DbHandler::insertNewItem(QString const& name,
     query.bindValue(":price", price);
     query.bindValue(":catid", categoryId);
 
-    bool b = query.exec();
-    query.finish();
-    return b;
+    return query.exec();
 }
 
+bool
+DbHandler::insertNewRecipient(QString const& name,
+                              QString const& address,
+                              bool const& isOnline)
+{
+    QSqlQuery query (database);
+    query.prepare("INSERT INTO Recipient (name, address, isOnline) VALUES (:name, :address, :isOnline);");
+    query.bindValue(":name", name);
+    query.bindValue(":address", address);
+    query.bindValue(":isOnline", isOnline);
+
+    return query.exec();
+}
