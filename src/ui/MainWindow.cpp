@@ -4,7 +4,7 @@
 
 #include <QtWidgets/QHBoxLayout>
 #include <data/DbHandler.h>
-#include "main_window.h"
+#include "MainWindow.h"
 #include "AddItemDialog.h"
 
 MainWindow::MainWindow()

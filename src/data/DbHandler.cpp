@@ -44,10 +44,30 @@ DbHandler::insertNewRecipient(QString const& name,
                               bool const& isOnline)
 {
     QSqlQuery query (database);
-    query.prepare("INSERT INTO Recipient (name, address, isOnline) VALUES (:name, :address, :isOnline);");
+    query.prepare("INSERT INTO Recipient (name, address, online) VALUES (:name, :address, :isOnline);");
     query.bindValue(":name", name);
     query.bindValue(":address", address);
-    query.bindValue(":isOnline", isOnline);
+    query.bindValue(":isOnline", isOnline?1:0);
 
-    return query.exec();
+    bool const b = query.exec();
+    if (!b)
+    {
+        std::cerr << database.lastError().text().toStdString() << std::endl;
+    }
+    return b;
+}
+
+bool
+DbHandler::insertNewCategory(QString const& name)
+{
+    QSqlQuery query (database);
+    query.prepare("INSERT INTO Category (name) VALUES (:name);");
+    query.bindValue(":name", name);
+
+    bool const b = query.exec();
+    if (!b)
+    {
+        std::cerr << database.lastError().text().toStdString() << std::endl;
+    }
+    return b;
 }

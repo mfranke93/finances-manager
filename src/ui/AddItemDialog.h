@@ -14,6 +14,7 @@
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QCalendarWidget>
 #include <QtWidgets/QLabel>
+#include <QtSql/QSqlError>
 
 class AddItemDialog : public QDialog
 {
@@ -27,6 +28,8 @@ public slots:
     void rebuildCategoryContents();
     void rebuildRecipientContents();
     void onClickOkay();
+    void onClickAddRecipient();
+    void onClickAddCategory();
 
 private:
     QLineEdit * itemName;

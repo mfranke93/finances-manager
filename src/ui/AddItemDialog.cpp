@@ -5,11 +5,13 @@
 #include <QtSql/QSqlQuery>
 #include <data/DbHandler.h>
 #include "AddItemDialog.h"
+#include "AddRecipientDialog.h"
+#include "AddCategoryDialog.h"
 
 AddItemDialog::AddItemDialog(QWidget * parent, Qt::WindowFlags const& f)
 : QDialog(parent, f)
 {
-    setWindowTitle(tr("Test"));
+    setWindowTitle(tr("Add item"));
     resize(500, 200);
 
     mainLayout = new QVBoxLayout;
@@ -58,6 +60,8 @@ AddItemDialog::AddItemDialog(QWidget * parent, Qt::WindowFlags const& f)
 
     this->connect(this->cancel, SIGNAL(clicked()), this, SLOT(reject()));
     this->connect(this->ok, SIGNAL(clicked()), this, SLOT(onClickOkay()));
+    this->connect(this->newRecipient, SIGNAL(clicked()), this, SLOT(onClickAddRecipient()));
+    this->connect(this->newCategory, SIGNAL(clicked()), this, SLOT(onClickAddCategory()));
 
     this->rebuildCategoryContents();
     this->rebuildRecipientContents();
@@ -73,7 +77,7 @@ AddItemDialog::rebuildCategoryContents()
 {
     this->category->clear();
 
-    QSqlQuery query ("SELECT id, name FROM Category;");
+    QSqlQuery query ("SELECT id, name FROM Category ORDER BY name COLLATE NOCASE ASC;");
     DbHandler::getInstance()->getDatabase().exec();
 
     while (query.next())
@@ -90,7 +94,7 @@ AddItemDialog::rebuildRecipientContents()
 {
     this->recipient->clear();
 
-    QSqlQuery query ("SELECT id, name, address FROM Recipient;");
+    QSqlQuery query ("SELECT id, name, address FROM Recipient ORDER BY name COLLATE NOCASE ASC;");
     DbHandler::getInstance()->getDatabase().exec();
 
     while (query.next())
@@ -125,5 +129,49 @@ AddItemDialog::onClickOkay()
     if (DbHandler::getInstance()->insertNewItem(name, recipientId, date, price, categoryId))
     {
         accept();
+    }
+}
+
+void
+AddItemDialog::onClickAddRecipient()
+{
+    AddRecipientDialog d (this, Qt::Dialog);
+    d.setModal(true);
+    d.exec();
+
+    int const result = d.result();
+
+    if (result == QDialog::Accepted)
+    {
+        rebuildRecipientContents();
+    }
+    else if (result == QDialog::Rejected)
+    {
+    }
+    else
+    {
+        std::cerr << "Undefined result state for QDialog: " << result << std::endl;
+    }
+}
+
+void
+AddItemDialog::onClickAddCategory()
+{
+    AddCategoryDialog d (this, Qt::Dialog);
+    d.setModal(true);
+    d.exec();
+
+    int const result = d.result();
+
+    if (result == QDialog::Accepted)
+    {
+        rebuildCategoryContents();
+    }
+    else if (result == QDialog::Rejected)
+    {
+    }
+    else
+    {
+        std::cerr << "Undefined result state for QDialog: " << result << std::endl;
     }
 }
