@@ -6,6 +6,7 @@
 #pragma once
 
 #include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlError>
 #include <QtSql/QSqlQuery>
 #include <iostream>
 #include <QtCore/QDate>
@@ -27,6 +28,7 @@ public:
     DbHandler(DbHandler const&) = delete;
     DbHandler& operator= (DbHandler const&) = delete;
 
+    bool insertNewCategory(QString const& name);
     bool insertNewRecipient(QString const& name, QString const& address, bool const& isOnline);
     bool insertNewItem(QString const& name, int const& recipientId, QDate const& date, QString const& price, int const& categoryId);
     static DbHandler * instance;
