@@ -17,12 +17,7 @@ public:
     MainWindow();
     ~MainWindow();
 
-protected slots:
-    void onPressCreate();
-
 private:
-    ExpenditureView * table;
-    QPushButton * reload;
-    QPushButton * create;
+    QTabWidget * tabs;
 };
 

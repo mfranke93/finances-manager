@@ -13,7 +13,7 @@ include_directories(${FINANCES_SOURCE_DIR}/src)
 link_directories(${FINANCES_BINARY_DIR}/src)
 
 add_executable(main main.cpp
-        ui/MainWindow.cpp ui/ExpenditureView.cpp ui/ExpenditureView.h ui/AddItemDialog.cpp ui/AddItemDialog.h data/DbHandler.cpp data/DbHandler.h ui/AddRecipientDialog.cpp ui/AddRecipientDialog.h ui/AddCategoryDialog.cpp ui/AddCategoryDialog.h)
+        ui/MainWindow.cpp ui/ExpenditureView.cpp ui/ExpenditureView.h ui/AddItemDialog.cpp ui/AddItemDialog.h data/DbHandler.cpp data/DbHandler.h ui/AddRecipientDialog.cpp ui/AddRecipientDialog.h ui/AddCategoryDialog.cpp ui/AddCategoryDialog.h ui/TableTab.cpp ui/TableTab.h ui/PlotTab.cpp ui/PlotTab.h ui/PlotArea.cpp ui/PlotArea.h)
 target_link_libraries(main ${Qt5Widgets_LIBRARIES})
 target_link_libraries(main ${Qt5Sql_LIBRARIES})
 

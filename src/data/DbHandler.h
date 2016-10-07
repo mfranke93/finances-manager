@@ -11,9 +11,11 @@
 #include <iostream>
 #include <QtCore/QDate>
 #include <QVariant>
+#include <QObject>
 
-class DbHandler
+class DbHandler : public QObject
 {
+    Q_OBJECT
 public:
     static DbHandler * const getInstance()
     {
@@ -34,11 +36,16 @@ public:
     static DbHandler * instance;
 
     QSqlDatabase& getDatabase() { return database; }
+    bool commit();
+
+signals:
+    void itemDataChanged(void);
 
 private:
     DbHandler();
 
     QSqlDatabase database;
+    bool itemsChanged = false;
 };
 
 

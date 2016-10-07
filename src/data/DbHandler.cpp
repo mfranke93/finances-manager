@@ -35,7 +35,7 @@ DbHandler::insertNewItem(QString const& name,
     query.bindValue(":price", price);
     query.bindValue(":catid", categoryId);
 
-    return query.exec();
+    return (itemsChanged = query.exec());
 }
 
 bool
@@ -69,5 +69,18 @@ DbHandler::insertNewCategory(QString const& name)
     {
         std::cerr << database.lastError().text().toStdString() << std::endl;
     }
+    return b;
+}
+
+bool
+DbHandler::commit()
+{
+    bool b = database.commit();
+    if (b && itemsChanged)
+    {
+        emit itemDataChanged();
+        itemsChanged = false;
+    }
+
     return b;
 }
