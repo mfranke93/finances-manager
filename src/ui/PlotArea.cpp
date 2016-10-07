@@ -49,7 +49,7 @@ PlotArea::paintEvent(QPaintEvent * evt)
     }
     constexpr double Y_LINES = 50;
     constexpr double Y_LABELS = 200;
-    for (double y = Y_LINES * floor(minimum/Y_LINES); y <= Y_LINES * ceil(maximum/Y_LINES); y += Y_LINES)
+    for (double y = Y_LINES * ceil(minimum/Y_LINES); y <= Y_LINES * ceil(maximum/Y_LINES); y += Y_LINES)
     {
         if (int(y)%int(Y_LABELS) == 0)
         {
@@ -71,6 +71,17 @@ PlotArea::paintEvent(QPaintEvent * evt)
         sprintf(buf, "%4.0f €", y);
         QString label (buf);
         painter.drawText(5, int(scale(y))+5, label);
+    }
+
+    // draw x axis labeling: first, last, first of each month
+    auto datePaint = [&](QDate const& d, int const& offset, bool const& firstOfMonth = false) -> void
+    {
+        painter.drawText(offset, this->size().height()-5, d.toString(firstOfMonth?"dd.MM.":"dd."));
+    };
+    for (size_t i = 0; i < cumulativeSums.size(); ++i)
+    {
+        bool first = cumulativeSums[i].first.day() == 1;
+        datePaint(cumulativeSums[i].first, DAY_WIDTH * i + marginLeft - (first?14:5), first);
     }
 
     // plot
