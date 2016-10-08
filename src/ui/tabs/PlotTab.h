@@ -11,7 +11,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QScrollArea>
 #include <QtWidgets/QPushButton>
-#include "PlotArea.h"
+#include "ui/plotting/PlotArea.h"
 
 class PlotTab : public QWidget
 {

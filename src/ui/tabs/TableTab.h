@@ -8,9 +8,9 @@
 
 #include <QtSql/QtSql>
 #include <QtWidgets/QPushButton>
-#include "ExpenditureView.h"
-#include "../data/DbHandler.h"
-#include "AddItemDialog.h"
+#include "ui/table/ExpenditureView.h"
+#include "data/DbHandler.h"
+#include "ui/dialogs/AddItemDialog.h"
 
 class TableTab : public QWidget
 {

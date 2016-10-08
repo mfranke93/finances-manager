@@ -26,6 +26,7 @@ public:
 public slots:
     void reloadData();
     virtual void paintEvent(QPaintEvent * evt) override;
+    virtual void mouseMoveEvent(QMouseEvent * evt) override;
 
     void incrementZoomLevel();
     void decrementZoomLevel();
@@ -47,7 +48,7 @@ private:
     inline int const& dayWidth() const { return zoomLevels[zoomLevel]; }
     int zoomLevel;
     static constexpr int maxZoomLevel = 10;
-    std::vector<int> zoomLevels{ 1, 2, 5, 8, 12, 20, 32, 50, 64, 80, 100 };
+    static const int zoomLevels [maxZoomLevel+1];
 };
 
 

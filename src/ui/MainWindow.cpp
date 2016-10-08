@@ -5,9 +5,9 @@
 #include <QtWidgets/QHBoxLayout>
 #include <data/DbHandler.h>
 #include "MainWindow.h"
-#include "AddItemDialog.h"
-#include "TableTab.h"
-#include "PlotTab.h"
+#include "ui/dialogs/AddItemDialog.h"
+#include "ui/tabs/TableTab.h"
+#include "ui/tabs/PlotTab.h"
 
 MainWindow::MainWindow()
 {

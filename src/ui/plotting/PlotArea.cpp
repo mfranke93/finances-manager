@@ -4,12 +4,14 @@
 
 #include "PlotArea.h"
 
+int const PlotArea::zoomLevels [] = { 1, 2, 5, 8, 12, 20, 32, 50, 64, 80, 100 };
 
 PlotArea::PlotArea(QWidget * parent)
 : QWidget(parent),
   zoomLevel(7)
 {
     reloadData();
+    setMouseTracking(true);
 
     connect(DbHandler::getInstance(), SIGNAL(itemDataChanged()), this, SLOT(reloadData()));
 }
@@ -179,4 +181,12 @@ PlotArea::checkZoomLevel()
     emit canIncrementZoomLevel(zoomLevel<maxZoomLevel);
     emit canDecrementZoomLevel(zoomLevel>0);
     setMinimumWidth(dayWidth() * (cumulativeSums.size()-1) + marginLeft + marginRight + 5);
+}
+
+void
+PlotArea::mouseMoveEvent(QMouseEvent * evt)
+{
+    char buf [20];
+    sprintf(buf, "Hello @ %d, %d", evt->pos().x(), evt->pos().y());
+    setToolTip(buf);
 }
