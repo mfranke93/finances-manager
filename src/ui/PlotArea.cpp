@@ -106,30 +106,55 @@ PlotArea::paintEvent(QPaintEvent * evt)
 void
 PlotArea::reloadData()
 {
+    // TODO: rewrite this
+    /**
+     * first, make a list of all days in the range (map)
+     * then, sum up all costs per day
+     * then, accumulate sums
+     */
     cumulativeSums.clear();
 
-    double sum = 0.0;
+    std::map<QDate, double> accumPerDay;
+
     QSqlQuery query (DbHandler::getInstance()->getDatabase());
     query.exec("SELECT date, price FROM Item ORDER BY date ASC;");
-    QDate lastDate;
-    bool first = true;
     while (query.next())
     {
         QDate d = query.value("date").toDate();
-        if (first)
-        {
-            first = false;
-            lastDate = d;
-        }
         double price = query.value("price").toDouble();
-        if (lastDate != d)
+
+        if (accumPerDay.find(d) == accumPerDay.end())
         {
-            cumulativeSums.push_back(std::make_pair(d, sum));
+            accumPerDay[d] = price;
         }
-        sum += price;
-        lastDate = d;
+        else
+        {
+            accumPerDay[d] += price;
+        }
     }
-    cumulativeSums.push_back(std::make_pair(lastDate, sum));
+    // find minimum and maximum
+    QDate first, last;
+    first = accumPerDay.begin()->first;
+    last = first;
+    for (auto it : accumPerDay)
+    {
+        if (it.first > last) last = it.first;
+        if (it.first < first) first = it.first;
+    }
+    QDate today = QDate::currentDate();
+    if (today > last) last = today;
+
+    double sum = 0.0;
+    for (QDate d = first; d <= last; d = d.addDays(1))
+    {
+        if (accumPerDay.find(d) != accumPerDay.end())
+        {
+            sum += accumPerDay[d];
+        }
+        cumulativeSums.push_back(std::make_pair(d, sum));
+    }
+
+    // iterate over dates
 
     setMinimumWidth(DAY_WIDTH * (cumulativeSums.size() - 1));
     repaint();

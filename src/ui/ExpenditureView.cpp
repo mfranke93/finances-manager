@@ -22,6 +22,7 @@ ExpenditureView::ExpenditureView(QWidget * parent)
     this->setEditTriggers(QAbstractItemView::NoEditTriggers);
     this->setSelectionBehavior(QAbstractItemView::SelectRows);
     this->setSelectionMode(QAbstractItemView::SingleSelection);
+    this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     this->setSortingEnabled(true);
     this->horizontalHeader()->setSortIndicator(2, Qt::SortOrder::AscendingOrder);
@@ -38,4 +39,12 @@ ExpenditureView::onPressReload()
     this->model->select();
     this->resizeColumnsToContents();
     this->resizeRowsToContents();
+}
+
+void
+ExpenditureView::resizeEvent(QResizeEvent * event)
+{
+    this->resizeColumnsToContents();
+    this->resizeRowsToContents();
+    QTableView::resizeEvent(event);
 }
