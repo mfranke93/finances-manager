@@ -3,12 +3,14 @@
 //
 
 #include "PlotArea.h"
+#include "PlotLine.h"
+#include "PlotBottomBar.h"
 
-int const PlotArea::zoomLevels [] = { 1, 2, 5, 8, 12, 20, 32, 50, 64, 80, 100 };
+int const PlotArea::zoomLevels [] = { 5, 8, 12, 20, 32, 50, 64, 80, 100 };
 
 PlotArea::PlotArea(QWidget * parent)
 : QWidget(parent),
-  zoomLevel(7)
+  zoomLevel(5)
 {
     reloadData();
     setMouseTracking(true);
@@ -43,7 +45,7 @@ PlotArea::paintEvent(QPaintEvent * evt)
     minimum -= 20.0;
 
     // scaling function
-    auto scale = [&](double const& d) -> double { return marginTop + height - (d-minimum)/(maximum-minimum)*height; };
+    auto scale = [&](double const& d) -> int { return int(marginTop + height - (d-minimum)/(maximum-minimum)*height); };
 
     // draw grid
     painter.setPen(QColor(200, 200, 200));
@@ -78,33 +80,20 @@ PlotArea::paintEvent(QPaintEvent * evt)
     }
 
     // draw x axis labeling: first, last, first of each month
-    auto datePaint = [&](QDate const& d, int const& offset, bool const& firstOfMonth = false) -> void
+    auto dtiConverter = [&](QDate const& d) -> int
     {
-        painter.drawText(offset, this->size().height()-5, d.toString(firstOfMonth?"dd.MM.":"dd."));
+        return int(d.toJulianDay() - cumulativeSums[0].first.toJulianDay())*dayWidth() + marginLeft;
     };
-    for (size_t i = 0; i < cumulativeSums.size(); ++i)
-    {
-        bool first = cumulativeSums[i].first.day() == 1;
-        datePaint(cumulativeSums[i].first, dayWidth() * i + marginLeft - (first?14:5), first);
-    }
+    PlotBottomBar b (marginBottom, marginLeft, this->height(), std::make_pair(cumulativeSums.begin()->first, cumulativeSums.back().first));
+    b.setDtiConverter(dtiConverter);
+    b.plot(&painter);
 
     // plot
-    painter.setPen(QColor(240,30,30));
-    painter.setBrush(QColor(50, 0, 255));
-    int x = marginLeft;
-    int y = int(scale(cumulativeSums[0].second));
-    painter.fillRect(x-2, y-2, 4, 4, QColor(50, 0, 255));
-
-    // next
-    for (size_t i = 0; i < cumulativeSums.size()-1; ++i)
-    {
-        int newx = x + dayWidth();
-        int newy = int(scale(cumulativeSums[i+1].second));
-        painter.drawLine(x, y, newx, newy);
-        painter.fillRect(newx-2, newy-2, 4, 4, QColor(50, 0, 255));
-        x = newx;
-        y = newy;
-    }
+    PlotLine p;
+    p.setDtiConverter(dtiConverter);
+    p.setVerticalScaler(scale);
+    for (auto it : cumulativeSums) p.addPoint(it.first, it.second);
+    p.plot(&painter);
 }
 
 void
