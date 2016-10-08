@@ -4,8 +4,10 @@
 
 #include "PlotArea.h"
 
+
 PlotArea::PlotArea(QWidget * parent)
-: QWidget(parent)
+: QWidget(parent),
+  zoomLevel(7)
 {
     reloadData();
 
@@ -43,7 +45,7 @@ PlotArea::paintEvent(QPaintEvent * evt)
 
     // draw grid
     painter.setPen(QColor(200, 200, 200));
-    for (int x = DAY_WIDTH+marginLeft; x < width+marginLeft; x += DAY_WIDTH)
+    for (int x = dayWidth()+marginLeft; x < width+marginLeft; x += dayWidth())
     {
         painter.drawLine(x, marginTop, x, height+marginTop);
     }
@@ -81,7 +83,7 @@ PlotArea::paintEvent(QPaintEvent * evt)
     for (size_t i = 0; i < cumulativeSums.size(); ++i)
     {
         bool first = cumulativeSums[i].first.day() == 1;
-        datePaint(cumulativeSums[i].first, DAY_WIDTH * i + marginLeft - (first?14:5), first);
+        datePaint(cumulativeSums[i].first, dayWidth() * i + marginLeft - (first?14:5), first);
     }
 
     // plot
@@ -94,7 +96,7 @@ PlotArea::paintEvent(QPaintEvent * evt)
     // next
     for (size_t i = 0; i < cumulativeSums.size()-1; ++i)
     {
-        int newx = x + DAY_WIDTH;
+        int newx = x + dayWidth();
         int newy = int(scale(cumulativeSums[i+1].second));
         painter.drawLine(x, y, newx, newy);
         painter.fillRect(newx-2, newy-2, 4, 4, QColor(50, 0, 255));
@@ -106,12 +108,7 @@ PlotArea::paintEvent(QPaintEvent * evt)
 void
 PlotArea::reloadData()
 {
-    // TODO: rewrite this
-    /**
-     * first, make a list of all days in the range (map)
-     * then, sum up all costs per day
-     * then, accumulate sums
-     */
+    // TODO: externalize
     cumulativeSums.clear();
 
     std::map<QDate, double> accumPerDay;
@@ -156,6 +153,30 @@ PlotArea::reloadData()
 
     // iterate over dates
 
-    setMinimumWidth(DAY_WIDTH * (cumulativeSums.size() - 1));
+    checkZoomLevel();
     repaint();
+}
+
+void
+PlotArea::incrementZoomLevel()
+{
+    if (zoomLevel < maxZoomLevel) ++zoomLevel;
+    checkZoomLevel();
+    repaint();
+}
+
+void
+PlotArea::decrementZoomLevel()
+{
+    if (zoomLevel > 0) --zoomLevel;
+    checkZoomLevel();
+    repaint();
+}
+
+void
+PlotArea::checkZoomLevel()
+{
+    emit canIncrementZoomLevel(zoomLevel<maxZoomLevel);
+    emit canDecrementZoomLevel(zoomLevel>0);
+    setMinimumWidth(dayWidth() * (cumulativeSums.size()-1) + marginLeft + marginRight + 5);
 }

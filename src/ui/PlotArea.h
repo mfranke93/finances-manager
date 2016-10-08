@@ -14,8 +14,6 @@
 #include <data/DbHandler.h>
 #include <numeric>
 
-#define DAY_WIDTH 50
-
 
 class PlotArea : public QWidget
 {
@@ -29,6 +27,15 @@ public slots:
     void reloadData();
     virtual void paintEvent(QPaintEvent * evt) override;
 
+    void incrementZoomLevel();
+    void decrementZoomLevel();
+
+signals:
+    void canDecrementZoomLevel(bool);
+    void canIncrementZoomLevel(bool);
+
+protected:
+    void checkZoomLevel();
 
 private:
     std::vector<std::pair<QDate, double>> cumulativeSums;
@@ -36,6 +43,11 @@ private:
     const int marginTop = 5;
     const int marginRight = 5;
     const int marginLeft = 60;
+
+    inline int const& dayWidth() const { return zoomLevels[zoomLevel]; }
+    int zoomLevel;
+    static constexpr int maxZoomLevel = 10;
+    std::vector<int> zoomLevels{ 1, 2, 5, 8, 12, 20, 32, 50, 64, 80, 100 };
 };
 
 

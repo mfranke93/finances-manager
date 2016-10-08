@@ -28,6 +28,8 @@ private:
     PlotArea * plotArea;
 
     QPushButton * repaintButton;
+    QPushButton * zoomInButton;
+    QPushButton * zoomOutButton;
 
     QVBoxLayout * mainLayout;
     QHBoxLayout * bottomButtonLayout;
