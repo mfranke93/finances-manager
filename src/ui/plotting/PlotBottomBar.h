@@ -19,6 +19,9 @@ public:
 
     void plot(QPainter * const) const override;
     void setDtiConverter(DateToIntConverter const& dti) { this->dtiConverter = dti; };
+
+protected:
+    std::vector<QDate> * calculatePrintedDates(QPainter * const) const;
 private:
     int const bottomMargin;
     int const leftMargin;

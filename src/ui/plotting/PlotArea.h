@@ -47,7 +47,7 @@ private:
 
     inline int const& dayWidth() const { return zoomLevels[zoomLevel]; }
     int zoomLevel;
-    static constexpr int maxZoomLevel = 9;
+    static constexpr int maxZoomLevel = 8;
     static const int zoomLevels [maxZoomLevel+1];
 };
 

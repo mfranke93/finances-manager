@@ -6,6 +6,7 @@
 #include "PlotLine.h"
 #include "PlotBottomBar.h"
 #include "PlotLeftAxis.h"
+#include "PlotGrid.h"
 
 int const PlotArea::zoomLevels [] = { 5, 8, 12, 20, 32, 50, 64, 80, 100 };
 
@@ -34,7 +35,6 @@ PlotArea::paintEvent(QPaintEvent * evt)
     double minimum = cumulativeSums[0].second;
     double maximum = minimum;
     int height = this->size().height() - marginBottom - marginTop;
-    int width = this->size().width() - marginLeft - marginRight;
     for (auto it : cumulativeSums)
     {
         if (it.second < minimum) minimum = it.second;
@@ -47,27 +47,16 @@ PlotArea::paintEvent(QPaintEvent * evt)
 
     // scaling function
     auto scale = [&](double const& d) -> int { return int(marginTop + height - (d-minimum)/(maximum-minimum)*height); };
+    auto dtiConverter = [&](QDate const& d) -> int
+    {
+        return int(cumulativeSums[0].first.daysTo(d)) * dayWidth() + marginLeft;
+    };
 
     // draw grid
-    painter.setPen(QColor(200, 200, 200));
-    for (int x = dayWidth()+marginLeft; x < width+marginLeft; x += dayWidth())
-    {
-        painter.drawLine(x, marginTop, x, height+marginTop);
-    }
-    constexpr double Y_LINES = 50;
-    constexpr double Y_LABELS = 200;
-    for (double y = Y_LINES * ceil(minimum/Y_LINES); y <= Y_LINES * ceil(maximum/Y_LINES); y += Y_LINES)
-    {
-        if (int(y)%int(Y_LABELS) == 0)
-        {
-            painter.setPen(QColor(100, 100, 100));
-        }
-        else
-        {
-            painter.setPen(QColor(200, 200, 200));
-        }
-        painter.drawLine(marginLeft, scale(y), marginLeft+width, scale(y));
-    }
+    PlotGrid pg (std::make_pair(cumulativeSums.begin()->first, cumulativeSums.back().first), std::make_pair(minimum, maximum));
+    pg.setDateToIntConverter(dtiConverter);
+    pg.setVerticalScaler(scale);
+    pg.plot(&painter);
 
     // draw y axis labeling: every 200 €
     PlotLeftAxis la (marginLeft, marginTop, height, std::make_pair(minimum, maximum));
@@ -75,10 +64,6 @@ PlotArea::paintEvent(QPaintEvent * evt)
     la.plot(&painter);
 
     // draw x axis labeling: first, last, first of each month
-    auto dtiConverter = [&](QDate const& d) -> int
-    {
-        return int(d.toJulianDay() - cumulativeSums[0].first.toJulianDay())*dayWidth() + marginLeft;
-    };
     PlotBottomBar b (marginBottom, marginLeft, this->height(), std::make_pair(cumulativeSums.begin()->first, cumulativeSums.back().first));
     b.setDtiConverter(dtiConverter);
     b.plot(&painter);
@@ -164,7 +149,7 @@ PlotArea::checkZoomLevel()
 {
     emit canIncrementZoomLevel(zoomLevel<maxZoomLevel);
     emit canDecrementZoomLevel(zoomLevel>0);
-    setMinimumWidth(dayWidth() * (cumulativeSums.size()-1) + marginLeft + marginRight + 5);
+    setMinimumWidth(dayWidth() * int(cumulativeSums.size()-1) + marginLeft + marginRight + 5);
 }
 
 void
