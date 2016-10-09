@@ -24,6 +24,7 @@ public:
 
     void plot(QPainter * const) const override;
     void addPoint(QDate const& date, double const& value);
+    void addPoints(std::vector<std::pair<QDate const, double>> const& vec);
     void setDtiConverter(DateToIntConverter const&);
     void setVerticalScaler(VerticalScaler const&);
 

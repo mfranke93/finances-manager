@@ -39,7 +39,7 @@ protected:
     void checkZoomLevel();
 
 private:
-    std::vector<std::pair<QDate, double>> cumulativeSums;
+    std::vector<std::pair<QDate const, double>> cumulativeSums;
     const int marginBottom = 20;
     const int marginTop = 5;
     const int marginRight = 5;

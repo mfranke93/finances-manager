@@ -22,6 +22,12 @@ PlotLine::addPoint(QDate const& date, double const& value)
 }
 
 void
+PlotLine::addPoints(std::vector<std::pair<QDate const, double>> const& vec)
+{
+    for (auto it : vec) points.push_back(it);
+}
+
+void
 PlotLine::setDtiConverter(DateToIntConverter const& dtiConverter)
 {
     this->dtiConverter = dtiConverter;

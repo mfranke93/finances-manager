@@ -87,7 +87,7 @@ PlotArea::paintEvent(QPaintEvent * evt)
     PlotLine p;
     p.setDtiConverter(dtiConverter);
     p.setVerticalScaler(scale);
-    for (auto it : cumulativeSums) p.addPoint(it.first, it.second);
+    p.addPoints(cumulativeSums);
     p.plot(&painter);
 }
 
