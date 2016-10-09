@@ -5,6 +5,7 @@
 #include "PlotArea.h"
 #include "PlotLine.h"
 #include "PlotBottomBar.h"
+#include "PlotLeftAxis.h"
 
 int const PlotArea::zoomLevels [] = { 5, 8, 12, 20, 32, 50, 64, 80, 100 };
 
@@ -69,15 +70,9 @@ PlotArea::paintEvent(QPaintEvent * evt)
     }
 
     // draw y axis labeling: every 200 €
-    painter.setFont(QFont("Monospace", 8));
-    painter.setPen(QColor(0,0,0));
-    for (double y = Y_LABELS * floor(minimum/Y_LABELS); y <= Y_LABELS * ceil(maximum/Y_LABELS); y += Y_LABELS)
-    {
-        char buf [10];
-        sprintf(buf, "%4.0f €", y);
-        QString label (buf);
-        painter.drawText(5, int(scale(y))+5, label);
-    }
+    PlotLeftAxis la (marginLeft, marginTop, height, std::make_pair(minimum, maximum));
+    la.setVerticalScaler(scale);
+    la.plot(&painter);
 
     // draw x axis labeling: first, last, first of each month
     auto dtiConverter = [&](QDate const& d) -> int
