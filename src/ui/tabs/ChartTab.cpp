@@ -49,8 +49,13 @@ ChartTab::reloadData()
         else ranges[cat].second += amount;
     }
 
-    for (auto it : ranges)
+    // sort
+    std::map<double, QString> sorterMap;
+    for (auto it:ranges) sorterMap[it.second.first + it.second.second] = it.first;
+
+
+    for (auto it : sorterMap)
     {
-        area->addBar(it.first, it.second.first, it.second.second);
+        area->addBar(it.second, ranges[it.second].first, ranges[it.second].second);
     }
 }
