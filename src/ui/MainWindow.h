@@ -8,7 +8,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
 #include <QSqlError>
-#include "ExpenditureView.h"
+#include "ui/table/ExpenditureView.h"
 
 class MainWindow : public QWidget
 {
@@ -17,12 +17,7 @@ public:
     MainWindow();
     ~MainWindow();
 
-protected slots:
-    void onPressCreate();
-
 private:
-    ExpenditureView * table;
-    QPushButton * reload;
-    QPushButton * create;
+    QTabWidget * tabs;
 };
 

@@ -12,7 +12,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 
-#include "../data/DbHandler.h"
+#include "data/DbHandler.h"
 
 class AddCategoryDialog : public QDialog
 {

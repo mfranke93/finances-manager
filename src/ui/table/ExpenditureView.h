@@ -16,6 +16,9 @@ public:
     ExpenditureView(QWidget * parent = nullptr);
     ~ExpenditureView();
 
+protected:
+    virtual void resizeEvent(QResizeEvent * event) override;
+
 public slots:
     void onPressReload();
 private:
