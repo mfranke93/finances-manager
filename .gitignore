@@ -1,6 +1,7 @@
 # Database
 data.db
 dbcreate.sql
+sql_backups/backup_*.sql
 
 # IntelliJ configs
 .idea/

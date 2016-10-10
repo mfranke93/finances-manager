@@ -1,12 +1,11 @@
 //
-// Created by max on 30/09/16.
+// Created by max on 06/10/16.
 //
 
-#include <QtWidgets/QHBoxLayout>
-#include "main_window.h"
-#include "AddItemDialog.h"
+#include "TableTab.h"
 
-MainWindow::MainWindow()
+TableTab::TableTab(QWidget * parent)
+: QWidget(parent)
 {
     QVBoxLayout * lay = new QVBoxLayout;
     QHBoxLayout * bottom = new QHBoxLayout;
@@ -22,17 +21,19 @@ MainWindow::MainWindow()
 
     this->connect(this->reload, SIGNAL(clicked()), this->table, SLOT(onPressReload()) );
     this->connect(this->create, SIGNAL(clicked()), SLOT(onPressCreate()));
+    this->connect(DbHandler::getInstance(), SIGNAL(itemDataChanged()), this->table, SLOT(onPressReload()));
 }
 
-MainWindow::~MainWindow()
+TableTab::~TableTab()
 {
     if (this->table != nullptr)
         delete this->table;
 }
 
 void
-MainWindow::onPressCreate()
+TableTab::onPressCreate()
 {
+    DbHandler::getInstance()->getDatabase().transaction();
     AddItemDialog d (this, Qt::Dialog);
     d.setModal(true);
     d.exec();
@@ -40,21 +41,18 @@ MainWindow::onPressCreate()
     int result = d.result();
     if (result == QDialog::Accepted)
     {
-        // TODO: make dbhandler class
-        // do the thing
-        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-        if (!db.commit())
+        if (!DbHandler::getInstance()->commit())
         {
-            fprintf(stderr, "Could not commit to %s\n", db.connectionName().toStdString().c_str());
+            fprintf(stderr, "Could not commit to %s\n", DbHandler::getInstance()->getDatabase().connectionName().toStdString().c_str());
+            std::cerr << DbHandler::getInstance()->getDatabase().lastError().text().toStdString() << std::endl;
         }
     }
     else if (result == QDialog::Rejected)
     {
         // rollback
-        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-        if (!db.rollback())
+        if (!DbHandler::getInstance()->getDatabase().rollback())
         {
-            fprintf(stderr, "Could not rollback %s\n", db.connectionName().toStdString().c_str());
+            fprintf(stderr, "Could not rollback %s\n", DbHandler::getInstance()->getDatabase().connectionName().toStdString().c_str());
         }
     }
     else

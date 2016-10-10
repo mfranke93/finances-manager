@@ -3,11 +3,12 @@
 //
 
 #include <QtWidgets/QHeaderView>
+#include <data/DbHandler.h>
 #include "ExpenditureView.h"
 
 ExpenditureView::ExpenditureView(QWidget * parent)
 {
-    this->model = new QSqlTableModel(parent);
+    this->model = new QSqlTableModel(parent, DbHandler::getInstance()->getDatabase());
     model->setTable("Expenditures");
     model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     model->select();
@@ -21,8 +22,10 @@ ExpenditureView::ExpenditureView(QWidget * parent)
     this->setEditTriggers(QAbstractItemView::NoEditTriggers);
     this->setSelectionBehavior(QAbstractItemView::SelectRows);
     this->setSelectionMode(QAbstractItemView::SingleSelection);
+    this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     this->setSortingEnabled(true);
+    this->horizontalHeader()->setSortIndicator(2, Qt::SortOrder::AscendingOrder);
 }
 
 ExpenditureView::~ExpenditureView()
@@ -34,4 +37,14 @@ void
 ExpenditureView::onPressReload()
 {
     this->model->select();
+    this->resizeColumnsToContents();
+    this->resizeRowsToContents();
+}
+
+void
+ExpenditureView::resizeEvent(QResizeEvent * event)
+{
+    this->resizeColumnsToContents();
+    this->resizeRowsToContents();
+    QTableView::resizeEvent(event);
 }
