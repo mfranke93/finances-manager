@@ -3,9 +3,9 @@
 //
 
 #include "PlotLine.h"
-#include "PlotPoint.h"
 
 PlotLine::PlotLine()
+: drawMinMax(true)
 {
     // ctor
 }
@@ -16,15 +16,18 @@ PlotLine::~PlotLine()
 }
 
 void
-PlotLine::addPoint(QDate const& date, double const& value)
+PlotLine::addPoint(QDate const& date, double const& value, double const& min, double const& max)
 {
-    points.push_back(std::make_pair(date, value));
+    points.push_back(std::make_pair(date, std::make_tuple(value, min, max)));
 }
 
 void
-PlotLine::addPoints(std::vector<std::pair<QDate const, double>> const& vec)
+PlotLine::addPoints(std::vector<std::pair<QDate const, std::tuple<double, double, double>>> const& vec)
 {
-    for (auto it : vec) points.push_back(it);
+    for (auto it : vec)
+    {
+        points.push_back(it);
+    }
 }
 
 void
@@ -50,7 +53,7 @@ PlotLine::plot(QPainter * const painter) const
         PlotPoint& end = vec->at(i+1);
 
         // line first
-        start.drawLine(painter, end, QColor(20, 205, 100));
+        start.drawLine(painter, end, QColor(20, 160, 90), drawMinMax);
         // then start point
         start.paint(painter);
     }
@@ -66,7 +69,12 @@ PlotLine::buildPoints() const
     std::vector<PlotPoint> * vec = new std::vector<PlotPoint>;
     for (auto const& point : points)
     {
-        vec->push_back(PlotPoint(dtiConverter(point.first), vScaler(point.second), 3, (point.second>0)?QColor(20, 100, 205):QColor(205, 20, 20)));
+        double val = std::get<0>(point.second);
+        double minimal = std::get<1>(point.second);
+        double maximal = std::get<2>(point.second);
+        PlotPoint p (dtiConverter(point.first), vScaler(val), 3, (val>0)?QColor(20, 100, 205):QColor(205, 20, 20));
+        p.setYRange(vScaler(minimal), vScaler(maximal));
+        vec->push_back(p);
     }
     return vec;
 }

@@ -18,13 +18,16 @@ public:
     PlotPoint(PlotPoint const&) = default;
     PlotPoint& operator= (PlotPoint const&) = delete;
 
+    void setYRange(int const&, int const&);
+
     void paint(QPainter * const painter) const;
-    inline void drawLine(QPainter * const painter, PlotPoint const& other) const { drawLine(painter, other, color); };
+    inline void drawLine(QPainter * const painter, PlotPoint const& other, bool const& drawYRange) const { drawLine(painter, other, color, drawYRange); };
     /* use start point color instead */
-    void drawLine(QPainter * const painter, PlotPoint const& other, QColor const& color) const;
+    void drawLine(QPainter * const painter, PlotPoint const& other, QColor const& color, bool const& drawYRange) const;
 
 private:
     int x, y;
+    std::pair<int, int> yRange;
     double radius;
     QColor color;
 

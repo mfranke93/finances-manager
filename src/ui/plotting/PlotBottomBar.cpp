@@ -2,7 +2,6 @@
 // Created by max on 08/10/16.
 //
 
-#include <iostream>
 #include "PlotBottomBar.h"
 
 PlotBottomBar::PlotBottomBar(int const& bottomMargin,
@@ -39,7 +38,6 @@ PlotBottomBar::calculatePrintedDates(QPainter * const painter) const
     QString sample ("12.04.");
     QRect boundingRectangle = painter->fontMetrics().boundingRect(sample);
     int distTwoDates = dtiConverter(dateRange.first.addDays(1)) - dtiConverter(dateRange.first);
-    std::cout << "width: " << boundingRectangle.width() << ", date dist: " << distTwoDates << std::endl;
 
     double quot = double(distTwoDates) / double(boundingRectangle.width());
     int factor = 1;

@@ -31,6 +31,9 @@ public slots:
     void incrementZoomLevel();
     void decrementZoomLevel();
 
+    inline bool const& isPaintMinMax() { return paintMinMax; };
+    inline void setPaintMinMax(bool const& b) { paintMinMax = b; emit repaint(); };
+
 signals:
     void canDecrementZoomLevel(bool);
     void canIncrementZoomLevel(bool);
@@ -39,7 +42,7 @@ protected:
     void checkZoomLevel();
 
 private:
-    std::vector<std::pair<QDate const, double>> cumulativeSums;
+    std::vector<std::pair<QDate const, std::tuple<double, double, double>>> cumulativeSums;
     const int marginBottom = 20;
     const int marginTop = 5;
     const int marginRight = 5;
@@ -49,6 +52,8 @@ private:
     int zoomLevel;
     static constexpr int maxZoomLevel = 8;
     static const int zoomLevels [maxZoomLevel+1];
+
+    bool paintMinMax = true;
 };
 
 

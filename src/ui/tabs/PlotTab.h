@@ -30,6 +30,7 @@ private:
     QPushButton * repaintButton;
     QPushButton * zoomInButton;
     QPushButton * zoomOutButton;
+    QPushButton * enableMinMaxDrawingButton;
 
     QVBoxLayout * mainLayout;
     QHBoxLayout * bottomButtonLayout;
