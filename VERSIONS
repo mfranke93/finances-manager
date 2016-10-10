@@ -1,0 +1,38 @@
+                                ----------------
+                                Finances Manager
+                                ----------------
+
+This is a program to keep track of personal finances. It has a SQLite backend
+and a Qt5 UI. The program is written in C++11.
+
+Maintainer: Max Franke <max@mumintroll.org>
+
+
+Version 1.0                                                            ~ v1.0 ~
+===========
+Release date: October 10th, 2016
+
+First official release. This contains the core program in a working state.
+
+Features:
+  - SQLite3 backend managed through Qt5.
+    - Foreign keys and unique key constraints to make database as robust as
+      possible. 
+    - Contains a view which prints all data in a nice overview.
+  - Qt5 UI with one main window.
+    - Window has one tab with a table view, which shows a view on the table of
+      expenditures.
+      - Button to add an expenditure launches a dialog.
+    - Window has one tab with a plotting area, where the cumulative value is
+      plotted over time.
+      - Can zoom in and out. x axis text is hidden if too close together.
+      - Can toggle whether maximum and minimum per day are also shown.
+    - Dialog to add an expenditure.
+      - Input fields for name, price.
+      - Date picker for date.
+      - Combo boxes for category and location.
+      - Buttons to add category or location.
+    - Dialog to add category.
+      - Input field for name, okay and cancel button.
+    - Dialog to add location.
+      - Input filed for name, address, okay and cancel button.
