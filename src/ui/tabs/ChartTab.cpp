@@ -4,6 +4,7 @@
 
 #include <QtSql/QSqlQuery>
 #include <iostream>
+#include <data/DbHandler.h>
 #include "ChartTab.h"
 
 ChartTab::ChartTab(QWidget * parent)
@@ -23,6 +24,8 @@ ChartTab::ChartTab()
     setLayout(mainLayout);
 
     reloadData();
+
+    connect(DbHandler::getInstance(), SIGNAL(itemDataChanged()), area, SLOT(reloadEvent()));
 }
 
 void

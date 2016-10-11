@@ -6,8 +6,11 @@
 #pragma once
 
 #include <QtWidgets/QTableView>
+#include <QtWidgets/QScrollBar>
 #include <QtSql/QSqlTableModel>
 #include <QtSql/QSqlQuery>
+#include <QtWidgets/QHeaderView>
+#include <data/DbHandler.h>
 
 class ExpenditureView : public QTableView
 {

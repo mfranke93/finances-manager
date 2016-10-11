@@ -24,6 +24,7 @@ public slots:
     void paintEvent(QPaintEvent * evt) override;
     void resizeEvent(QResizeEvent * evt) override;
     void rebuildBars();
+    void reloadEvent();
 
 private:
     GraphArea(QWidget * parent) : QWidget(parent) {};

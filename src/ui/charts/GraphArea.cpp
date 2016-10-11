@@ -84,3 +84,9 @@ GraphArea::addBar(QString const& name, double const& min, double const& max)
 
     emit rebuildBars();
 }
+
+void
+GraphArea::reloadEvent()
+{
+    emit rebuildBars();
+}

@@ -2,6 +2,7 @@
 // Created by max on 06/10/16.
 //
 
+#include <QtWidgets/QAbstractSlider>
 #include "PlotTab.h"
 
 PlotTab::PlotTab(QWidget * parent)
@@ -45,10 +46,13 @@ PlotTab::PlotTab(QWidget * parent)
     connect(plotArea, SIGNAL(canIncrementZoomLevel(bool)), zoomInButton, SLOT(setEnabled(bool)));
     connect(plotArea, SIGNAL(canDecrementZoomLevel(bool)), zoomOutButton, SLOT(setEnabled(bool)));
     connect(enableMinMaxDrawingButton, SIGNAL(toggled(bool)), plotArea, SLOT(setPaintMinMax(bool)));
+
+    onDataChanged();
 }
 
 void
 PlotTab::onDataChanged()
 {
     plotArea->reloadData();
+    plotAreaWrapper->horizontalScrollBar()->setValue(plotAreaWrapper->horizontalScrollBar()->maximum());
 }
