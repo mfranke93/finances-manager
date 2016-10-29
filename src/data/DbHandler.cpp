@@ -9,7 +9,7 @@ DbHandler * DbHandler::instance = nullptr;
 DbHandler::DbHandler()
 : database(QSqlDatabase::addDatabase("QSQLITE"))
 {
-    database.setDatabaseName("/home/max/dev/finances-manager/data.db");
+    database.setDatabaseName("/home/max/prog/finances-manager/data.db");
     if (!database.open())
     {
         std::cerr << "Could not open database at " << database.databaseName().toStdString() << std::endl;
