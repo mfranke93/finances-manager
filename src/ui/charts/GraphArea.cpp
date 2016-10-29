@@ -19,7 +19,7 @@ GraphArea::paintEvent(QPaintEvent * evt)
     painter.fillRect(this->rect(), QColor("white"));
 
     painter.setPen(QColor(180,180,180));
-    for (double d = 200*(ceil(range.first/200)); d <= range.second; d += 200)
+    for (double d = 200*(std::ceil(range.first/200)); d <= range.second; d += 200)
     {
         int const y = scale(d) + yOffset;
         painter.drawLine(0, y, width(), y);

@@ -5,7 +5,7 @@
 
 #pragma once
 
-
+#include <cmath>
 #include <QtWidgets/QWidget>
 #include "BarGraph.h"
 
