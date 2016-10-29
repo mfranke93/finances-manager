@@ -2,6 +2,7 @@
 // Created by max on 09/10/16.
 //
 
+#include <cmath>
 #include "PlotGrid.h"
 
 PlotGrid::PlotGrid(std::pair<QDate const, QDate const> const& dateRange,
@@ -29,7 +30,7 @@ void PlotGrid::plot(QPainter * const painter) const
     zeroLine.setWidthF(1.0);
 
     // horizontal lines
-    int y = int(ceil(priceRange.first/yStep))*yStep;
+    int y = int(std::ceil(priceRange.first/yStep))*yStep;
     while (y <= int(priceRange.second))
     {
         int const coordY = vScaler(y);
