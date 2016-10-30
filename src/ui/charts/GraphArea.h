@@ -35,6 +35,8 @@ private:
 
     int heightPerBar = 200;
     int yOffset = 20;
+
+    constexpr static int xOffsetGlobal = 50;
 };
 
 
