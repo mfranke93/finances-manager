@@ -18,17 +18,29 @@ GraphArea::paintEvent(QPaintEvent * evt)
 
     painter.fillRect(this->rect(), QColor("white"));
 
-    painter.setPen(QColor(180,180,180));
+    // draw grid and numbers
+    QColor red = QColor(205, 20, 20);
+    QColor black = QColor(0,0,0);
+    QColor gray = QColor(180,180,180);
+    painter.setFont(QFont("Monospace", 8));
     for (double d = 200*(std::ceil(range.first/200)); d <= range.second; d += 200)
     {
         int const y = scale(d) + yOffset;
-        painter.drawLine(0, y, width(), y);
+        painter.setPen(gray);
+        painter.drawLine(xOffsetGlobal, y, width(), y);
+
+        // numbers
+        painter.setPen(d<0.0?red:black);
+        char buf [10];
+        std::sprintf(buf, "%4.0f", d);
+        painter.drawText(10, y+5, QString(buf));
     }
 
+    // draw bars
     for (auto& it : bars)
     {
         it.second.paint(&painter);
-        painter.setPen(QColor("black"));
+        painter.setPen(black);
         QFont f ("Monospace", 8);
         painter.setFont(f);
         painter.drawText(it.second.boundingRect().x() -5, it.second.boundingRect().bottom() + 15, it.first);
@@ -47,7 +59,7 @@ GraphArea::rebuildBars()
 {
     // rebuild bounding rects
     int const numBars = int(bars.size());
-    int widthPerBar = width()/numBars;
+    int widthPerBar = (width() - xOffsetGlobal)/numBars;
     if (widthPerBar > 120) widthPerBar = 120;
     heightPerBar = height() - 60;
     int const xOffset = 20;
@@ -59,7 +71,7 @@ GraphArea::rebuildBars()
         return int(heightPerBar - scalingFactor * heightPerBar);
     };
 
-    int currentX = 0;
+    int currentX = xOffsetGlobal;
     for (auto& it : bars)
     {
         it.second.setPriceScaler(scale);
