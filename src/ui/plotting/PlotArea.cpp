@@ -2,6 +2,7 @@
 // Created by max on 07/10/16.
 //
 
+#include <data/ResourceHandler.h>
 #include "PlotArea.h"
 #include "PlotLine.h"
 #include "PlotBottomBar.h"
@@ -21,22 +22,21 @@ PlotArea::PlotArea(QWidget * parent)
 }
 
 void
-PlotArea::paintEvent(QPaintEvent * evt)
-{
-    QPainter painter (this);
+PlotArea::paintEvent(QPaintEvent * evt) {
+    QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
     painter.setPen(Qt::NoPen);
-    painter.setBrush(QColor(255,255,255));
-    painter.fillRect(this->rect().adjusted(marginLeft,marginTop,-marginRight-1,-marginBottom-1), QColor(255,255,255));
+    painter.setBrush(QColor(255, 255, 255));
+    painter.fillRect(this->rect().adjusted(marginLeft, marginTop, -marginRight - 1, -marginBottom - 1),
+                     QColor(255, 255, 255));
 
     if (cumulativeSums.empty()) return;
     // scaling factors
     double minimum = std::get<0>(cumulativeSums[0].second);
     double maximum = minimum;
     int height = this->size().height() - marginBottom - marginTop;
-    for (auto it : cumulativeSums)
-    {
+    for (auto it : cumulativeSums) {
         double min = std::get<1>(it.second);
         double max = std::get<2>(it.second);
 
@@ -49,25 +49,28 @@ PlotArea::paintEvent(QPaintEvent * evt)
     minimum -= 20.0;
 
     // scaling function
-    auto scale = [&](double const& d) -> int { return int(marginTop + height - (d-minimum)/(maximum-minimum)*height); };
-    auto dtiConverter = [&](QDate const& d) -> int
-    {
+    auto scale = [&](double const &d) -> int {
+        return int(marginTop + height - (d - minimum) / (maximum - minimum) * height);
+    };
+    auto dtiConverter = [&](QDate const &d) -> int {
         return int(cumulativeSums[0].first.daysTo(d)) * dayWidth() + marginLeft;
     };
 
     // draw grid
-    PlotGrid pg (std::make_pair(cumulativeSums.begin()->first, cumulativeSums.back().first), std::make_pair(minimum, maximum));
+    PlotGrid pg(std::make_pair(cumulativeSums.begin()->first, cumulativeSums.back().first),
+                std::make_pair(minimum, maximum));
     pg.setDateToIntConverter(dtiConverter);
     pg.setVerticalScaler(scale);
     pg.plot(&painter);
 
     // draw y axis labeling: every 200 €
-    PlotLeftAxis la (marginLeft, marginTop, height, std::make_pair(minimum, maximum));
+    PlotLeftAxis la(marginLeft, marginTop, height, std::make_pair(minimum, maximum));
     la.setVerticalScaler(scale);
     la.plot(&painter);
 
     // draw x axis labeling: first, last, first of each month
-    PlotBottomBar b (marginBottom, marginLeft, this->height(), std::make_pair(cumulativeSums.begin()->first, cumulativeSums.back().first));
+    PlotBottomBar b(marginBottom, marginLeft, this->height(),
+                    std::make_pair(cumulativeSums.begin()->first, cumulativeSums.back().first));
     b.setDtiConverter(dtiConverter);
     b.plot(&painter);
 
@@ -78,6 +81,18 @@ PlotArea::paintEvent(QPaintEvent * evt)
     p.setDrawMinMax(paintMinMax);
     p.addPoints(cumulativeSums);
     p.plot(&painter);
+
+
+    // test: plot colors
+    for (int i = 1; i < 17; ++i) {
+        char buf[40];
+        std::sprintf(buf, "color%02d.light", i);
+        painter.setBrush(ResourceHandler::getInstance()->getColor(QString(buf)));
+        painter.drawRect(20 * i, 20, 20, 20);
+        std::sprintf(buf, "color%02d.dark", i);
+        painter.setBrush(ResourceHandler::getInstance()->getColor(QString(buf)));
+        painter.drawRect(20 * i, 40, 20, 20);
+    }
 }
 
 void

@@ -5,8 +5,9 @@
 
 #pragma once
 
-
+#include <iostream>
 #include <QtGui/QColor>
+#include <QtGui/QPixmap>
 
 class ResourceHandler
 {
@@ -26,10 +27,14 @@ public:
     ResourceHandler& operator= (ResourceHandler const&) = delete;
 
     QColor const& getColor(QString const&) const;
-    QIcon const& getIcon(QString const&) const;
+    QPixmap const& getIcon(QString const&) const;
 
+    static inline constexpr size_t const& getNumberOfNumberedColors()
+    { return numberedColorRange; }
 protected:
     void initColors();
+
+    static QColor lightVersion(QColor const&) throw();
 
 private:
     ResourceHandler();
@@ -37,7 +42,12 @@ private:
     static ResourceHandler * instance;
 
     std::map<QString const, QColor const> colors;
-    std::map<QString const, QIcon const> icons;
+    std::map<QString const, QPixmap const> icons;
+
+    /**
+     * Number of numbered colors, e.g. color04.light/dark
+     */
+    static constexpr size_t numberedColorRange {16};
 };
 
 
