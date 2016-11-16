@@ -2,6 +2,7 @@
 // Created by max on 08/10/16.
 //
 
+#include <data/ResourceHandler.h>
 #include "PlotLine.h"
 
 PlotLine::PlotLine()
@@ -53,7 +54,7 @@ PlotLine::plot(QPainter * const painter) const
         PlotPoint& end = vec->at(i+1);
 
         // line first
-        start.drawLine(painter, end, QColor(20, 160, 90), drawMinMax);
+        start.drawLine(painter, end, ResourceHandler::getInstance()->getColor("plot line green"), drawMinMax);
         // then start point
         start.paint(painter);
     }
@@ -72,7 +73,10 @@ PlotLine::buildPoints() const
         double val = std::get<0>(point.second);
         double minimal = std::get<1>(point.second);
         double maximal = std::get<2>(point.second);
-        PlotPoint p (dtiConverter(point.first), vScaler(val), 3, (val>0)?QColor(20, 100, 205):QColor(205, 20, 20));
+        PlotPoint p (dtiConverter(point.first), vScaler(val), 3,
+                     (val>0)
+                     ? ResourceHandler::getInstance()->getColor("positive numbers blue")
+                     : ResourceHandler::getInstance()->getColor("negative numbers red"));
         p.setYRange(vScaler(minimal), vScaler(maximal));
         vec->push_back(p);
     }
