@@ -8,6 +8,7 @@
 
 #include <QtGui/QColor>
 #include <QtGui/QPainter>
+#include <data/ResourceHandler.h>
 
 class PlotPoint
 {

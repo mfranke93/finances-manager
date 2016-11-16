@@ -2,7 +2,6 @@
 // Created by max on 10/10/16.
 //
 
-#include <iostream>
 #include "GraphArea.h"
 
 GraphArea::GraphArea()
@@ -19,9 +18,9 @@ GraphArea::paintEvent(QPaintEvent * evt)
     painter.fillRect(this->rect(), QColor("white"));
 
     // draw grid and numbers
-    QColor red = QColor(205, 20, 20);
-    QColor black = QColor(0,0,0);
-    QColor gray = QColor(180,180,180);
+    QColor red = ResourceHandler::getInstance()->getColor("negative numbers red");
+    QColor black = ResourceHandler::getInstance()->getColor("positive numbers blue");
+    QColor gray = ResourceHandler::getInstance()->getColor("plot grid grey");
     painter.setFont(QFont("Monospace", 8));
     for (double d = 200*(std::ceil(range.first/200)); d <= range.second; d += 200)
     {
@@ -87,7 +86,15 @@ GraphArea::addBar(QString const& name, double const& min, double const& max)
     BarGraph graph;
     graph.setPriceScaler(scale);
     graph.setBoundingRect(QRect(0, 0, 50, 200));
-    graph.setColors(QColor(120, 120, 240), QColor(240, 120, 120));
+
+    const size_t number = (bars.size() % ResourceHandler::numberedColorRange) + 1;
+    char buf[20];
+    std::sprintf(buf, "color%02lu.dark", number);
+    const QColor positive = ResourceHandler::getInstance()->getColor(QString(buf));
+    std::sprintf(buf, "color%02lu.light", number);
+    const QColor negative = ResourceHandler::getInstance()->getColor(QString(buf));
+
+    graph.setColors(positive, negative);
     graph.setRange(min, max);
     if (min < range.first) range.first = min;
     if (max > range.second) range.second = max;

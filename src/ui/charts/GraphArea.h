@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include <iostream>
+#include <data/ResourceHandler.h>
 #include <cmath>
 #include <QtWidgets/QWidget>
 #include "BarGraph.h"
