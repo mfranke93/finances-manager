@@ -2,7 +2,6 @@
 // Created by max on 08/10/16.
 //
 
-#include <data/ResourceHandler.h>
 #include "PlotPoint.h"
 
 PlotPoint::PlotPoint(int const& x, int const& y, double const& radius, const QColor& color)

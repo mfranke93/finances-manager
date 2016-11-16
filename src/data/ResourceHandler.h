@@ -29,8 +29,10 @@ public:
     QColor const& getColor(QString const&) const;
     QPixmap const& getIcon(QString const&) const;
 
-    static inline constexpr size_t const& getNumberOfNumberedColors()
-    { return numberedColorRange; }
+    /**
+     * Number of numbered colors, e.g. color04.light/dark
+     */
+    static constexpr size_t numberedColorRange {16};
 protected:
     void initColors();
 
@@ -43,11 +45,6 @@ private:
 
     std::map<QString const, QColor const> colors;
     std::map<QString const, QPixmap const> icons;
-
-    /**
-     * Number of numbered colors, e.g. color04.light/dark
-     */
-    static constexpr size_t numberedColorRange {16};
 };
 
 

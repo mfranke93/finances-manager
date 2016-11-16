@@ -2,7 +2,6 @@
 // Created by max on 08/10/16.
 //
 
-#include <data/ResourceHandler.h>
 #include "PlotLine.h"
 
 PlotLine::PlotLine()

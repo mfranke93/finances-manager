@@ -18,8 +18,10 @@ add_executable(main main.cpp
         ui/table/ExpenditureView.h
         ui/dialogs/AddItemDialog.cpp
         ui/dialogs/AddItemDialog.h
-        data/DbHandler.cpp 
+        data/DbHandler.cpp
         data/DbHandler.h
+        data/ResourceHandler.cpp
+        data/ResourceHandler.h
         ui/dialogs/AddRecipientDialog.cpp
         ui/dialogs/AddRecipientDialog.h
         ui/dialogs/AddCategoryDialog.cpp
