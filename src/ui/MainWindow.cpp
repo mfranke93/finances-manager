@@ -4,6 +4,7 @@
 
 #include <QtWidgets/QHBoxLayout>
 #include <data/DbHandler.h>
+#include <ui/tabs/ChartTab.h>
 #include "MainWindow.h"
 #include "ui/dialogs/AddItemDialog.h"
 #include "ui/tabs/TableTab.h"
@@ -17,6 +18,7 @@ MainWindow::MainWindow()
 
     tabs->addTab(new TableTab(this), "Table");
     tabs->addTab(new PlotTab(this), "Plot");
+    tabs->addTab(new ChartTab, "Chart");
 }
 
 MainWindow::~MainWindow()

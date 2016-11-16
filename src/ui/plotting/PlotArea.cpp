@@ -15,10 +15,7 @@ PlotArea::PlotArea(QWidget * parent)
 : QWidget(parent),
   zoomLevel(5)
 {
-    reloadData();
     setMouseTracking(true);
-
-    connect(DbHandler::getInstance(), SIGNAL(itemDataChanged()), this, SLOT(reloadData()));
 }
 
 void
