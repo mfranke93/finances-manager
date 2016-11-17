@@ -34,6 +34,11 @@ public slots:
     inline bool const& isPaintMinMax() { return paintMinMax; };
     inline void setPaintMinMax(bool const& b) { paintMinMax = b; emit repaint(); };
 
+    void setFilters(std::vector<QString> filters)
+    {
+        this->filters = filters;
+    }
+
 signals:
     void canDecrementZoomLevel(bool);
     void canIncrementZoomLevel(bool);
@@ -49,11 +54,14 @@ private:
     const int marginLeft = 60;
 
     inline int const& dayWidth() const { return zoomLevels[zoomLevel]; }
+    QString buildQuery() const;
     int zoomLevel;
     static constexpr int maxZoomLevel = 8;
     static const int zoomLevels [maxZoomLevel+1];
 
     bool paintMinMax = true;
+
+    std::vector<QString> filters;
 };
 
 

@@ -49,7 +49,7 @@ add_executable(main main.cpp
         ui/charts/BarGraph.h
         ui/charts/GraphArea.cpp
         ui/charts/GraphArea.h
-        )
+        ui/plotting/PlotCategoryFilter.cpp ui/plotting/PlotCategoryFilter.h)
 target_link_libraries(main ${Qt5Widgets_LIBRARIES})
 target_link_libraries(main ${Qt5Sql_LIBRARIES})
 

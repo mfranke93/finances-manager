@@ -27,7 +27,7 @@ ResourceHandler::initColors()
     for (size_t count = 0; count < RANGE; ++count)
     {
         char buf[10];
-        std::sprintf(buf, "color%02lu", ((count*5)%RANGE)+1);
+        std::sprintf(buf, "color%02lu", count+1);
         constexpr int value = static_cast<int>(0.8 * 256);
         constexpr int saturation = static_cast<int>(0.7 * 256);
         const int hue = static_cast<int>(count/ static_cast<double>(RANGE) * 360);

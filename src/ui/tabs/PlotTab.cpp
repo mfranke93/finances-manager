@@ -3,13 +3,16 @@
 //
 
 #include <QtWidgets/QAbstractSlider>
+#include <data/ResourceHandler.h>
 #include "PlotTab.h"
 
 PlotTab::PlotTab(QWidget * parent)
 : QWidget(parent)
 {
     mainLayout = new QVBoxLayout;
+    allLayout = new QHBoxLayout;
     bottomButtonLayout = new QHBoxLayout;
+    sideButtons = new PlotCategoryFilter(this);
 
     plotAreaWrapper = new QScrollArea;
     plotArea = new PlotArea(plotAreaWrapper);
@@ -37,7 +40,10 @@ PlotTab::PlotTab(QWidget * parent)
     mainLayout->addWidget(plotAreaWrapper);
     mainLayout->addItem(bottomButtonLayout);
 
-    setLayout(mainLayout);
+    allLayout->addItem(mainLayout);
+    allLayout->addWidget(sideButtons);
+
+    setLayout(allLayout);
 
     connect(repaintButton, SIGNAL(clicked()), this, SLOT(onDataChanged()));
 
@@ -47,12 +53,33 @@ PlotTab::PlotTab(QWidget * parent)
     connect(plotArea, SIGNAL(canDecrementZoomLevel(bool)), zoomOutButton, SLOT(setEnabled(bool)));
     connect(enableMinMaxDrawingButton, SIGNAL(toggled(bool)), plotArea, SLOT(setPaintMinMax(bool)));
 
+    rebuildCategories();
     onDataChanged();
+}
+
+void
+PlotTab::rebuildCategories()
+{
+    sideButtons->clearFilters();
+
+    QSqlQuery query (DbHandler::getInstance()->getDatabase());
+    query.exec("SELECT name FROM Category ORDER BY name ASC;");
+    size_t counter = 1;
+    char buf[15];
+    while (query.next())
+    {
+        QString name = query.value("name").toString();
+        std::sprintf(buf, "color%02lu.dark", counter++);
+        QColor c = ResourceHandler::getInstance()->getColor(QString(buf));
+
+        sideButtons->addFilter(name, c);
+    }
 }
 
 void
 PlotTab::onDataChanged()
 {
+    plotArea->setFilters(sideButtons->getSelected());
     plotArea->reloadData();
     plotAreaWrapper->horizontalScrollBar()->setValue(plotAreaWrapper->horizontalScrollBar()->maximum());
 }

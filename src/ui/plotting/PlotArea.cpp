@@ -13,9 +13,10 @@ int const PlotArea::zoomLevels [] = { 5, 8, 12, 20, 32, 50, 64, 80, 100 };
 
 PlotArea::PlotArea(QWidget * parent)
 : QWidget(parent),
-  zoomLevel(5)
+  zoomLevel(3)
 {
     setMouseTracking(true);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 void
@@ -78,18 +79,31 @@ PlotArea::paintEvent(QPaintEvent * evt) {
     p.setDrawMinMax(paintMinMax);
     p.addPoints(cumulativeSums);
     p.plot(&painter);
+}
 
-
-    // test: plot colors
-    for (int i = 1; i < 17; ++i) {
-        char buf[40];
-        std::sprintf(buf, "color%02d.light", i);
-        painter.setBrush(ResourceHandler::getInstance()->getColor(QString(buf)));
-        painter.drawRect(20 * i, 20, 20, 20);
-        std::sprintf(buf, "color%02d.dark", i);
-        painter.setBrush(ResourceHandler::getInstance()->getColor(QString(buf)));
-        painter.drawRect(20 * i, 40, 20, 20);
+QString
+PlotArea::buildQuery() const
+{
+    QString query;
+    query += "SELECT Item.date as date, Item.price as price ";
+    query += "FROM Item ";
+    if (filters.size() > 0)
+    {
+        query += "JOIN Category On Category.id = Item.catid ";
+        query += "WHERE Category.name IN (";
+        for (size_t i = 0; i < filters.size()-1; ++i)
+        {
+            query += "'";
+            query += filters[i];
+            query += "', ";
+        }
+        query += "'";
+        query += filters.back();
+        query += "') ";
     }
+    query += "ORDER BY date ASC;";
+
+    return query;
 }
 
 void
@@ -101,7 +115,7 @@ PlotArea::reloadData()
     std::map<QDate, std::tuple<double, double, double>> accumPerDay;
 
     QSqlQuery query (DbHandler::getInstance()->getDatabase());
-    query.exec("SELECT date, price FROM Item ORDER BY date ASC;");
+    query.exec(buildQuery()); //"SELECT date, price FROM Item ORDER BY date ASC;");
     while (query.next())
     {
         QDate d = query.value("date").toDate();
