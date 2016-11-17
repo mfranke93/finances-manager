@@ -49,7 +49,6 @@ ChartTab::reloadData()
     query.bindValue(":start", p.first.toString("yyyy-MM-dd"));
     query.bindValue(":end", p.second.toString("yyyy-MM-dd"));
     query.exec();
-    int count {0};
     while (query.next())
     {
         QString cat = query.value("cat").toString();
@@ -62,7 +61,6 @@ ChartTab::reloadData()
 
         if (amount < 0) ranges[cat].first += amount;
         else ranges[cat].second += amount;
-        ++count;
     }
 
     // sort
@@ -74,7 +72,6 @@ ChartTab::reloadData()
     {
         area->addBar(it.second, ranges[it.second].first, ranges[it.second].second);
     }
-    std::cout << "Changed: " << count << std::endl;
 
     emit barDataChanged();
     emit repaint();
