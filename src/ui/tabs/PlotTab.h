@@ -13,6 +13,7 @@
 #include <QtWidgets/QScrollBar>
 #include <QtWidgets/QPushButton>
 #include <ui/plotting/PlotCategoryFilter.h>
+#include <ui/common/DateFilterPane.h>
 #include "ui/plotting/PlotArea.h"
 
 class PlotTab : public QWidget
@@ -37,6 +38,7 @@ private:
     QPushButton * enableMinMaxDrawingButton;
 
     PlotCategoryFilter * sideButtons;
+    DateFilterPane * dateFilterPane;
 
     QVBoxLayout * mainLayout;
     QHBoxLayout * allLayout;

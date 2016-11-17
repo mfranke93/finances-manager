@@ -39,6 +39,9 @@ PlotTab::PlotTab(QWidget * parent)
 
     mainLayout->addWidget(plotAreaWrapper);
     mainLayout->addItem(bottomButtonLayout);
+    auto p = DbHandler::getInstance()->getDateRange();
+    dateFilterPane = new DateFilterPane(nullptr, p.first, p.second);
+    mainLayout->addWidget(dateFilterPane);
 
     allLayout->addItem(mainLayout);
     allLayout->addWidget(sideButtons);
@@ -54,6 +57,7 @@ PlotTab::PlotTab(QWidget * parent)
     connect(enableMinMaxDrawingButton, SIGNAL(toggled(bool)), plotArea, SLOT(setPaintMinMax(bool)));
 
     rebuildCategories();
+    dateFilterPane->onClickReset();
     onDataChanged();
 }
 
@@ -79,7 +83,9 @@ PlotTab::rebuildCategories()
 void
 PlotTab::onDataChanged()
 {
-    plotArea->setFilters(sideButtons->getSelected());
+    dateFilterPane->setValidRange(DbHandler::getInstance()->getDateRange());
+    plotArea->setDateRangeFilters(dateFilterPane->getRange());
+    plotArea->setCategoryFilters(sideButtons->getSelected());
     plotArea->reloadData();
     plotAreaWrapper->horizontalScrollBar()->setValue(plotAreaWrapper->horizontalScrollBar()->maximum());
 }

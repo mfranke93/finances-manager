@@ -34,9 +34,14 @@ public slots:
     inline bool const& isPaintMinMax() { return paintMinMax; };
     inline void setPaintMinMax(bool const& b) { paintMinMax = b; emit repaint(); };
 
-    void setFilters(std::vector<QString> filters)
+    inline void setCategoryFilters(std::vector<QString> filters)
     {
         this->filters = filters;
+    }
+
+    inline void setDateRangeFilters(std::pair<QDate, QDate> dateRange)
+    {
+        this->dateRange = dateRange;
     }
 
 signals:
@@ -62,6 +67,7 @@ private:
     bool paintMinMax = true;
 
     std::vector<QString> filters;
+    std::pair<QDate, QDate> dateRange;
 };
 
 

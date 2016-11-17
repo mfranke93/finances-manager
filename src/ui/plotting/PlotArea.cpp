@@ -101,6 +101,17 @@ PlotArea::buildQuery() const
         query += filters.back();
         query += "') ";
     }
+    {
+        // date range
+        query += "AND Item.date >= ";
+        query += "'";
+        query += dateRange.first.toString("yyyy-MM-dd");
+        query += "' ";
+        query += "AND Item.date <= ";
+        query += "'";
+        query += dateRange.second.toString("yyyy-MM-dd");
+        query += "' ";
+    }
     query += "ORDER BY date ASC;";
 
     return query;
@@ -142,15 +153,13 @@ PlotArea::reloadData()
     }
     // find minimum and maximum
     QDate first, last;
-    first = accumPerDay.begin()->first;
-    last = first;
+    first = dateRange.first;
+    last = dateRange.second;
     for (auto it : accumPerDay)
     {
         if (it.first > last) last = it.first;
         if (it.first < first) first = it.first;
     }
-    QDate today = QDate::currentDate();
-    if (today > last) last = today;
 
     double sum = 0.0;
     for (QDate d = first; d <= last; d = d.addDays(1))
@@ -167,8 +176,6 @@ PlotArea::reloadData()
         }
         cumulativeSums.push_back(std::make_pair(d, std::make_tuple(sum, min, max)));
     }
-
-    // iterate over dates
 
     checkZoomLevel();
     emit repaint();

@@ -35,6 +35,8 @@ public:
     bool insertNewItem(QString const& name, int const& recipientId, QDate const& date, QString const& price, int const& categoryId);
     static DbHandler * instance;
 
+    std::pair<QDate, QDate> getDateRange() const;
+
     QSqlDatabase& getDatabase() { return database; }
     bool commit();
 

@@ -10,10 +10,13 @@
 #include <ui/charts/BarGraph.h>
 #include <ui/charts/GraphArea.h>
 #include <QtWidgets/QVBoxLayout>
+#include <ui/common/DateFilterPane.h>
 
 class ChartTab : public QWidget
 {
 Q_OBJECT
+signals:
+    void barDataChanged();
 public:
 
     ChartTab();
@@ -32,6 +35,7 @@ private:
 
     QVBoxLayout * mainLayout;
     GraphArea * area;
+    DateFilterPane * dateFilterPane;
 };
 
 

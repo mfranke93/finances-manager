@@ -65,6 +65,7 @@ GraphArea::rebuildBars()
 {
     // rebuild bounding rects
     int const numBars = int(bars.size());
+    std::cout << "size: " << numBars << std::endl;
     int widthPerBar = (width() - xOffsetGlobal)/numBars;
     if (widthPerBar > 120) widthPerBar = 120;
     heightPerBar = height() - 100;
