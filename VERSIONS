@@ -7,6 +7,19 @@ and a Qt5 UI. The program is written in C++11.
 
 Maintainer: Max Franke <max@mumintroll.org>
 
+Version 1.1                                                            ~ v1.1 ~
+===========
+Release date: November 17th, 2016
+
+This adds some features to the core program.
+
+New features:
+  - New tab for bar graph showing distribution of income and expenditures over
+    the different categories.
+  - It is now possible to only plot a selection of categories, instead of all.
+  - It is now possible to only plot data from a certain date range. This feature
+    exists for the bar graph as well.
+  - Added an internal color scheme for the bar graph bars.
 
 Version 1.0                                                            ~ v1.0 ~
 ===========
