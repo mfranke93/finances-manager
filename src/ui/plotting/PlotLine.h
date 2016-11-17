@@ -8,6 +8,7 @@
 #include "Plottable.h"
 #include "PlotPoint.h"
 #include <QtCore/QDate>
+#include <data/ResourceHandler.h>
 #include <functional>
 
 typedef std::function<int(QDate const&)> DateToIntConverter;

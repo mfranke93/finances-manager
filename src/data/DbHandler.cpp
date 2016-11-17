@@ -2,6 +2,7 @@
 // Created by max on 04/10/16.
 //
 
+#include <stdlib.h>
 #include "DbHandler.h"
 
 DbHandler * DbHandler::instance = nullptr;
@@ -83,4 +84,28 @@ DbHandler::commit()
     }
 
     return b;
+}
+
+std::pair<QDate, QDate>
+DbHandler::getDateRange() const
+{
+    QSqlQuery query(database);
+    query.prepare("SELECT min(date) AS start, max(date) as end FROM Item;");
+    bool const b = query.exec();
+    if (!b)
+    {
+        std::cerr << database.lastError().text().toStdString() << std::endl;
+        exit(1);
+    }
+
+    if (!query.next())
+    {
+        std::cerr << "No dates in table" << std::endl;
+        exit(1);
+    }
+
+    QDate const start = query.value("start").toDate();
+    QDate const end = query.value("end").toDate();
+
+    return std::make_pair(start, end);
 }

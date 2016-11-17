@@ -39,10 +39,10 @@ PlotPoint::drawLine(QPainter * const painter, PlotPoint const& other, QColor con
             path.lineTo(other.x, other.yRange.first);
             path.lineTo(other.x, other.y);
             path.lineTo(x, y);
-            painter->setBrush(QColor(205, 20, 20, 70));
+            painter->setBrush(ResourceHandler::getInstance()->getColor("plot negative area red"));
             painter->setPen(Qt::NoPen);
-            painter->fillPath(path, QColor(205, 20, 20, 70));
-            painter->setPen(QColor(205, 20, 20, 140));
+            painter->fillPath(path, ResourceHandler::getInstance()->getColor("plot negative area red"));
+            painter->setPen(ResourceHandler::getInstance()->getColor("plot negative line red"));
             painter->setBrush(Qt::NoBrush);
             painter->drawLine(other.x, other.yRange.first, x, yRange.first);
         }
@@ -55,16 +55,16 @@ PlotPoint::drawLine(QPainter * const painter, PlotPoint const& other, QColor con
             path.lineTo(other.x, other.yRange.second);
             path.lineTo(other.x, other.y);
             path.lineTo(x, y);
-            painter->setBrush(QColor(20, 20, 205, 70));
+            painter->setBrush(ResourceHandler::getInstance()->getColor("plot positive area blue"));
             painter->setPen(Qt::NoPen);
-            painter->fillPath(path, QColor(20, 20, 205, 70));
-            painter->setPen(QColor(20, 20, 205, 140));
+            painter->fillPath(path, ResourceHandler::getInstance()->getColor("plot positive area blue"));
+            painter->setPen(ResourceHandler::getInstance()->getColor("plot positive line blue"));
             painter->setBrush(Qt::NoBrush);
             painter->drawLine(other.x, other.yRange.second, x, yRange.second);
         }
     }
 
     painter->setBrush(Qt::NoBrush);
-    painter->setPen(QPen(color, 2));
+    painter->setPen(QPen(ResourceHandler::getInstance()->getColor("plot line green"), 2));
     painter->drawLine(x, y, other.x, other.y);
 }

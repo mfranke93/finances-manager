@@ -2,8 +2,6 @@
 // Created by max on 30/09/16.
 //
 
-#include <QtWidgets/QHeaderView>
-#include <data/DbHandler.h>
 #include "ExpenditureView.h"
 
 ExpenditureView::ExpenditureView(QWidget * parent)
@@ -26,6 +24,8 @@ ExpenditureView::ExpenditureView(QWidget * parent)
 
     this->setSortingEnabled(true);
     this->horizontalHeader()->setSortIndicator(2, Qt::SortOrder::AscendingOrder);
+
+    emit onPressReload();
 }
 
 ExpenditureView::~ExpenditureView()
@@ -39,6 +39,7 @@ ExpenditureView::onPressReload()
     this->model->select();
     this->resizeColumnsToContents();
     this->resizeRowsToContents();
+    this->verticalScrollBar()->setValue(this->verticalScrollBar()->maximum());
 }
 
 void

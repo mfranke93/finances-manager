@@ -2,6 +2,7 @@
 // Created by max on 07/10/16.
 //
 
+#include <data/ResourceHandler.h>
 #include "PlotArea.h"
 #include "PlotLine.h"
 #include "PlotBottomBar.h"
@@ -12,31 +13,28 @@ int const PlotArea::zoomLevels [] = { 5, 8, 12, 20, 32, 50, 64, 80, 100 };
 
 PlotArea::PlotArea(QWidget * parent)
 : QWidget(parent),
-  zoomLevel(5)
+  zoomLevel(3)
 {
-    reloadData();
     setMouseTracking(true);
-
-    connect(DbHandler::getInstance(), SIGNAL(itemDataChanged()), this, SLOT(reloadData()));
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 void
-PlotArea::paintEvent(QPaintEvent * evt)
-{
-    QPainter painter (this);
+PlotArea::paintEvent(QPaintEvent * evt) {
+    QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
     painter.setPen(Qt::NoPen);
-    painter.setBrush(QColor(255,255,255));
-    painter.fillRect(this->rect().adjusted(marginLeft,marginTop,-marginRight-1,-marginBottom-1), QColor(255,255,255));
+    painter.setBrush(QColor(255, 255, 255));
+    painter.fillRect(this->rect().adjusted(marginLeft, marginTop, -marginRight - 1, -marginBottom - 1),
+                     QColor(255, 255, 255));
 
     if (cumulativeSums.empty()) return;
     // scaling factors
     double minimum = std::get<0>(cumulativeSums[0].second);
     double maximum = minimum;
     int height = this->size().height() - marginBottom - marginTop;
-    for (auto it : cumulativeSums)
-    {
+    for (auto it : cumulativeSums) {
         double min = std::get<1>(it.second);
         double max = std::get<2>(it.second);
 
@@ -49,25 +47,28 @@ PlotArea::paintEvent(QPaintEvent * evt)
     minimum -= 20.0;
 
     // scaling function
-    auto scale = [&](double const& d) -> int { return int(marginTop + height - (d-minimum)/(maximum-minimum)*height); };
-    auto dtiConverter = [&](QDate const& d) -> int
-    {
+    auto scale = [&](double const &d) -> int {
+        return int(marginTop + height - (d - minimum) / (maximum - minimum) * height);
+    };
+    auto dtiConverter = [&](QDate const &d) -> int {
         return int(cumulativeSums[0].first.daysTo(d)) * dayWidth() + marginLeft;
     };
 
     // draw grid
-    PlotGrid pg (std::make_pair(cumulativeSums.begin()->first, cumulativeSums.back().first), std::make_pair(minimum, maximum));
+    PlotGrid pg(std::make_pair(cumulativeSums.begin()->first, cumulativeSums.back().first),
+                std::make_pair(minimum, maximum));
     pg.setDateToIntConverter(dtiConverter);
     pg.setVerticalScaler(scale);
     pg.plot(&painter);
 
     // draw y axis labeling: every 200 €
-    PlotLeftAxis la (marginLeft, marginTop, height, std::make_pair(minimum, maximum));
+    PlotLeftAxis la(marginLeft, marginTop, height, std::make_pair(minimum, maximum));
     la.setVerticalScaler(scale);
     la.plot(&painter);
 
     // draw x axis labeling: first, last, first of each month
-    PlotBottomBar b (marginBottom, marginLeft, this->height(), std::make_pair(cumulativeSums.begin()->first, cumulativeSums.back().first));
+    PlotBottomBar b(marginBottom, marginLeft, this->height(),
+                    std::make_pair(cumulativeSums.begin()->first, cumulativeSums.back().first));
     b.setDtiConverter(dtiConverter);
     b.plot(&painter);
 
@@ -80,6 +81,42 @@ PlotArea::paintEvent(QPaintEvent * evt)
     p.plot(&painter);
 }
 
+QString
+PlotArea::buildQuery() const
+{
+    QString query;
+    query += "SELECT Item.date as date, Item.price as price ";
+    query += "FROM Item ";
+    if (filters.size() > 0)
+    {
+        query += "JOIN Category On Category.id = Item.catid ";
+        query += "WHERE Category.name IN (";
+        for (size_t i = 0; i < filters.size()-1; ++i)
+        {
+            query += "'";
+            query += filters[i];
+            query += "', ";
+        }
+        query += "'";
+        query += filters.back();
+        query += "') ";
+    }
+    {
+        // date range
+        query += "AND Item.date >= ";
+        query += "'";
+        query += dateRange.first.toString("yyyy-MM-dd");
+        query += "' ";
+        query += "AND Item.date <= ";
+        query += "'";
+        query += dateRange.second.toString("yyyy-MM-dd");
+        query += "' ";
+    }
+    query += "ORDER BY date ASC;";
+
+    return query;
+}
+
 void
 PlotArea::reloadData()
 {
@@ -89,7 +126,7 @@ PlotArea::reloadData()
     std::map<QDate, std::tuple<double, double, double>> accumPerDay;
 
     QSqlQuery query (DbHandler::getInstance()->getDatabase());
-    query.exec("SELECT date, price FROM Item ORDER BY date ASC;");
+    query.exec(buildQuery()); //"SELECT date, price FROM Item ORDER BY date ASC;");
     while (query.next())
     {
         QDate d = query.value("date").toDate();
@@ -116,15 +153,13 @@ PlotArea::reloadData()
     }
     // find minimum and maximum
     QDate first, last;
-    first = accumPerDay.begin()->first;
-    last = first;
+    first = dateRange.first;
+    last = dateRange.second;
     for (auto it : accumPerDay)
     {
         if (it.first > last) last = it.first;
         if (it.first < first) first = it.first;
     }
-    QDate today = QDate::currentDate();
-    if (today > last) last = today;
 
     double sum = 0.0;
     for (QDate d = first; d <= last; d = d.addDays(1))
@@ -141,8 +176,6 @@ PlotArea::reloadData()
         }
         cumulativeSums.push_back(std::make_pair(d, std::make_tuple(sum, min, max)));
     }
-
-    // iterate over dates
 
     checkZoomLevel();
     emit repaint();
