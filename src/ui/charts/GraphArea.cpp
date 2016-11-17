@@ -42,7 +42,14 @@ GraphArea::paintEvent(QPaintEvent * evt)
         painter.setPen(black);
         QFont f ("Monospace", 8);
         painter.setFont(f);
-        painter.drawText(it.second.boundingRect().x() -5, it.second.boundingRect().bottom() + 15, it.first);
+        painter.rotate(-90);
+        painter.drawText(
+                //it.second.boundingRect().x() -5,
+                //it.second.boundingRect().bottom() + 15,
+                -it.second.boundingRect().bottom() - 80,
+                it.second.boundingRect().x() + 27,
+                it.first);
+        painter.rotate(90);
     }
 }
 
@@ -58,9 +65,10 @@ GraphArea::rebuildBars()
 {
     // rebuild bounding rects
     int const numBars = int(bars.size());
+    std::cout << "size: " << numBars << std::endl;
     int widthPerBar = (width() - xOffsetGlobal)/numBars;
     if (widthPerBar > 120) widthPerBar = 120;
-    heightPerBar = height() - 60;
+    heightPerBar = height() - 100;
     int const xOffset = 20;
     yOffset = 20;
 

@@ -24,6 +24,8 @@ ExpenditureView::ExpenditureView(QWidget * parent)
 
     this->setSortingEnabled(true);
     this->horizontalHeader()->setSortIndicator(2, Qt::SortOrder::AscendingOrder);
+
+    emit onPressReload();
 }
 
 ExpenditureView::~ExpenditureView()

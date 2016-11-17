@@ -20,7 +20,7 @@ public:
     ~GraphArea() = default;
 
     void addBar(QString const& name, double const& min, double const& max);
-    void clearBars() { bars.clear(); emit repaint(); };
+    void clearBars() { bars.clear(); range = std::make_pair(0.0, 0.0); emit repaint(); };
 
 public slots:
     void paintEvent(QPaintEvent * evt) override;

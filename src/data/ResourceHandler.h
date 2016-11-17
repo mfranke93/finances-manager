@@ -32,7 +32,7 @@ public:
     /**
      * Number of numbered colors, e.g. color04.light/dark
      */
-    static constexpr size_t numberedColorRange {16};
+    static constexpr size_t numberedColorRange {20};
 protected:
     void initColors();
 
