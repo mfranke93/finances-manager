@@ -56,6 +56,10 @@ PlotTab::PlotTab(QWidget * parent)
     connect(plotArea, SIGNAL(canDecrementZoomLevel(bool)), zoomOutButton, SLOT(setEnabled(bool)));
     connect(enableMinMaxDrawingButton, SIGNAL(toggled(bool)), plotArea, SLOT(setPaintMinMax(bool)));
 
+    connect(DbHandler::getInstance(), SIGNAL(dateRangeChanged(std::pair<QDate, QDate>)),
+            dateFilterPane, SLOT(onDateRangeChanged(std::pair<QDate, QDate>)));
+    connect(dateFilterPane, SIGNAL(dateRangeChanged()), this, SLOT(onDataChanged()));
+
     rebuildCategories();
     dateFilterPane->onClickReset();
     onDataChanged();
