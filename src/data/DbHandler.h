@@ -42,6 +42,7 @@ public:
 
 signals:
     void itemDataChanged(void);
+    void dateRangeChanged(std::pair<QDate, QDate>);
 
 private:
     DbHandler();

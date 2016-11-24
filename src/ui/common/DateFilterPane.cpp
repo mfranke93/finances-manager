@@ -82,3 +82,11 @@ DateFilterPane::getRange() const
         endEdit->date()
     );
 }
+
+void
+DateFilterPane::onDateRangeChanged(std::pair<QDate, QDate> range)
+{
+    setValidRange(range);
+    onClickReset();
+    emit dateRangeChanged();
+}

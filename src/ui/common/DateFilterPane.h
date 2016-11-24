@@ -27,6 +27,9 @@ public:
 
     void setValidRange(std::pair<QDate, QDate> const&);
 
+public slots:
+    void onDateRangeChanged(std::pair<QDate, QDate>);
+
 protected slots:
     void onClickReset();
     void onStartDateChanged(QDate);
