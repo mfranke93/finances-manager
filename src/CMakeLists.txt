@@ -50,7 +50,12 @@ add_executable(main main.cpp
         ui/charts/GraphArea.cpp
         ui/charts/GraphArea.h
         ui/plotting/PlotCategoryFilter.cpp
-        ui/plotting/PlotCategoryFilter.h ui/common/DateFilterPane.cpp ui/common/DateFilterPane.h)
+        ui/plotting/PlotCategoryFilter.h
+        ui/common/DateFilterPane.cpp
+        ui/common/DateFilterPane.h
+        data/DateFilter.h
+        data/DateRangeFilter.cpp
+        data/DateRangeFilter.h)
 target_link_libraries(main ${Qt5Widgets_LIBRARIES})
 target_link_libraries(main ${Qt5Sql_LIBRARIES})
 
