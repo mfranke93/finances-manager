@@ -5,7 +5,6 @@
 #include "DateRangeFilter.h"
 
 DateRangeFilter::DateRangeFilter(std::pair<QDate, QDate> const& range)
-throw(std::invalid_argument)
 : range_(range)
 {
     // ctor
@@ -20,11 +19,20 @@ throw(std::invalid_argument)
 }
 
 DateRangeFilter::DateRangeFilter(QDate const& from, QDate const& to)
-throw(std::invalid_argument)
 : DateRangeFilter(std::make_pair(from, to))
 {
     // ctor
 }
+
+DateRangeFilter::DateRangeFilter()
+: range_(std::make_pair(QDate(), QDate()))
+{
+
+}
+
+DateRangeFilter::DateRangeFilter(DateRangeFilter const& other)
+: range_(other.range_)
+{}
 
 void
 DateRangeFilter::setRange(std::pair<QDate, QDate> const& range)

@@ -37,12 +37,16 @@ PlotTab::PlotTab(QWidget * parent)
     bottomButtonLayout->addStretch(3);
     bottomButtonLayout->addWidget(repaintButton);
 
+    bottomLayout = new QHBoxLayout;
+    bottomLayout->addItem(bottomButtonLayout);
     mainLayout->addWidget(plotAreaWrapper);
-    mainLayout->addItem(bottomButtonLayout);
     auto p = DbHandler::getInstance()->getDateRange();
     dateFilterPane = new DateFilterPane(nullptr, p.first, p.second);
-    mainLayout->addWidget(dateFilterPane);
 
+    bottomLayout->addSpacing(30);
+    bottomLayout->addWidget(dateFilterPane);
+
+    mainLayout->addItem(bottomLayout);
     allLayout->addItem(mainLayout);
     allLayout->addWidget(sideButtons);
 

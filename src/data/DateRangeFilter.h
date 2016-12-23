@@ -11,10 +11,12 @@ class DateRangeFilter: public DateFilter
 {
     Q_OBJECT
 public:
-    explicit DateRangeFilter(std::pair<QDate, QDate> const&) throw(std::invalid_argument);
-    explicit DateRangeFilter(QDate const&, QDate const&) throw(std::invalid_argument);
-    DateRangeFilter() = delete;
+    DateRangeFilter(std::pair<QDate, QDate> const&);
+    DateRangeFilter(QDate const&, QDate const&);
+    DateRangeFilter();
     ~DateRangeFilter() = default;
+    DateRangeFilter(DateRangeFilter const&);
+    DateRangeFilter& operator= (DateRangeFilter const&) = default;
 
     void setRange(std::pair<QDate, QDate> const&) throw(std::invalid_argument);
     void setRange(QDate const&, QDate const&) throw(std::invalid_argument);
