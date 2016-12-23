@@ -80,6 +80,7 @@ DbHandler::commit()
     if (b && itemsChanged)
     {
         emit itemDataChanged();
+        emit dateRangeChanged(getDateRange());
         itemsChanged = false;
     }
 

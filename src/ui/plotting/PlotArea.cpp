@@ -9,7 +9,7 @@
 #include "PlotLeftAxis.h"
 #include "PlotGrid.h"
 
-int const PlotArea::zoomLevels [] = { 5, 8, 12, 20, 32, 50, 64, 80, 100 };
+int const PlotArea::zoomLevels [] = { 2, 5, 8, 12, 20, 32 };
 
 PlotArea::PlotArea(QWidget * parent)
 : QWidget(parent),
@@ -31,8 +31,8 @@ PlotArea::paintEvent(QPaintEvent * evt) {
 
     if (cumulativeSums.empty()) return;
     // scaling factors
-    double minimum = std::get<0>(cumulativeSums[0].second);
-    double maximum = minimum;
+    minimum = std::get<0>(cumulativeSums[0].second);
+    maximum = minimum;
     int height = this->size().height() - marginBottom - marginTop;
     for (auto it : cumulativeSums) {
         double min = std::get<1>(it.second);
@@ -208,7 +208,32 @@ PlotArea::checkZoomLevel()
 void
 PlotArea::mouseMoveEvent(QMouseEvent * evt)
 {
-    char buf [20];
-    sprintf(buf, "Hello @ %d, %d", evt->pos().x(), evt->pos().y());
+    double d = getYValue(evt->pos().y());
+    QDate date = getXValue(evt->pos().x());
+    char buf [50];
+    sprintf(buf, "%s, %.2f", date.toString("dd.MM.yyyy").toStdString().c_str(), d);
     setToolTip(buf);
+}
+
+double
+PlotArea::getYValue(int const& posY) const
+{
+    const int height = this->size().height();
+    const double scale = static_cast<double>(posY)/ static_cast<double>(height);
+    // value is highest at top, but the y values get larger further down
+    const double actualScale = 1.0 - scale;
+    const double val = actualScale * (maximum - minimum);
+    return val + minimum;
+}
+
+QDate
+PlotArea::getXValue(int const& posX) const
+{
+    const int width = this->size().width();
+    const double scale = static_cast<double>(posX)/ static_cast<double>(width);
+    const qint64 minDate = dateRange.first.toJulianDay();
+    const qint64 maxDate = dateRange.second.toJulianDay();
+    const double val = scale * (maxDate - minDate);
+    const qint64 actualVal = static_cast<qint64>(val + minDate);
+    return QDate::fromJulianDay(actualVal);
 }

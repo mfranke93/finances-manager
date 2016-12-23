@@ -8,6 +8,7 @@ GraphArea::GraphArea()
 : range(0,0)
 {
     // ctor
+    setMouseTracking(true);
 }
 
 void
@@ -65,7 +66,7 @@ GraphArea::rebuildBars()
 {
     // rebuild bounding rects
     int const numBars = int(bars.size());
-    int widthPerBar = (width() - xOffsetGlobal)/numBars;
+    widthPerBar = (width() - xOffsetGlobal)/numBars;
     if (widthPerBar > 120) widthPerBar = 120;
     heightPerBar = height() - 100;
     int const xOffset = 20;
@@ -115,4 +116,32 @@ void
 GraphArea::reloadEvent()
 {
     emit rebuildBars();
+}
+
+void
+GraphArea::mouseMoveEvent(QMouseEvent * evt)
+{
+    auto pair = getBarAt(evt->pos().x());
+
+    QString str;
+    str += pair.first;
+    str += "\n";
+
+    double const min = pair.second.getRange().first;
+    double const max = pair.second.getRange().second;
+
+    char buf [32];
+    std::sprintf(buf, "+%.2f\n%.2f", max, min);
+    str += buf;
+
+    setToolTip(str);
+}
+
+std::pair<QString, BarGraph> const&
+GraphArea::getBarAt(int const& posX) const
+{
+    // save width per bar to instance
+    const int withoutOffset = posX - xOffsetGlobal;
+    const int index = withoutOffset / widthPerBar;
+    return bars.at(index);
 }

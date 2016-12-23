@@ -37,12 +37,16 @@ PlotTab::PlotTab(QWidget * parent)
     bottomButtonLayout->addStretch(3);
     bottomButtonLayout->addWidget(repaintButton);
 
+    bottomLayout = new QHBoxLayout;
+    bottomLayout->addItem(bottomButtonLayout);
     mainLayout->addWidget(plotAreaWrapper);
-    mainLayout->addItem(bottomButtonLayout);
     auto p = DbHandler::getInstance()->getDateRange();
     dateFilterPane = new DateFilterPane(nullptr, p.first, p.second);
-    mainLayout->addWidget(dateFilterPane);
 
+    bottomLayout->addSpacing(30);
+    bottomLayout->addWidget(dateFilterPane);
+
+    mainLayout->addItem(bottomLayout);
     allLayout->addItem(mainLayout);
     allLayout->addWidget(sideButtons);
 
@@ -55,6 +59,10 @@ PlotTab::PlotTab(QWidget * parent)
     connect(plotArea, SIGNAL(canIncrementZoomLevel(bool)), zoomInButton, SLOT(setEnabled(bool)));
     connect(plotArea, SIGNAL(canDecrementZoomLevel(bool)), zoomOutButton, SLOT(setEnabled(bool)));
     connect(enableMinMaxDrawingButton, SIGNAL(toggled(bool)), plotArea, SLOT(setPaintMinMax(bool)));
+
+    connect(DbHandler::getInstance(), SIGNAL(dateRangeChanged(std::pair<QDate, QDate>)),
+            dateFilterPane, SLOT(onDateRangeChanged(std::pair<QDate, QDate>)));
+    connect(dateFilterPane, SIGNAL(dateRangeChanged()), this, SLOT(onDataChanged()));
 
     rebuildCategories();
     dateFilterPane->onClickReset();

@@ -34,6 +34,11 @@ public:
 
     QRect& boundingRect() { return this->boundingRectangle; };
 
+    inline std::pair<double, double> const& getRange() const
+    {
+        return range;
+    };
+
 private:
     PriceScaler scale;
     std::pair<double, double> range;

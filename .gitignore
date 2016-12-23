@@ -6,6 +6,9 @@ sql_backups/backup_*.sql
 # IntelliJ configs
 .idea/
 
+# Build directory
+cmake-build-debug/
+
 # Compiled Object files
 *.slo
 *.lo
