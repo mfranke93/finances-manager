@@ -11,6 +11,7 @@
 #include <QtSql/QSqlQuery>
 #include <QtWidgets/QHeaderView>
 #include <data/DbHandler.h>
+#include "PriceColumnDelegate.h"
 
 class ExpenditureView : public QTableView
 {
@@ -26,6 +27,8 @@ public slots:
     void onPressReload();
 private:
     QSqlTableModel * model;
+
+    PriceColumnDelegate * priceColumnDelegate;
 };
 
 
