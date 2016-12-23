@@ -42,6 +42,7 @@ private:
 
     QVBoxLayout * mainLayout;
     QHBoxLayout * allLayout;
+    QHBoxLayout * bottomLayout;
     QHBoxLayout * bottomButtonLayout;
 };
 

@@ -27,6 +27,8 @@ ChartTab::ChartTab(QWidget * parent)
     connect(DbHandler::getInstance(), SIGNAL(dateRangeChanged(std::pair<QDate, QDate>)),
             dateFilterPane, SLOT(onDateRangeChanged(std::pair<QDate, QDate>)));
     reloadData();
+
+    dateFilterPane->onClickReset();
 }
 
 ChartTab::ChartTab()
@@ -38,6 +40,7 @@ ChartTab::ChartTab()
 void
 ChartTab::reloadData()
 {
+    dateFilterPane->setValidRange(DbHandler::getInstance()->getDateRange());
     area->clearBars();
 
     std::map<QString, std::pair<double, double>> ranges;
