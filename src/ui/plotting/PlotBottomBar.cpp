@@ -8,11 +8,11 @@ PlotBottomBar::PlotBottomBar(int const& bottomMargin,
                              int const& leftMargin,
                              int const& offset,
                              std::pair<QDate const, QDate const> dateRange,
-                             DateToIntConverter const& dti)
+                             std::shared_ptr<DateToIntConverter> const& dti)
 : bottomMargin(bottomMargin), leftMargin(leftMargin), offset(offset), dateRange(dateRange), dtiConverter(dti)
 {
     // ctor
-    boundingRect_.setCoords(leftMargin, offset-bottomMargin, dtiConverter(dateRange.second), bottomMargin);
+    boundingRect_.setCoords(leftMargin, offset-bottomMargin, (*dtiConverter)(dateRange.second), bottomMargin);
 }
 
 void
@@ -26,7 +26,7 @@ PlotBottomBar::plot(QPainter * const painter) const
     std::vector<QDate> * vec = calculatePrintedDates(painter);
     for (QDate const& d : *vec)
     {
-        painter->drawText(dtiConverter(d)-15, y+5, d.toString("dd.MM."));
+        painter->drawText((*dtiConverter)(d)-15, y+5, d.toString("dd.MM."));
     }
     delete vec;
 }
@@ -38,7 +38,7 @@ PlotBottomBar::calculatePrintedDates(QPainter * const painter) const
     // take random date as we use monospaced font anyways
     QString sample ("12.04.");
     QRect boundingRectangle = painter->fontMetrics().boundingRect(sample);
-    int distTwoDates = dtiConverter(dateRange.first.addDays(1)) - dtiConverter(dateRange.first);
+    int distTwoDates = (*dtiConverter)(dateRange.first.addDays(1)) - (*dtiConverter)(dateRange.first);
 
     double quot = double(distTwoDates) / double(boundingRectangle.width());
     int factor = 1;

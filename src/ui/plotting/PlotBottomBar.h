@@ -15,7 +15,7 @@ public:
                   int const& leftMargin,
                   int const& offset,
                   std::pair<QDate const, QDate const> dateRange,
-                  DateToIntConverter const& dti);
+                  std::shared_ptr<DateToIntConverter> const& dti);
     PlotBottomBar() = delete;
     ~PlotBottomBar() = default;
     PlotBottomBar(PlotBottomBar const&) = delete;
@@ -36,7 +36,7 @@ private:
     int const offset;
     std::pair<QDate const, QDate const> dateRange;
 
-    DateToIntConverter dtiConverter;
+    std::shared_ptr<DateToIntConverter> dtiConverter;
 
 
     QRect boundingRect_;

@@ -55,7 +55,7 @@ add_executable(main main.cpp
         ui/common/DateFilterPane.h
         data/DateFilter.h
         data/DateRangeFilter.cpp
-        data/DateRangeFilter.h)
+        data/DateRangeFilter.h ui/plotting/graphics/PlotElement.h data/RangeConverter.cpp data/RangeConverter.h)
 target_link_libraries(main ${Qt5Widgets_LIBRARIES})
 target_link_libraries(main ${Qt5Sql_LIBRARIES})
 

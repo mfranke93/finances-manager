@@ -13,7 +13,7 @@ class PlotLeftAxis : public Plottable
 {
 public:
     PlotLeftAxis(int const& leftMargin, int const& topMargin, int const& innerHeight,
-                 std::pair<double const, double const> const& range, VerticalScaler const& verticalScaler);
+                 std::pair<double const, double const> const& range, std::shared_ptr<VerticalScaler> const& verticalScaler);
 
     PlotLeftAxis() = delete;
 
@@ -31,7 +31,7 @@ private:
     int const topMargin;
     int const innerHeight;
     std::pair<double const, double const> const range;
-    VerticalScaler vScaler;
+    std::shared_ptr<VerticalScaler> vScaler;
 
     QRect boundingRect_;
 };

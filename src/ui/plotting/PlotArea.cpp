@@ -42,36 +42,28 @@ PlotArea::paintEvent(QPaintEvent * evt) {
         if (max > maximum) maximum = max;
     }
 
-    // pad margins
-    maximum += 20.0;
-    minimum -= 20.0;
+    PlotLine p (cumulativeSums, zoomLevels[zoomLevel], height, marginLeft);
+    p.setDrawMinMax(paintMinMax);
 
     // scaling function
-    auto scale = [&](double const &d) -> int {
-        return int(marginTop + height - (d - minimum) / (maximum - minimum) * height);
-    };
-    auto dtiConverter = [&](QDate const &d) -> int {
-        return int(cumulativeSums[0].first.daysTo(d)) * dayWidth() + marginLeft;
-    };
+    auto scale = p.verticalScaler();
+    auto dtiConverter = p.dtiConverter();
 
     // draw grid
-    PlotGrid pg(std::make_pair(cumulativeSums.begin()->first, cumulativeSums.back().first),
-                std::make_pair(minimum, maximum), dtiConverter, scale);
+    PlotGrid pg(p.xRange(), p.yRange(), dtiConverter, scale);
     pg.plot(&painter);
 
-    // draw y axis labeling: every 200 €
-    PlotLeftAxis la(marginLeft, marginTop, height, std::make_pair(minimum, maximum), scale);
-    la.plot(&painter);
+    //// draw y axis labeling: every 200 €
+    //PlotLeftAxis la(marginLeft, marginTop, height, std::make_pair(minimum, maximum), scale);
+    //la.plot(&painter);
 
-    // draw x axis labeling: first, last, first of each month
-    PlotBottomBar b(marginBottom, marginLeft, this->height(),
-                    std::make_pair(cumulativeSums.begin()->first, cumulativeSums.back().first),
-                    dtiConverter);
-    b.plot(&painter);
+    //// draw x axis labeling: first, last, first of each month
+    //PlotBottomBar b(marginBottom, marginLeft, this->height(),
+    //                std::make_pair(cumulativeSums.begin()->first, cumulativeSums.back().first),
+    //                dtiConverter);
+    //b.plot(&painter);
 
     // plot
-    PlotLine p(cumulativeSums, dtiConverter, scale);
-    p.setDrawMinMax(paintMinMax);
     p.plot(&painter);
 }
 

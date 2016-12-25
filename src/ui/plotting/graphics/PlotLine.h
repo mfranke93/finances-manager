@@ -7,20 +7,18 @@
 
 #include "Plottable.h"
 #include "PlotPoint.h"
+#include "PlotElement.h"
 #include <QtCore/QDate>
 #include <data/ResourceHandler.h>
 #include <functional>
+#include <memory>
 
-typedef std::function<int(QDate const&)> DateToIntConverter;
-typedef std::function<int(double const&)> VerticalScaler;
-
-class PlotLine : public Plottable
+class PlotLine : public PlotElement
 {
 public:
     PlotLine() = delete;
     PlotLine(std::vector<std::pair<QDate const, std::tuple<double, double, double>>> const& vec,
-        DateToIntConverter const& dti,
-        VerticalScaler const& vs);
+             int const& pixelsPerDay, int const& height, int const& leftMargin);
     ~PlotLine();
 
     PlotLine(PlotLine const&) = default;
@@ -30,16 +28,23 @@ public:
     inline void setDrawMinMax(bool const& b) { drawMinMax = b; };
 
     QRect const& boundingRect() const override { return boundingRect_; };
+    std::pair<QDate, QDate> const& xRange() const override { return xRange_; };
+    std::pair<double, double> const& yRange() const override { return yRange_; };
+    std::shared_ptr<DateToIntConverter> dtiConverter() const override { return dtiConverter_; };
+    std::shared_ptr<VerticalScaler> verticalScaler() const override { return vScaler_; };
 
 protected:
-    std::vector<PlotPoint> * buildPoints() const;
+    std::vector<PlotPoint> * buildPoints(int const&, int const&, int const&);
 
 private:
     std::vector<std::pair<QDate const, std::tuple<double,double,double>>> points;
-    DateToIntConverter dtiConverter;
-    VerticalScaler vScaler;
+    std::vector<PlotPoint> * plotPoints_;
+    std::shared_ptr<DateToIntConverter> dtiConverter_;
+    std::shared_ptr<VerticalScaler> vScaler_;
     bool drawMinMax;
 
+    mutable std::pair<QDate, QDate> xRange_;
+    mutable std::pair<double, double> yRange_;
     mutable QRect boundingRect_;
 };
 
