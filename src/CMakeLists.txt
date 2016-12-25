@@ -35,8 +35,8 @@ add_executable(main main.cpp
         ui/plotting/graphics/PlotPoint.cpp
         ui/plotting/graphics/PlotPoint.h
         ui/plotting/graphics/Plottable.h
-        ui/plotting/graphics/PlotLine.cpp
-        ui/plotting/graphics/PlotLine.h
+        ui/plotting/graphics/CumulativePlotLine.cpp
+        ui/plotting/graphics/CumulativePlotLine.h
         ui/plotting/PlotBottomBar.cpp
         ui/plotting/PlotBottomBar.h
         ui/plotting/PlotLeftAxis.cpp
@@ -55,7 +55,7 @@ add_executable(main main.cpp
         ui/common/DateFilterPane.h
         data/DateFilter.h
         data/DateRangeFilter.cpp
-        data/DateRangeFilter.h ui/plotting/graphics/PlotElement.h data/RangeConverter.cpp data/RangeConverter.h)
+        data/DateRangeFilter.h ui/plotting/graphics/PlotElement.h data/RangeConverter.cpp data/RangeConverter.h ui/plotting/graphics/PlotLineFactory.cpp ui/plotting/graphics/PlotLineFactory.h)
 target_link_libraries(main ${Qt5Widgets_LIBRARIES})
 target_link_libraries(main ${Qt5Sql_LIBRARIES})
 

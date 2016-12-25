@@ -7,7 +7,7 @@
 
 
 #include "ui/plotting/graphics/Plottable.h"
-#include "ui/plotting/graphics/PlotLine.h"
+#include "ui/plotting/graphics/CumulativePlotLine.h"
 
 class PlotLeftAxis : public Plottable
 {

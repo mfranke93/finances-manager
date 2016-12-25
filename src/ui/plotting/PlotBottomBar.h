@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "ui/plotting/graphics/PlotLine.h"
+#include "ui/plotting/graphics/CumulativePlotLine.h"
 #include "ui/plotting/graphics/Plottable.h"
 
 class PlotBottomBar : public Plottable

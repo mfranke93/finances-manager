@@ -6,11 +6,13 @@
 
 #include <functional>
 #include <memory>
+#include <QtSql/QSqlQuery>
 #include "Plottable.h"
 #include "../../../data/RangeConverter.h"
 
 class PlotElement: public Plottable
 {
+public:
     virtual std::pair<QDate, QDate> const& xRange() const = 0;
     virtual std::pair<double, double> const& yRange() const = 0;
     virtual std::shared_ptr<DateToIntConverter> dtiConverter() const = 0;

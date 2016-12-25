@@ -57,7 +57,6 @@ private:
     double getYValue(int const&) const;
     QDate getXValue(int const&) const;
 
-    std::vector<std::pair<QDate const, std::tuple<double, double, double>>> cumulativeSums;
     const int marginBottom = 20;
     const int marginTop = 5;
     const int marginRight = 5;

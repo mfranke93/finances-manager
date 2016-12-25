@@ -3,8 +3,9 @@
 //
 
 #include <data/ResourceHandler.h>
+#include <ui/plotting/graphics/PlotLineFactory.h>
 #include "PlotArea.h"
-#include "ui/plotting/graphics/PlotLine.h"
+#include "ui/plotting/graphics/CumulativePlotLine.h"
 #include "PlotBottomBar.h"
 #include "PlotLeftAxis.h"
 #include "PlotGrid.h"
@@ -29,28 +30,28 @@ PlotArea::paintEvent(QPaintEvent * evt) {
     painter.fillRect(this->rect().adjusted(marginLeft, marginTop, -marginRight - 1, -marginBottom - 1),
                      QColor(255, 255, 255));
 
-    if (cumulativeSums.empty()) return;
     // scaling factors
-    minimum = std::get<0>(cumulativeSums[0].second);
-    maximum = minimum;
     int height = this->size().height() - marginBottom - marginTop;
-    for (auto it : cumulativeSums) {
-        double min = std::get<1>(it.second);
-        double max = std::get<2>(it.second);
 
-        if (min < minimum) minimum = min;
-        if (max > maximum) maximum = max;
-    }
-
-    PlotLine p (cumulativeSums, zoomLevels[zoomLevel], height, marginLeft, marginTop);
-    p.setDrawMinMax(paintMinMax);
+    QSqlQuery query (DbHandler::getInstance()->getDatabase());
+    query.exec(buildQuery()); //"SELECT date, price FROM Item ORDER BY date ASC;");
+    PlotLineFactory lineFactory;
+    std::shared_ptr<PlotElement> p = lineFactory.buildPlotElementFromData(
+            query,
+            zoomLevels[zoomLevel],
+            height, marginLeft, marginTop,
+            dateRange,
+            PlotType ::CUMULATIVE_WITH_MINMAX
+    );
+    minimum = p->yRange().first;
+    maximum = p->yRange().second;
 
     // scaling function
-    auto scale = p.verticalScaler();
-    auto dtiConverter = p.dtiConverter();
+    auto scale = p->verticalScaler();
+    auto dtiConverter = p->dtiConverter();
 
     // draw grid
-    PlotGrid pg(p.xRange(), p.yRange(), dtiConverter, scale);
+    PlotGrid pg(p->xRange(), p->yRange(), dtiConverter, scale);
     pg.plot(&painter);
 
     // draw y axis labeling: every 200 €
@@ -59,12 +60,12 @@ PlotArea::paintEvent(QPaintEvent * evt) {
 
     // draw x axis labeling: first, last, first of each month
     PlotBottomBar b(marginBottom, marginLeft, this->height(),
-                    std::make_pair(cumulativeSums.begin()->first, cumulativeSums.back().first),
+                    p->xRange(),
                     dtiConverter);
     b.plot(&painter);
 
     // plot
-    p.plot(&painter);
+    p->plot(&painter);
 }
 
 QString
@@ -106,63 +107,6 @@ PlotArea::buildQuery() const
 void
 PlotArea::reloadData()
 {
-    // TODO: externalize
-    cumulativeSums.clear();
-
-    std::map<QDate, std::tuple<double, double, double>> accumPerDay;
-
-    QSqlQuery query (DbHandler::getInstance()->getDatabase());
-    query.exec(buildQuery()); //"SELECT date, price FROM Item ORDER BY date ASC;");
-    while (query.next())
-    {
-        QDate d = query.value("date").toDate();
-        double price = query.value("price").toDouble();
-
-        if (accumPerDay.find(d) == accumPerDay.end())
-        {
-            double min = price<0?price:0.0;
-            double max = price<0?0.0:price;
-            accumPerDay[d] = std::make_tuple(price, min, max);
-        }
-        else
-        {
-            std::get<0>(accumPerDay[d]) += price;
-            if (price >= 0.0)
-            {
-                std::get<2>(accumPerDay[d]) += price;
-            }
-            else
-            {
-                std::get<1>(accumPerDay[d]) += price;
-            }
-        }
-    }
-    // find minimum and maximum
-    QDate first, last;
-    first = dateRange.first;
-    last = dateRange.second;
-    for (auto it : accumPerDay)
-    {
-        if (it.first > last) last = it.first;
-        if (it.first < first) first = it.first;
-    }
-
-    double sum = 0.0;
-    for (QDate d = first; d <= last; d = d.addDays(1))
-    {
-        double min = sum;
-        double max = sum;
-        if (accumPerDay.find(d) != accumPerDay.end())
-        {
-            // minimum of day: before all positive
-            min += std::get<1>(accumPerDay[d]);
-            // maximum per day: before all negative
-            max += std::get<2>(accumPerDay[d]);
-            sum += std::get<0>(accumPerDay[d]);
-        }
-        cumulativeSums.push_back(std::make_pair(d, std::make_tuple(sum, min, max)));
-    }
-
     checkZoomLevel();
     emit repaint();
 }
@@ -188,7 +132,8 @@ PlotArea::checkZoomLevel()
 {
     emit canIncrementZoomLevel(zoomLevel<maxZoomLevel);
     emit canDecrementZoomLevel(zoomLevel>0);
-    setMinimumWidth(dayWidth() * int(cumulativeSums.size()-1) + marginLeft + marginRight + 5);
+    qint64 const days = dateRange.first.daysTo(dateRange.second);
+    setMinimumWidth(dayWidth() * int(days-1) + marginLeft + marginRight + 5);
 }
 
 void

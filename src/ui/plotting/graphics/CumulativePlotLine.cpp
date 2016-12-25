@@ -2,9 +2,9 @@
 // Created by max on 08/10/16.
 //
 
-#include "PlotLine.h"
+#include "CumulativePlotLine.h"
 
-PlotLine::PlotLine(std::vector<std::pair<QDate const, std::tuple<double, double, double>>> const& vec,
+CumulativePlotLine::CumulativePlotLine(std::vector<std::pair<QDate const, std::tuple<double, double, double>>> const& vec,
                    int const& pixelsPerDay, int const& height, int const& leftMargin, int const& topMargin)
 : points(vec), drawMinMax(true)
 {
@@ -12,14 +12,14 @@ PlotLine::PlotLine(std::vector<std::pair<QDate const, std::tuple<double, double,
     plotPoints_ = buildPoints(pixelsPerDay, height, leftMargin, topMargin);
 }
 
-PlotLine::~PlotLine()
+CumulativePlotLine::~CumulativePlotLine()
 {
     // dtor
     if (plotPoints_ != nullptr) delete plotPoints_;
 }
 
 void
-PlotLine::plot(QPainter * const painter) const
+CumulativePlotLine::plot(QPainter * const painter) const
 {
     for (size_t i = 0; i < plotPoints_->size()-1; ++i)
     {
@@ -36,7 +36,7 @@ PlotLine::plot(QPainter * const painter) const
 }
 
 std::vector<PlotPoint> *
-PlotLine::buildPoints(int const& pixelsPerDay, int const& height, int const& leftMargin, int const& topMargin)
+CumulativePlotLine::buildPoints(int const& pixelsPerDay, int const& height, int const& leftMargin, int const& topMargin)
 {
     std::vector<PlotPoint> * vec = new std::vector<PlotPoint>;
     double minVal, maxVal;

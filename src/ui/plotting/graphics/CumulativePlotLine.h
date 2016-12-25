@@ -13,16 +13,16 @@
 #include <functional>
 #include <memory>
 
-class PlotLine : public PlotElement
+class CumulativePlotLine : public PlotElement
 {
 public:
-    PlotLine() = delete;
-    PlotLine(std::vector<std::pair<QDate const, std::tuple<double, double, double>>> const& vec,
+    CumulativePlotLine() = delete;
+    CumulativePlotLine(std::vector<std::pair<QDate const, std::tuple<double, double, double>>> const& vec,
              int const& pixelsPerDay, int const& height, int const& leftMargin, int const& topMargin);
-    ~PlotLine();
+    ~CumulativePlotLine();
 
-    PlotLine(PlotLine const&) = default;
-    PlotLine& operator= (PlotLine const&) = delete;
+    CumulativePlotLine(CumulativePlotLine const&) = default;
+    CumulativePlotLine& operator= (CumulativePlotLine const&) = delete;
 
     void plot(QPainter * const) const override;
     inline void setDrawMinMax(bool const& b) { drawMinMax = b; };
