@@ -18,3 +18,8 @@
     - The delegated class must know its own geometry.
     - The delegated class gets a QSqlQuery object to build the data from. This
       way, we are free to filter data beforehand on the SQL side.
+*** Interface of drawable:
+    - Either collection of drawables
+    - or struct { QPainterPath..., QBrush, QPen }
+    - or any class with a paint(QPainter*) method
+      
