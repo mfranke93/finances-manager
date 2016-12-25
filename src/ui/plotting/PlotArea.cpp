@@ -57,11 +57,11 @@ PlotArea::paintEvent(QPaintEvent * evt) {
     PlotLeftAxis la(marginLeft, marginTop, height, std::make_pair(minimum, maximum), scale);
     la.plot(&painter);
 
-    //// draw x axis labeling: first, last, first of each month
-    //PlotBottomBar b(marginBottom, marginLeft, this->height(),
-    //                std::make_pair(cumulativeSums.begin()->first, cumulativeSums.back().first),
-    //                dtiConverter);
-    //b.plot(&painter);
+    // draw x axis labeling: first, last, first of each month
+    PlotBottomBar b(marginBottom, marginLeft, this->height(),
+                    std::make_pair(cumulativeSums.begin()->first, cumulativeSums.back().first),
+                    dtiConverter);
+    b.plot(&painter);
 
     // plot
     p.plot(&painter);

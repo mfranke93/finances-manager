@@ -33,10 +33,6 @@ PlotLine::plot(QPainter * const painter) const
     }
     // paint last
     plotPoints_->back().paint(painter);
-
-    painter->setPen(QColor(255, 0, 0));
-    painter->setBrush(Qt::NoBrush);
-    painter->drawRect(boundingRect_);
 }
 
 std::vector<PlotPoint> *
