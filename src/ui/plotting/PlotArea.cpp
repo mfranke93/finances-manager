@@ -53,9 +53,9 @@ PlotArea::paintEvent(QPaintEvent * evt) {
     PlotGrid pg(p.xRange(), p.yRange(), dtiConverter, scale);
     pg.plot(&painter);
 
-    //// draw y axis labeling: every 200 €
-    //PlotLeftAxis la(marginLeft, marginTop, height, std::make_pair(minimum, maximum), scale);
-    //la.plot(&painter);
+    // draw y axis labeling: every 200 €
+    PlotLeftAxis la(marginLeft, marginTop, height, std::make_pair(minimum, maximum), scale);
+    la.plot(&painter);
 
     //// draw x axis labeling: first, last, first of each month
     //PlotBottomBar b(marginBottom, marginLeft, this->height(),
