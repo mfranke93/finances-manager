@@ -6,26 +6,30 @@
 #pragma once
 
 
-#include "Plottable.h"
-#include "PlotLine.h"
+#include "ui/plotting/graphics/Plottable.h"
+#include "ui/plotting/graphics/PlotLine.h"
 
 class PlotGrid : public Plottable
 {
 public:
     PlotGrid() = delete;
     ~PlotGrid() = default;
-    PlotGrid(std::pair<QDate const, QDate const> const& dateRange, std::pair<double const, double const> const& priceRange);
-
-    inline void setVerticalScaler(VerticalScaler const& vs) { vScaler = vs; };
-    inline void setDateToIntConverter(DateToIntConverter const& dti) { dtiConverter = dti; };
+    PlotGrid(std::pair<QDate const, QDate const> const& dateRange,
+             std::pair<double const, double const> const& priceRange,
+             DateToIntConverter const& dti,
+             VerticalScaler const& vs);
 
     void plot(QPainter * const) const override;
+
+    QRect const& boundingRect() const override { return boundingRect_; };
 private:
-    VerticalScaler vScaler;
-    DateToIntConverter dtiConverter;
 
     std::pair<QDate const, QDate const> const dateRange;
     std::pair<double const, double const> const priceRange;
+    DateToIntConverter dtiConverter;
+    VerticalScaler vScaler;
+
+    QRect const boundingRect_;
 };
 
 

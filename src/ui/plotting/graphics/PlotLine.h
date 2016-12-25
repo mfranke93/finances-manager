@@ -30,6 +30,8 @@ public:
     void setVerticalScaler(VerticalScaler const&);
     inline void setDrawMinMax(bool const& b) { drawMinMax = b; };
 
+    QRect const& boundingRect() const override { return boundingRect_; };
+
 protected:
     std::vector<PlotPoint> * buildPoints() const;
 
@@ -39,6 +41,7 @@ private:
     VerticalScaler vScaler;
     bool drawMinMax;
 
+    mutable QRect boundingRect_;
 };
 
 

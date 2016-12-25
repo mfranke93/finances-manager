@@ -32,11 +32,11 @@ add_executable(main main.cpp
         ui/tabs/PlotTab.h
         ui/plotting/PlotArea.cpp
         ui/plotting/PlotArea.h
-        ui/plotting/PlotPoint.cpp
-        ui/plotting/PlotPoint.h
-        ui/plotting/Plottable.h
-        ui/plotting/PlotLine.cpp
-        ui/plotting/PlotLine.h
+        ui/plotting/graphics/PlotPoint.cpp
+        ui/plotting/graphics/PlotPoint.h
+        ui/plotting/graphics/Plottable.h
+        ui/plotting/graphics/PlotLine.cpp
+        ui/plotting/graphics/PlotLine.h
         ui/plotting/PlotBottomBar.cpp
         ui/plotting/PlotBottomBar.h
         ui/plotting/PlotLeftAxis.cpp

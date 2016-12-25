@@ -6,8 +6,12 @@
 #include "PlotGrid.h"
 
 PlotGrid::PlotGrid(std::pair<QDate const, QDate const> const& dateRange,
-                   std::pair<double const, double const> const& priceRange)
-: dateRange(dateRange), priceRange(priceRange)
+                   std::pair<double const, double const> const& priceRange,
+                   DateToIntConverter const& dti,
+                   VerticalScaler const& vs)
+: dateRange(dateRange), priceRange(priceRange), dtiConverter(dti), vScaler(vs),
+  boundingRect_(QPoint(dti(dateRange.first), vs(priceRange.second)),
+                QPoint(dti(dateRange.second), vs(priceRange.first)))
 {
     // ctor
 }

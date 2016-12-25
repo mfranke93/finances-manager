@@ -7,16 +7,17 @@
 PlotBottomBar::PlotBottomBar(int const& bottomMargin,
                              int const& leftMargin,
                              int const& offset,
-                             std::pair<QDate const, QDate const> dateRange)
-: bottomMargin(bottomMargin), leftMargin(leftMargin), offset(offset), dateRange(dateRange)
+                             std::pair<QDate const, QDate const> dateRange,
+                             DateToIntConverter const& dti)
+: bottomMargin(bottomMargin), leftMargin(leftMargin), offset(offset), dateRange(dateRange), dtiConverter(dti)
 {
     // ctor
+    boundingRect_.setCoords(leftMargin, offset-bottomMargin, dtiConverter(dateRange.second), bottomMargin);
 }
 
 void
 PlotBottomBar::plot(QPainter * const painter) const
 {
-    // TODO: omit dates if too little space between points
     int const y = offset - bottomMargin + 5;
 
     painter->setFont(QFont("Monospace", 8));
@@ -49,7 +50,6 @@ PlotBottomBar::calculatePrintedDates(QPainter * const painter) const
      * steps:
      * each day, first of each week, first of each month
      */
-    // TODO: first of month when stepping through weeks
     if (factor == 1)
     {
         for (QDate d = dateRange.first; d <= dateRange.second; d = d.addDays(1)) vec->push_back(d);

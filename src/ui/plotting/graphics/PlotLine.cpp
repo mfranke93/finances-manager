@@ -67,17 +67,35 @@ std::vector<PlotPoint> *
 PlotLine::buildPoints() const
 {
     std::vector<PlotPoint> * vec = new std::vector<PlotPoint>;
+    int minX, minY, maxX, maxY;
+    bool first = true;
     for (auto const& point : points)
     {
-        double val = std::get<0>(point.second);
-        double minimal = std::get<1>(point.second);
-        double maximal = std::get<2>(point.second);
-        PlotPoint p (dtiConverter(point.first), vScaler(val), 3,
+        double const val = std::get<0>(point.second);
+        double const minimal = std::get<1>(point.second);
+        double const maximal = std::get<2>(point.second);
+
+        int const x = dtiConverter(point.first);
+        int const y = vScaler(val);
+        int const min = vScaler(minimal);
+        int const max = vScaler(maximal);
+
+        if (first || min < minY) minY = min;
+        if (first || max > maxY) maxY = max;
+        if (first || x < minX) minX = x;
+        if (first || x > maxX) maxX = x;
+
+        PlotPoint p (x, y, 3,
                      (val>0)
                      ? ResourceHandler::getInstance()->getColor("positive numbers blue")
                      : ResourceHandler::getInstance()->getColor("negative numbers red"));
-        p.setYRange(vScaler(minimal), vScaler(maximal));
+        p.setYRange(min, max);
         vec->push_back(p);
+
+        first = false;
     }
+
+    boundingRect_.setCoords(minX, minY, maxX, maxY);
+
     return vec;
 }

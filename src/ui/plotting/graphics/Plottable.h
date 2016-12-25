@@ -10,4 +10,5 @@ class Plottable
 {
 public:
     virtual void plot(QPainter * const) const = 0;
+    virtual QRect const& boundingRect() const = 0;
 };

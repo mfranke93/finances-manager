@@ -4,7 +4,7 @@
 
 #include <data/ResourceHandler.h>
 #include "PlotArea.h"
-#include "PlotLine.h"
+#include "ui/plotting/graphics/PlotLine.h"
 #include "PlotBottomBar.h"
 #include "PlotLeftAxis.h"
 #include "PlotGrid.h"
@@ -56,24 +56,22 @@ PlotArea::paintEvent(QPaintEvent * evt) {
 
     // draw grid
     PlotGrid pg(std::make_pair(cumulativeSums.begin()->first, cumulativeSums.back().first),
-                std::make_pair(minimum, maximum));
-    pg.setDateToIntConverter(dtiConverter);
-    pg.setVerticalScaler(scale);
+                std::make_pair(minimum, maximum), dtiConverter, scale);
     pg.plot(&painter);
 
     // draw y axis labeling: every 200 €
-    PlotLeftAxis la(marginLeft, marginTop, height, std::make_pair(minimum, maximum));
-    la.setVerticalScaler(scale);
+    PlotLeftAxis la(marginLeft, marginTop, height, std::make_pair(minimum, maximum), scale);
     la.plot(&painter);
 
     // draw x axis labeling: first, last, first of each month
     PlotBottomBar b(marginBottom, marginLeft, this->height(),
-                    std::make_pair(cumulativeSums.begin()->first, cumulativeSums.back().first));
-    b.setDtiConverter(dtiConverter);
+                    std::make_pair(cumulativeSums.begin()->first, cumulativeSums.back().first),
+                    dtiConverter);
     b.plot(&painter);
 
     // plot
     PlotLine p;
+    // TODO: give dti and vs to constructor
     p.setDtiConverter(dtiConverter);
     p.setVerticalScaler(scale);
     p.setDrawMinMax(paintMinMax);
