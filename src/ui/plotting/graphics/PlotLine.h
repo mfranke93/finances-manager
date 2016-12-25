@@ -17,17 +17,16 @@ typedef std::function<int(double const&)> VerticalScaler;
 class PlotLine : public Plottable
 {
 public:
-    PlotLine();
+    PlotLine() = delete;
+    PlotLine(std::vector<std::pair<QDate const, std::tuple<double, double, double>>> const& vec,
+        DateToIntConverter const& dti,
+        VerticalScaler const& vs);
     ~PlotLine();
 
     PlotLine(PlotLine const&) = default;
     PlotLine& operator= (PlotLine const&) = delete;
 
     void plot(QPainter * const) const override;
-    void addPoint(QDate const& date, double const& value, double const& min, double const& max);
-    void addPoints(std::vector<std::pair<QDate const, std::tuple<double, double, double>>> const& vec);
-    void setDtiConverter(DateToIntConverter const&);
-    void setVerticalScaler(VerticalScaler const&);
     inline void setDrawMinMax(bool const& b) { drawMinMax = b; };
 
     QRect const& boundingRect() const override { return boundingRect_; };

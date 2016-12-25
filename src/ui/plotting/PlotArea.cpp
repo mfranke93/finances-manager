@@ -70,12 +70,8 @@ PlotArea::paintEvent(QPaintEvent * evt) {
     b.plot(&painter);
 
     // plot
-    PlotLine p;
-    // TODO: give dti and vs to constructor
-    p.setDtiConverter(dtiConverter);
-    p.setVerticalScaler(scale);
+    PlotLine p(cumulativeSums, dtiConverter, scale);
     p.setDrawMinMax(paintMinMax);
-    p.addPoints(cumulativeSums);
     p.plot(&painter);
 }
 

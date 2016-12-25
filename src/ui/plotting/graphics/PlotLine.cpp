@@ -4,8 +4,9 @@
 
 #include "PlotLine.h"
 
-PlotLine::PlotLine()
-: drawMinMax(true)
+PlotLine::PlotLine(std::vector<std::pair<QDate const, std::tuple<double, double, double>>> const& vec,
+                   DateToIntConverter const& dti, VerticalScaler const& vs)
+: points(vec), dtiConverter(dti), vScaler(vs), drawMinMax(true)
 {
     // ctor
 }
@@ -13,33 +14,6 @@ PlotLine::PlotLine()
 PlotLine::~PlotLine()
 {
     // dtor
-}
-
-void
-PlotLine::addPoint(QDate const& date, double const& value, double const& min, double const& max)
-{
-    points.push_back(std::make_pair(date, std::make_tuple(value, min, max)));
-}
-
-void
-PlotLine::addPoints(std::vector<std::pair<QDate const, std::tuple<double, double, double>>> const& vec)
-{
-    for (auto it : vec)
-    {
-        points.push_back(it);
-    }
-}
-
-void
-PlotLine::setDtiConverter(DateToIntConverter const& dtiConverter)
-{
-    this->dtiConverter = dtiConverter;
-}
-
-void
-PlotLine::setVerticalScaler(VerticalScaler const& vs)
-{
-    vScaler = vs;
 }
 
 void
