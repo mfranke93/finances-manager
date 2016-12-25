@@ -23,3 +23,9 @@
     - or struct { QPainterPath..., QBrush, QPen }
     - or any class with a paint(QPainter*) method
       
+* TODO Redesign whole plotting backend
+  All plotting elements should be encapsuled into one accessible class. From
+  here, there can be classes branched off with the plot elements, like the grid,
+  but the caller should not be required to call them explicitly.
+  Take as example the matplotlib approach, where you call grid() or legend() on
+  your figure directly.
