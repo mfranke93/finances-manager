@@ -42,7 +42,7 @@ PlotArea::paintEvent(QPaintEvent * evt) {
         if (max > maximum) maximum = max;
     }
 
-    PlotLine p (cumulativeSums, zoomLevels[zoomLevel], height, marginLeft);
+    PlotLine p (cumulativeSums, zoomLevels[zoomLevel], height, marginLeft, marginTop);
     p.setDrawMinMax(paintMinMax);
 
     // scaling function

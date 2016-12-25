@@ -5,11 +5,11 @@
 #include "PlotLine.h"
 
 PlotLine::PlotLine(std::vector<std::pair<QDate const, std::tuple<double, double, double>>> const& vec,
-                   int const& pixelsPerDay, int const& height, int const& leftMargin)
+                   int const& pixelsPerDay, int const& height, int const& leftMargin, int const& topMargin)
 : points(vec), drawMinMax(true)
 {
     // ctor
-    plotPoints_ = buildPoints(pixelsPerDay, height, leftMargin);
+    plotPoints_ = buildPoints(pixelsPerDay, height, leftMargin, topMargin);
 }
 
 PlotLine::~PlotLine()
@@ -40,7 +40,7 @@ PlotLine::plot(QPainter * const painter) const
 }
 
 std::vector<PlotPoint> *
-PlotLine::buildPoints(int const& pixelsPerDay, int const& height, int const& leftMargin)
+PlotLine::buildPoints(int const& pixelsPerDay, int const& height, int const& leftMargin, int const& topMargin)
 {
     std::vector<PlotPoint> * vec = new std::vector<PlotPoint>;
     double minVal, maxVal;
@@ -64,7 +64,7 @@ PlotLine::buildPoints(int const& pixelsPerDay, int const& height, int const& lef
     // scalers
     int const width = static_cast<int>(points.size()) * pixelsPerDay;
     dtiConverter_ = std::make_shared<DateToIntConverter>(xRange_, std::make_pair(leftMargin, width+leftMargin));
-    vScaler_ = std::make_shared<VerticalScaler>(yRange_, std::make_pair(height, 0));  // coords top to bottom
+    vScaler_ = std::make_shared<VerticalScaler>(yRange_, std::make_pair(height+topMargin, topMargin));  // coords top to bottom
 
     for (auto const& point : points)
     {

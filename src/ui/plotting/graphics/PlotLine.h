@@ -18,7 +18,7 @@ class PlotLine : public PlotElement
 public:
     PlotLine() = delete;
     PlotLine(std::vector<std::pair<QDate const, std::tuple<double, double, double>>> const& vec,
-             int const& pixelsPerDay, int const& height, int const& leftMargin);
+             int const& pixelsPerDay, int const& height, int const& leftMargin, int const& topMargin);
     ~PlotLine();
 
     PlotLine(PlotLine const&) = default;
@@ -34,7 +34,7 @@ public:
     std::shared_ptr<VerticalScaler> verticalScaler() const override { return vScaler_; };
 
 protected:
-    std::vector<PlotPoint> * buildPoints(int const&, int const&, int const&);
+    std::vector<PlotPoint> * buildPoints(int const&, int const&, int const&, int const&);
 
 private:
     std::vector<std::pair<QDate const, std::tuple<double,double,double>>> points;
