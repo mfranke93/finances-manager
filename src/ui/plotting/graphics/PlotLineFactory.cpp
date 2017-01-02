@@ -18,6 +18,10 @@ PlotLineFactory::buildPlotElementFromData(QSqlQuery& resultsQuery, int const& pi
             if (plotType == PlotType::CUMULATIVE_WITH_MINMAX) pl->setDrawMinMax(true);
             return pl;
         }
+        case PlotType::DAILY_PEAKS:
+        {
+            // TODO
+        }
         default:
         {
             throw std::invalid_argument("o");
