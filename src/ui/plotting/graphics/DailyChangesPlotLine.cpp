@@ -62,8 +62,9 @@ DailyChangesPlotLine::buildBars(int const& pixelsPerDay, int const& height, int 
         int const min = (*vScaler_)(minimal);
         int const max = (*vScaler_)(maximal);
 
-        QRect rectPositive (x-3, max, 6, y-max);
-        QRect rectNegative (x-3, min, 6, min-y);
+        std::printf("%d %d %d %d\n", x, y, min, max);
+        QRect rectPositive (x-2, max, 4, y-max);
+        QRect rectNegative (x-2, y, 4, min-y);
 
         PlotBar barPositive (rectPositive, ResourceHandler::getInstance()->getColor("plot positive line blue"),
             ResourceHandler::getInstance()->getColor("plot positive area blue"));

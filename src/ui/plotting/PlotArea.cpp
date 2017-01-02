@@ -41,7 +41,7 @@ PlotArea::paintEvent(QPaintEvent * evt) {
             zoomLevels[zoomLevel],
             height, marginLeft, marginTop,
             dateRange,
-            PlotType ::CUMULATIVE_WITH_MINMAX
+            PlotType::DAILY_PEAKS
     );
     minimum = p->yRange().first;
     maximum = p->yRange().second;

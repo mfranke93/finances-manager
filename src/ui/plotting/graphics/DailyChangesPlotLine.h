@@ -10,6 +10,7 @@
 
 class DailyChangesPlotLine: public PlotElement
 {
+public:
     DailyChangesPlotLine() = delete;
     ~DailyChangesPlotLine() = default;
     DailyChangesPlotLine(std::vector<std::pair<QDate const, std::pair<double, double>>> const& values,

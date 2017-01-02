@@ -6,6 +6,7 @@
 
 #include "PlotElement.h"
 #include "CumulativePlotLine.h"
+#include "DailyChangesPlotLine.h"
 #include <QString>
 #include <QVariant>
 
@@ -31,6 +32,12 @@ public:
     ) const;
 protected:
     std::shared_ptr<CumulativePlotLine> buildCumulativePlotLine(
+            QSqlQuery& resultsQuery,
+            int const& pixelsPerDay,
+            int const& height, int const& leftMargin, int const& topMargin,
+            std::pair<QDate, QDate> const& dateRange
+    ) const;
+    std::shared_ptr<DailyChangesPlotLine> buildDailyPeaksPlotLine(
             QSqlQuery& resultsQuery,
             int const& pixelsPerDay,
             int const& height, int const& leftMargin, int const& topMargin,
