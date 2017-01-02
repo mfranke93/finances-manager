@@ -62,7 +62,6 @@ DailyChangesPlotLine::buildBars(int const& pixelsPerDay, int const& height, int 
         int const min = (*vScaler_)(minimal);
         int const max = (*vScaler_)(maximal);
 
-        std::printf("%d %d %d %d\n", x, y, min, max);
         QRect rectPositive (x-2, max, 4, y-max);
         QRect rectNegative (x-2, y, 4, min-y);
 

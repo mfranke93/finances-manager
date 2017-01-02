@@ -4,6 +4,7 @@
 
 #include <QtWidgets/QAbstractSlider>
 #include <data/ResourceHandler.h>
+#include <ui/plotting/graphics/PlotLineFactory.h>
 #include "PlotTab.h"
 
 PlotTab::PlotTab(QWidget * parent)
@@ -27,11 +28,14 @@ PlotTab::PlotTab(QWidget * parent)
     bottomButtonLayout->addWidget(zoomOutButton);
     bottomButtonLayout->addWidget(zoomInButton);
 
-    enableMinMaxDrawingButton = new QPushButton("Draw min/max");
-    enableMinMaxDrawingButton->setCheckable(true);
-    enableMinMaxDrawingButton->setChecked(plotArea->isPaintMinMax());
+    plotStyleComboBox = new QComboBox();
+    {
+        plotStyleComboBox->addItem("Cumulative");
+        plotStyleComboBox->addItem("Cumulative with min/max");
+        plotStyleComboBox->addItem("Peaks");
+    }
     bottomButtonLayout->addStretch(1);
-    bottomButtonLayout->addWidget(enableMinMaxDrawingButton);
+    bottomButtonLayout->addWidget(plotStyleComboBox);
 
     repaintButton = new QPushButton("Repaint");
     bottomButtonLayout->addStretch(3);
@@ -58,7 +62,7 @@ PlotTab::PlotTab(QWidget * parent)
     connect(zoomOutButton, SIGNAL(clicked()), plotArea, SLOT(decrementZoomLevel()));
     connect(plotArea, SIGNAL(canIncrementZoomLevel(bool)), zoomInButton, SLOT(setEnabled(bool)));
     connect(plotArea, SIGNAL(canDecrementZoomLevel(bool)), zoomOutButton, SLOT(setEnabled(bool)));
-    connect(enableMinMaxDrawingButton, SIGNAL(toggled(bool)), plotArea, SLOT(setPaintMinMax(bool)));
+    connect(plotStyleComboBox, SIGNAL(currentIndexChanged(int)), plotArea, SLOT(setPlotStyle(int)));
 
     connect(DbHandler::getInstance(), SIGNAL(dateRangeChanged(std::pair<QDate, QDate>)),
             dateFilterPane, SLOT(onDateRangeChanged(std::pair<QDate, QDate>)));

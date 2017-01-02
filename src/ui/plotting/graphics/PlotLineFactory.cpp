@@ -15,7 +15,7 @@ PlotLineFactory::buildPlotElementFromData(QSqlQuery& resultsQuery, int const& pi
         case PlotType::CUMULATIVE_WITH_MINMAX:
         {
             std::shared_ptr<CumulativePlotLine> pl = buildCumulativePlotLine(resultsQuery, pixelsPerDay, height, leftMargin, topMargin, dateRange);
-            if (plotType == PlotType::CUMULATIVE_WITH_MINMAX) pl->setDrawMinMax(true);
+            pl->setDrawMinMax(plotType == PlotType::CUMULATIVE_WITH_MINMAX);
             return pl;
         }
         case PlotType::DAILY_PEAKS:

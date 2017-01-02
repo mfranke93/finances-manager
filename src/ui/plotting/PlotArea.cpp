@@ -2,19 +2,14 @@
 // Created by max on 07/10/16.
 //
 
-#include <data/ResourceHandler.h>
-#include <ui/plotting/graphics/PlotLineFactory.h>
 #include "PlotArea.h"
-#include "ui/plotting/graphics/CumulativePlotLine.h"
-#include "PlotBottomBar.h"
-#include "PlotLeftAxis.h"
-#include "PlotGrid.h"
 
 int const PlotArea::zoomLevels [] = { 2, 5, 8, 12, 20, 32 };
 
 PlotArea::PlotArea(QWidget * parent)
 : QWidget(parent),
-  zoomLevel(3)
+  zoomLevel(3),
+  plotType_(PlotType::CUMULATIVE_WITH_MINMAX)
 {
     setMouseTracking(true);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -41,7 +36,7 @@ PlotArea::paintEvent(QPaintEvent * evt) {
             zoomLevels[zoomLevel],
             height, marginLeft, marginTop,
             dateRange,
-            PlotType::DAILY_PEAKS
+            plotType_
     );
     minimum = p->yRange().first;
     maximum = p->yRange().second;
@@ -167,4 +162,11 @@ PlotArea::getXValue(int const& posX) const
     const double val = scale * (maxDate - minDate);
     const qint64 actualVal = static_cast<qint64>(val + minDate);
     return QDate::fromJulianDay(actualVal);
+}
+
+void
+PlotArea::setPlotStyle(int ps)
+{
+    plotType_ = static_cast<PlotType>(ps);
+    emit repaint();
 }

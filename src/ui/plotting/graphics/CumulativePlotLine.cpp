@@ -6,7 +6,7 @@
 
 CumulativePlotLine::CumulativePlotLine(std::vector<std::pair<QDate const, std::tuple<double, double, double>>> const& vec,
                    int const& pixelsPerDay, int const& height, int const& leftMargin, int const& topMargin)
-: points(vec), drawMinMax(true)
+: points(vec), drawMinMax(false)
 {
     // ctor
     plotPoints_ = buildPoints(pixelsPerDay, height, leftMargin, topMargin);
