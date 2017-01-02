@@ -40,6 +40,8 @@ public:
     QSqlDatabase& getDatabase() { return database; }
     bool commit();
 
+    void dumpDatabase() const;
+
 signals:
     void itemDataChanged(void);
     void dateRangeChanged(std::pair<QDate, QDate>);

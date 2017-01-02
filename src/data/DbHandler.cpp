@@ -110,3 +110,9 @@ DbHandler::getDateRange() const
 
     return std::make_pair(start, end);
 }
+
+void
+DbHandler::dumpDatabase() const
+{
+    // TODO implement
+}

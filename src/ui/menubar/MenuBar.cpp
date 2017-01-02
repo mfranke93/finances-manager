@@ -4,6 +4,7 @@
 
 #include <QtWidgets/QApplication>
 #include <stdlib.h>
+#include <data/DbHandler.h>
 #include "MenuBar.h"
 
 MenuBar::MenuBar()
@@ -19,8 +20,15 @@ MenuBar::buildFileMenu()
     addMenu(menu);
 
     /******************************/
+    menu->addAction("Make data backup", this, SLOT(makeDataBackup()));
     /******************************/
     menu->addSeparator();
     menu->addAction("Quit", this, SLOT(closeApplication()), QKeySequence(Qt::KeyboardModifier::ControlModifier | Qt::Key_Q));
     /******************************/
+}
+
+void
+MenuBar::makeDataBackup()
+{
+    DbHandler::getInstance()->dumpDatabase();
 }
