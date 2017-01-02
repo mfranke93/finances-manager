@@ -40,7 +40,7 @@ public:
     QSqlDatabase& getDatabase() { return database; }
     bool commit();
 
-    void dumpDatabase() const;
+    void dumpDatabase(QString const& filename) const;
 
 signals:
     void itemDataChanged(void);

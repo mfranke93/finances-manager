@@ -55,7 +55,7 @@ add_executable(main main.cpp
         ui/common/DateFilterPane.h
         data/DateFilter.h
         data/DateRangeFilter.cpp
-        data/DateRangeFilter.h ui/menubar/MenuBar.cpp ui/menubar/MenuBar.h)
+        data/DateRangeFilter.h ui/menubar/MenuBar.cpp ui/menubar/MenuBar.h version.h)
 target_link_libraries(main ${Qt5Widgets_LIBRARIES})
 target_link_libraries(main ${Qt5Sql_LIBRARIES})
 

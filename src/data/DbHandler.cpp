@@ -112,7 +112,8 @@ DbHandler::getDateRange() const
 }
 
 void
-DbHandler::dumpDatabase() const
+DbHandler::dumpDatabase(QString const& filename) const
 {
     // TODO implement
+    std::cout << "Dump database to file " << filename.toStdString() <<" (tba)." << std::endl;
 }
