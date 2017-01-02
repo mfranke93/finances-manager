@@ -8,10 +8,17 @@
 
 class MenuBar : public QMenuBar
 {
+    Q_OBJECT
 public:
     MenuBar();
     MenuBar(MenuBar const&) = default;
     MenuBar& operator=(MenuBar const&) = default;
+
+protected:
+    void buildFileMenu();
+
+private slots:
+    inline void closeApplication() { exit(0); };
 };
 
 
