@@ -19,25 +19,25 @@ MenuBar::MenuBar()
 void
 MenuBar::buildFileMenu()
 {
-    QMenu * menu = new QMenu("File");
+    QMenu * menu = new QMenu("&File");
     addMenu(menu);
 
     /******************************/
-    menu->addAction("Make data backup", this, SLOT(makeDataBackup()));
+    menu->addAction("Make data &backup", this, SLOT(makeDataBackup()));
     /******************************/
     menu->addSeparator();
-    menu->addAction("Quit", this, SLOT(closeApplication()), QKeySequence(Qt::KeyboardModifier::ControlModifier | Qt::Key_Q));
+    menu->addAction("&Quit", this, SLOT(closeApplication()), QKeySequence(Qt::KeyboardModifier::ControlModifier | Qt::Key_Q));
     /******************************/
 }
 
 void
 MenuBar::buildHelpMenu()
 {
-    QMenu * menu = new QMenu("Help");
+    QMenu * menu = new QMenu("&Help");
     addMenu(menu);
 
     /******************************/
-    menu->addAction("About", this, SLOT(showAbout()));
+    menu->addAction("&About", this, SLOT(showAbout()));
     /******************************/
 }
 

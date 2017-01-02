@@ -20,9 +20,9 @@ MainWindow::MainWindow()
     tabs = new QTabWidget;
     layout()->addWidget(tabs);
 
-    tabs->addTab(new TableTab(this), "Table");
-    tabs->addTab(new PlotTab(this), "Plot");
-    tabs->addTab(new ChartTab, "Chart");
+    tabs->addTab(new TableTab(this), "&Table");
+    tabs->addTab(new PlotTab(this), "&Plot");
+    tabs->addTab(new ChartTab, "&Chart");
 }
 
 MainWindow::~MainWindow()
