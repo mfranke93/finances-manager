@@ -8,6 +8,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
 #include <QSqlError>
+#include <ui/menubar/MenuBar.h>
 #include "ui/table/ExpenditureView.h"
 
 class MainWindow : public QWidget
@@ -18,6 +19,7 @@ public:
     ~MainWindow();
 
 private:
+    MenuBar * menuBar;
     QTabWidget * tabs;
 };
 
