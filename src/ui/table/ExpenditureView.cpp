@@ -3,6 +3,7 @@
 //
 
 #include "ExpenditureView.h"
+#include "PriceColumnDelegate.h"
 
 ExpenditureView::ExpenditureView(QWidget * parent)
 {
@@ -21,6 +22,9 @@ ExpenditureView::ExpenditureView(QWidget * parent)
     this->setSelectionBehavior(QAbstractItemView::SelectRows);
     this->setSelectionMode(QAbstractItemView::SingleSelection);
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    this->priceColumnDelegate = new PriceColumnDelegate;
+    this->setItemDelegateForColumn(4, priceColumnDelegate);
 
     this->setSortingEnabled(true);
     this->horizontalHeader()->setSortIndicator(2, Qt::SortOrder::AscendingOrder);
