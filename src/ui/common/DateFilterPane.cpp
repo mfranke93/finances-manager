@@ -136,6 +136,12 @@ DateFilterPane::rebuildComboBox()
             notLastMonth = false;
         }
 
+        // this means we went too far
+        if (end < startOfMonth)
+        {
+            continue;
+        }
+
         DateRangeFilter drf (startOfMonth, endOfMonth);
         if (notLastMonth || drf.contains(end))
         {

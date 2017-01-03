@@ -5,20 +5,25 @@
 
 #pragma once
 
-#include "PlotLine.h"
-#include "Plottable.h"
+#include "ui/plotting/graphics/CumulativePlotLine.h"
+#include "ui/plotting/graphics/Plottable.h"
 
 class PlotBottomBar : public Plottable
 {
 public:
-    PlotBottomBar(int const& bottomMargin, int const& leftMargin, int const& offset, std::pair<QDate const, QDate const> dateRange);
+    PlotBottomBar(int const& bottomMargin,
+                  int const& leftMargin,
+                  int const& offset,
+                  std::pair<QDate const, QDate const> dateRange,
+                  std::shared_ptr<DateToIntConverter> const& dti);
     PlotBottomBar() = delete;
     ~PlotBottomBar() = default;
     PlotBottomBar(PlotBottomBar const&) = delete;
     PlotBottomBar& operator= (PlotBottomBar const&) = delete;
 
     void plot(QPainter * const) const override;
-    void setDtiConverter(DateToIntConverter const& dti) { this->dtiConverter = dti; };
+
+    QRect const& boundingRect() const override { return boundingRect_; };
 
 protected:
     std::vector<QDate> * calculatePrintedDates(QPainter * const) const;
@@ -29,10 +34,12 @@ private:
      * offset from top of painting area
      */
     int const offset;
-
-    DateToIntConverter dtiConverter;
-
     std::pair<QDate const, QDate const> dateRange;
+
+    std::shared_ptr<DateToIntConverter> dtiConverter;
+
+
+    QRect boundingRect_;
 };
 
 
