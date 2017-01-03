@@ -13,8 +13,11 @@ PlotBar::PlotBar(QRect const& rect, QColor const& frame, QColor const& area)
 void
 PlotBar::plot(QPainter * const painter) const
 {
-    QPen pen (frameColor_, 1, Qt::SolidLine, Qt::SquareCap, Qt::PenJoinStyle::BevelJoin);
+    painter->setRenderHint(QPainter::Antialiasing, false);
+    QPen pen (frameColor_, 1, Qt::SolidLine, Qt::SquareCap, Qt::PenJoinStyle::MiterJoin);
+    pen.setMiterLimit(10);
     painter->setPen(pen);
     painter->setBrush(areaColor_);
     painter->drawRect(area_);
+    painter->setRenderHint(QPainter::Antialiasing);
 }
