@@ -27,9 +27,12 @@ public slots:
     void resizeEvent(QResizeEvent * evt) override;
     void rebuildBars();
     void reloadEvent();
+    void mouseMoveEvent(QMouseEvent * evt) override;
 
 private:
     GraphArea(QWidget * parent) : QWidget(parent) {};
+
+    std::pair<QString, BarGraph> const& getBarAt(int const& posX) const;
 
     std::vector<std::pair<QString, BarGraph>> bars;
     PriceScaler scale;
@@ -37,6 +40,7 @@ private:
 
     int heightPerBar = 200;
     int yOffset = 20;
+    int widthPerBar = 120;
 
     constexpr static int xOffsetGlobal = 50;
 };

@@ -13,7 +13,9 @@
 #include <QtSql/QSqlResult>
 #include <data/DbHandler.h>
 #include <numeric>
+#include <functional>
 
+typedef double (* YReverseScaler)(int const&);
 
 class PlotArea : public QWidget
 {
@@ -52,6 +54,9 @@ protected:
     void checkZoomLevel();
 
 private:
+    double getYValue(int const&) const;
+    QDate getXValue(int const&) const;
+
     std::vector<std::pair<QDate const, std::tuple<double, double, double>>> cumulativeSums;
     const int marginBottom = 20;
     const int marginTop = 5;
@@ -61,13 +66,15 @@ private:
     inline int const& dayWidth() const { return zoomLevels[zoomLevel]; }
     QString buildQuery() const;
     int zoomLevel;
-    static constexpr int maxZoomLevel = 8;
+    static constexpr int maxZoomLevel = 5;
     static const int zoomLevels [maxZoomLevel+1];
 
     bool paintMinMax = true;
 
     std::vector<QString> filters;
     std::pair<QDate, QDate> dateRange;
+
+    double maximum, minimum;
 };
 
 

@@ -8,6 +8,9 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QDateEdit>
+#include <QtWidgets/QComboBox>
+
+#include <data/DateRangeFilter.h>
 
 class DateFilterPane : public QWidget
 {
@@ -16,6 +19,7 @@ signals:
     void dateRangeChanged();
 public:
     friend class PlotTab;
+    friend class ChartTab;
     DateFilterPane() = delete;
     DateFilterPane(QWidget * parent, QDate const& start, QDate const& end);
     ~DateFilterPane() = default;
@@ -27,19 +31,25 @@ public:
 
     void setValidRange(std::pair<QDate, QDate> const&);
 
+protected:
+    void rebuildComboBox();
+
+public slots:
+    void onDateRangeChanged(std::pair<QDate, QDate>);
+
 protected slots:
     void onClickReset();
     void onStartDateChanged(QDate);
     void onEndDateChanged(QDate);
+    void onSelectedComboBoxItem(int);
 private:
     QHBoxLayout * mainLayout;
 
-    QPushButton * resetButton;
-    QPushButton * startButton;
-    QPushButton * endButton;
+    QComboBox * comboBox;
 
-    QDateEdit * startEdit;
-    QDateEdit * endEdit;
+    QDate start, end;
+
+    std::vector<DateRangeFilter> filters;
 };
 
 
