@@ -131,7 +131,7 @@ GraphArea::mouseMoveEvent(QMouseEvent * evt)
     double const max = pair.second.getRange().second;
 
     char buf [32];
-    std::sprintf(buf, "+%.2f\n%.2f", max, min);
+    std::sprintf(buf, "+%.2f\n-%.2f", max, std::abs(min));
     str += buf;
 
     setToolTip(str);

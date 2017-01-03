@@ -43,8 +43,9 @@ TableTab::onPressCreate()
     {
         if (!DbHandler::getInstance()->commit())
         {
-            fprintf(stderr, "Could not commit to %s\n", DbHandler::getInstance()->getDatabase().connectionName().toStdString().c_str());
-            std::cerr << DbHandler::getInstance()->getDatabase().lastError().text().toStdString() << std::endl;
+            std::fprintf(stderr, "Could not commit to %s\n%s",
+                         DbHandler::getInstance()->getDatabase().connectionName().toStdString().c_str(),
+                         DbHandler::getInstance()->getDatabase().lastError().text().toStdString().c_str());
         }
     }
     else if (result == QDialog::Rejected)
@@ -52,11 +53,12 @@ TableTab::onPressCreate()
         // rollback
         if (!DbHandler::getInstance()->getDatabase().rollback())
         {
-            fprintf(stderr, "Could not rollback %s\n", DbHandler::getInstance()->getDatabase().connectionName().toStdString().c_str());
+            std::fprintf(stderr, "Could not rollback %s\n",
+                         DbHandler::getInstance()->getDatabase().connectionName().toStdString().c_str());
         }
     }
     else
     {
-        printf("Unknown result value: %d\n", result);
+        std::fprintf(stderr, "Unknown result value: %d\n", result);
     }
 }
