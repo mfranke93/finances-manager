@@ -7,16 +7,17 @@
 PlotBottomBar::PlotBottomBar(int const& bottomMargin,
                              int const& leftMargin,
                              int const& offset,
-                             std::pair<QDate const, QDate const> dateRange)
-: bottomMargin(bottomMargin), leftMargin(leftMargin), offset(offset), dateRange(dateRange)
+                             std::pair<QDate const, QDate const> dateRange,
+                             std::shared_ptr<DateToIntConverter> const& dti)
+: bottomMargin(bottomMargin), leftMargin(leftMargin), offset(offset), dateRange(dateRange), dtiConverter(dti)
 {
     // ctor
+    boundingRect_.setCoords(leftMargin, offset-bottomMargin, (*dtiConverter)(dateRange.second), bottomMargin);
 }
 
 void
 PlotBottomBar::plot(QPainter * const painter) const
 {
-    // TODO: omit dates if too little space between points
     int const y = offset - bottomMargin + 5;
 
     painter->setFont(QFont("Monospace", 8));
@@ -25,7 +26,7 @@ PlotBottomBar::plot(QPainter * const painter) const
     std::vector<QDate> * vec = calculatePrintedDates(painter);
     for (QDate const& d : *vec)
     {
-        painter->drawText(dtiConverter(d)-15, y+5, d.toString("dd.MM."));
+        painter->drawText((*dtiConverter)(d)-15, y+5, d.toString("dd.MM."));
     }
     delete vec;
 }
@@ -37,7 +38,7 @@ PlotBottomBar::calculatePrintedDates(QPainter * const painter) const
     // take random date as we use monospaced font anyways
     QString sample ("12.04.");
     QRect boundingRectangle = painter->fontMetrics().boundingRect(sample);
-    int distTwoDates = dtiConverter(dateRange.first.addDays(1)) - dtiConverter(dateRange.first);
+    int distTwoDates = (*dtiConverter)(dateRange.first.addDays(1)) - (*dtiConverter)(dateRange.first);
 
     double quot = double(distTwoDates) / double(boundingRectangle.width());
     int factor = 1;
@@ -49,7 +50,6 @@ PlotBottomBar::calculatePrintedDates(QPainter * const painter) const
      * steps:
      * each day, first of each week, first of each month
      */
-    // TODO: first of month when stepping through weeks
     if (factor == 1)
     {
         for (QDate d = dateRange.first; d <= dateRange.second; d = d.addDays(1)) vec->push_back(d);

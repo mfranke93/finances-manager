@@ -13,7 +13,15 @@
 #include <QtSql/QSqlResult>
 #include <data/DbHandler.h>
 #include <numeric>
+#include <functional>
+#include <data/ResourceHandler.h>
+#include <ui/plotting/graphics/PlotLineFactory.h>
+#include "ui/plotting/graphics/CumulativePlotLine.h"
+#include "PlotBottomBar.h"
+#include "PlotLeftAxis.h"
+#include "PlotGrid.h"
 
+typedef double (* YReverseScaler)(int const&);
 
 class PlotArea : public QWidget
 {
@@ -31,9 +39,6 @@ public slots:
     void incrementZoomLevel();
     void decrementZoomLevel();
 
-    inline bool const& isPaintMinMax() { return paintMinMax; };
-    inline void setPaintMinMax(bool const& b) { paintMinMax = b; emit repaint(); };
-
     inline void setCategoryFilters(std::vector<QString> filters)
     {
         this->filters = filters;
@@ -44,6 +49,8 @@ public slots:
         this->dateRange = dateRange;
     }
 
+    void setPlotStyle(int);
+
 signals:
     void canDecrementZoomLevel(bool);
     void canIncrementZoomLevel(bool);
@@ -52,7 +59,9 @@ protected:
     void checkZoomLevel();
 
 private:
-    std::vector<std::pair<QDate const, std::tuple<double, double, double>>> cumulativeSums;
+    double getYValue(int const&) const;
+    QDate getXValue(int const&) const;
+
     const int marginBottom = 20;
     const int marginTop = 5;
     const int marginRight = 5;
@@ -61,13 +70,15 @@ private:
     inline int const& dayWidth() const { return zoomLevels[zoomLevel]; }
     QString buildQuery() const;
     int zoomLevel;
-    static constexpr int maxZoomLevel = 8;
+    static constexpr int maxZoomLevel = 5;
     static const int zoomLevels [maxZoomLevel+1];
-
-    bool paintMinMax = true;
 
     std::vector<QString> filters;
     std::pair<QDate, QDate> dateRange;
+
+    PlotType plotType_;
+
+    double maximum, minimum;
 };
 
 

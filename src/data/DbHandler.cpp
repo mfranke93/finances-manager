@@ -80,6 +80,7 @@ DbHandler::commit()
     if (b && itemsChanged)
     {
         emit itemDataChanged();
+        emit dateRangeChanged(getDateRange());
         itemsChanged = false;
     }
 
@@ -108,4 +109,11 @@ DbHandler::getDateRange() const
     QDate const end = query.value("end").toDate();
 
     return std::make_pair(start, end);
+}
+
+void
+DbHandler::dumpDatabase(QString const& filename) const
+{
+    // TODO implement
+    std::cout << "Dump database to file " << filename.toStdString() <<" (tba)." << std::endl;
 }

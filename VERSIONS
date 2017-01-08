@@ -7,6 +7,27 @@ and a Qt5 UI. The program is written in C++11.
 
 Maintainer: Max Franke <max@mumintroll.org>
 
+Version 1.2                                                            ~ v1.2 ~
+===========
+Release date: January 8th, 2017
+
+This adds and improves some features.
+
+New features:
+  - Cursor hovering in plot and bar graph gives information on the data at
+    that point. Formerly, there was only a generic greeting in the popup.
+  - Moved plotting classes to their own dedicated module. Plotting is now done
+    in a more abstract way, enabling implementation of different plotting
+    styles that are hot swappable. Added a combo box to select plotting style.
+  - Added a plotting style which shows the summed plus' and minus' of each day
+    as it's own peak. This is now selectable together with the "standard"
+    cumulative plot.
+  - Added a menu bar with some select items in it.
+  - The table view now makes negative numbers red and aligns the minus at the
+    far left of the cell.
+  - Reduced the default zoom level for the plot by one.
+  - Minor fixes and improvements.
+
 Version 1.1                                                            ~ v1.1 ~
 ===========
 Release date: November 17th, 2016

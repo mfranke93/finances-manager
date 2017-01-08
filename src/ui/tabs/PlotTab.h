@@ -23,6 +23,9 @@ class PlotTab : public QWidget
 public:
     PlotTab(QWidget * parent);
 
+signals:
+    void plotTypeChanged(PlotType);
+
 protected slots:
     void onDataChanged();
 
@@ -35,13 +38,14 @@ private:
     QPushButton * repaintButton;
     QPushButton * zoomInButton;
     QPushButton * zoomOutButton;
-    QPushButton * enableMinMaxDrawingButton;
+    QComboBox   * plotStyleComboBox;
 
     PlotCategoryFilter * sideButtons;
     DateFilterPane * dateFilterPane;
 
     QVBoxLayout * mainLayout;
     QHBoxLayout * allLayout;
+    QHBoxLayout * bottomLayout;
     QHBoxLayout * bottomButtonLayout;
 };
 
