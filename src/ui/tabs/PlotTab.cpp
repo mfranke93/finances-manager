@@ -34,6 +34,8 @@ PlotTab::PlotTab(QWidget * parent)
         plotStyleComboBox->addItem("Cumulative with min/max");
         plotStyleComboBox->addItem("Peaks");
     }
+    /* cumulative with min/max selected */
+    plotStyleComboBox->setCurrentIndex(1);
     bottomButtonLayout->addStretch(1);
     bottomButtonLayout->addWidget(plotStyleComboBox);
 

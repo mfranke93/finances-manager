@@ -25,6 +25,7 @@ New features:
   - Added a menu bar with some select items in it.
   - The table view now makes negative numbers red and aligns the minus at the
     far left of the cell.
+  - Reduced the default zoom level for the plot by one.
   - Minor fixes and improvements.
 
 Version 1.1                                                            ~ v1.1 ~
