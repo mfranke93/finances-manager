@@ -7,6 +7,7 @@
 #include "AddItemDialog.h"
 #include "AddRecipientDialog.h"
 #include "AddCategoryDialog.h"
+#include "SearchRecipientDialog.h"
 
 AddItemDialog::AddItemDialog(QWidget * parent, Qt::WindowFlags const& f)
 : QDialog(parent, f)
@@ -135,6 +136,10 @@ AddItemDialog::onClickOkay()
 void
 AddItemDialog::onClickAddRecipient()
 {
+    SearchRecipientDialog srd;
+    srd.exec();
+    return;
+    /* not now */
     AddRecipientDialog d (this, Qt::Dialog);
     d.setModal(true);
     d.exec();
