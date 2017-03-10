@@ -2,6 +2,7 @@
 // Created by max on 10/01/17.
 //
 
+#include <QtWidgets/QTableView>
 #include "SearchRecipientDialog.h"
 
 SearchRecipientDialog::SearchRecipientDialog()
@@ -45,7 +46,7 @@ SearchRecipientDialog::SearchRecipientDialog()
     connect(okayButton, SIGNAL(clicked()), this, SLOT(onClickOkay()));
     connect(addButton, SIGNAL(clicked()), this, SLOT(onClickAdd()));
     // TODO selected index change
-    // TODO search bar text change
+    connect(searchBar, SIGNAL(textChanged(QString)), this, SLOT(searchBarContentChanged(QString)));
 }
 
 void
@@ -77,6 +78,11 @@ void
 SearchRecipientDialog::onClickSearch()
 {
     // TODO
+    store.search(searchBar->text());
+    QTableView * view = new QTableView;
+    view->setModel(&store);
+    searchResultScrollView->setViewport(view);
+    repaint();
 }
 
 void

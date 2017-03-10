@@ -10,6 +10,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QScrollArea>
 #include <QtWidgets/QPushButton>
+#include <data/RecipientObjectStore.h>
 
 class SearchRecipientDialog : public QDialog
 {
@@ -55,6 +56,8 @@ protected slots:
     void recipientIdChanged(int);
     void searchBarContentChanged(QString);
 
+protected:
+
 private:
     QVBoxLayout * toplevelLayout;
     QHBoxLayout * searchbarLayout;
@@ -66,6 +69,8 @@ private:
     QPushButton * cancelButton;
     QPushButton * addButton;
     QPushButton * okayButton;
+
+    RecipientObjectStore store;
 
     /**
      * Selected recipient ID.
