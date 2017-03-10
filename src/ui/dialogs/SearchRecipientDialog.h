@@ -9,6 +9,7 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QScrollArea>
+#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QPushButton>
 #include <data/RecipientObjectStore.h>
 

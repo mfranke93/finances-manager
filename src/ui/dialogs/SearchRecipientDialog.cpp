@@ -82,6 +82,17 @@ SearchRecipientDialog::onClickSearch()
     QTableView * view = new QTableView;
     view->setModel(&store);
     searchResultScrollView->setViewport(view);
+    view->setColumnHidden(0, true);
+    view->setColumnHidden(3, true);
+    view->setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
+    view->setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
+    view->setShowGrid(false);
+    view->horizontalHeader()->setVisible(false);
+    view->verticalHeader()->setVisible(false);
+    view->resizeColumnsToContents();
+    view->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    view->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+
     repaint();
 }
 
