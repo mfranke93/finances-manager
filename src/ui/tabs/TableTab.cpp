@@ -24,6 +24,7 @@ TableTab::TableTab(QWidget * parent)
     this->connect(DbHandler::getInstance(), SIGNAL(itemDataChanged()), this->table, SLOT(onPressReload()));
 }
 
+
 TableTab::~TableTab()
 {
     if (this->table != nullptr)
