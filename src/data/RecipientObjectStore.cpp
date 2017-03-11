@@ -36,6 +36,7 @@ RecipientObjectStore::buildList()
 void
 RecipientObjectStore::search(QString searchTerm)
 {
+    beginResetModel();
     if (searchTerm.isEmpty()) mSelectedRecipients = mRecipients;
     else
     {
@@ -46,6 +47,7 @@ RecipientObjectStore::search(QString searchTerm)
             if ((-1 != re.indexIn(item->name)) || (-1 != re.indexIn(item->address))) mSelectedRecipients.push_back(item);
         }
     }
+    endResetModel();
 }
 
 QVariant

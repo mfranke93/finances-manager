@@ -7,6 +7,7 @@
 
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QTableView>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QScrollArea>
 #include <QtWidgets/QHeaderView>
@@ -22,7 +23,7 @@ class SearchRecipientDialog : public QDialog
      *
      * Layout:
      *
-     *      [ SEARCH BAR TEXT LINE EDIT ] [ Search ]
+     *      [ SEARCH BAR TEXT LINE EDIT            ]
      *
      *      [                                      ]
      *      [                                      ]
@@ -52,7 +53,6 @@ protected slots:
     void onClickCancel();
     void onClickAdd();
     void onClickOkay();
-    void onClickSearch();
 
     void recipientIdChanged(int);
     void searchBarContentChanged(QString);
@@ -61,12 +61,11 @@ protected:
 
 private:
     QVBoxLayout * toplevelLayout;
-    QHBoxLayout * searchbarLayout;
     QHBoxLayout * addOkayLayout;
 
     QLineEdit   * searchBar;
-    QPushButton * searchButton;
     QScrollArea * searchResultScrollView;
+    QTableView  * searchResultTable;
     QPushButton * cancelButton;
     QPushButton * addButton;
     QPushButton * okayButton;

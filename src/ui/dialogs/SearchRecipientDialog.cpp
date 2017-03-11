@@ -10,11 +10,9 @@
 SearchRecipientDialog::SearchRecipientDialog()
 {
     toplevelLayout = new QVBoxLayout;
-    searchbarLayout = new QHBoxLayout;
     addOkayLayout = new QHBoxLayout;
 
     searchBar = new QLineEdit;
-    searchButton = new QPushButton("Search");
 
     searchResultScrollView = new QScrollArea;
 
@@ -22,12 +20,9 @@ SearchRecipientDialog::SearchRecipientDialog()
     addButton = new QPushButton("Add");
     okayButton = new QPushButton("Okay");
 
-    toplevelLayout->addItem(searchbarLayout);
+    toplevelLayout->addWidget(searchBar);
     toplevelLayout->addWidget(searchResultScrollView);
     toplevelLayout->addItem(addOkayLayout);
-
-    searchbarLayout->addWidget(searchBar, 5);
-    searchbarLayout->addWidget(searchButton, 1);
 
     addOkayLayout->addWidget(cancelButton);
     addOkayLayout->addStretch(1);
@@ -40,10 +35,26 @@ SearchRecipientDialog::SearchRecipientDialog()
     setWindowTitle("Find recipient");
 
     okayButton->setEnabled(false);
-    searchButton->setEnabled(false);
+
+    /* Search result table */
+    searchResultTable = new QTableView;
+    searchResultTable->setModel(&store);
+    searchResultTable->setColumnHidden(0, true);
+    searchResultTable->setColumnHidden(3, true);
+    searchResultTable->setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
+    searchResultTable->setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
+    searchResultTable->setShowGrid(false);
+    searchResultTable->horizontalHeader()->setVisible(false);
+    searchResultTable->verticalHeader()->setVisible(false);
+    searchResultTable->resizeColumnsToContents();
+    searchResultTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    searchResultTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+    searchResultTable->setItemDelegateForColumn(1, new RecipientNameDelegate);
+    searchResultTable->setItemDelegateForColumn(2, new RecipientAddressDelegate);
+    searchResultTable->setAlternatingRowColors(true);
+    searchResultScrollView->setViewport(searchResultTable);
 
     /* Signals */
-    connect(searchButton, SIGNAL(clicked()), this, SLOT(onClickSearch()));
     connect(cancelButton, SIGNAL(clicked()), this, SLOT(onClickCancel()));
     connect(okayButton, SIGNAL(clicked()), this, SLOT(onClickOkay()));
     connect(addButton, SIGNAL(clicked()), this, SLOT(onClickAdd()));
@@ -77,31 +88,6 @@ SearchRecipientDialog::onClickOkay()
 }
 
 void
-SearchRecipientDialog::onClickSearch()
-{
-    // TODO
-    store.search(searchBar->text());
-    QTableView * view = new QTableView;
-    view->setModel(&store);
-    searchResultScrollView->setViewport(view);
-    view->setColumnHidden(0, true);
-    view->setColumnHidden(3, true);
-    view->setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
-    view->setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
-    view->setShowGrid(false);
-    view->horizontalHeader()->setVisible(false);
-    view->verticalHeader()->setVisible(false);
-    view->resizeColumnsToContents();
-    view->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
-    view->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
-    view->setItemDelegateForColumn(1, new RecipientNameDelegate);
-    view->setItemDelegateForColumn(2, new RecipientAddressDelegate);
-    view->setAlternatingRowColors(true);
-
-    repaint();
-}
-
-void
 SearchRecipientDialog::recipientIdChanged(int recid)
 {
     this->_recId = recid;
@@ -112,7 +98,8 @@ SearchRecipientDialog::recipientIdChanged(int recid)
 void
 SearchRecipientDialog::searchBarContentChanged(QString content)
 {
-    // TODO update filtering
-
-    this->searchButton->setEnabled(!content.isEmpty());
+    store.search(content);
+    searchResultTable->resizeColumnsToContents();
+    searchResultTable->repaint();
+    std::printf("Hello\n");
 }
