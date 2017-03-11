@@ -37,7 +37,15 @@ void
 RecipientObjectStore::search(QString searchTerm)
 {
     if (searchTerm.isEmpty()) mSelectedRecipients = mRecipients;
-    mSelectedRecipients = mRecipients;
+    else
+    {
+        QRegExp re (searchTerm, Qt::CaseSensitivity::CaseInsensitive, QRegExp::FixedString);
+        mSelectedRecipients.clear();
+        for (auto item : mRecipients)
+        {
+            if ((-1 != re.indexIn(item->name)) || (-1 != re.indexIn(item->address))) mSelectedRecipients.push_back(item);
+        }
+    }
 }
 
 QVariant
