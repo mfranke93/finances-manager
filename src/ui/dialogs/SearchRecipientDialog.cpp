@@ -3,6 +3,8 @@
 //
 
 #include <QtWidgets/QTableView>
+#include <ui/delegates/RecipientNameDelegate.h>
+#include <ui/delegates/RecipientAddressDelegate.h>
 #include "SearchRecipientDialog.h"
 
 SearchRecipientDialog::SearchRecipientDialog()
@@ -34,7 +36,7 @@ SearchRecipientDialog::SearchRecipientDialog()
     addOkayLayout->addWidget(okayButton);
 
     setLayout(toplevelLayout);
-    setMinimumSize(400, 600);
+    setMinimumSize(600, 600);
     setWindowTitle("Find recipient");
 
     okayButton->setEnabled(false);
@@ -92,6 +94,9 @@ SearchRecipientDialog::onClickSearch()
     view->resizeColumnsToContents();
     view->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     view->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+    view->setItemDelegateForColumn(1, new RecipientNameDelegate);
+    view->setItemDelegateForColumn(2, new RecipientAddressDelegate);
+    view->setAlternatingRowColors(true);
 
     repaint();
 }

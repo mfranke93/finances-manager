@@ -10,6 +10,18 @@ ResourceHandler::ResourceHandler()
 {
     // ctor
     initColors();
+
+    recipientNameFont = []() -> QFont
+    {
+        QFont font ("Sans Serif", 10);
+        font.setBold(true);
+        return font;
+    }();
+    recipientAddressFont = []() -> QFont
+    {
+        QFont font ("Sans Serif", 7);
+        return font;
+    }();
 }
 
 QColor

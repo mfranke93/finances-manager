@@ -3,7 +3,7 @@
 //
 
 #include "ExpenditureView.h"
-#include "PriceColumnDelegate.h"
+#include "ui/delegates/PriceColumnDelegate.h"
 
 ExpenditureView::ExpenditureView(QWidget * parent)
 {
