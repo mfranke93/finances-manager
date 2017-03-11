@@ -43,7 +43,7 @@ public:
     void dumpDatabase(QString const& filename) const;
 
 signals:
-    void itemDataChanged(void);
+    void itemDataChanged();
     void dateRangeChanged(std::pair<QDate, QDate>);
 
 private:

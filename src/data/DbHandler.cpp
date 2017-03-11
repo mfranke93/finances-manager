@@ -55,6 +55,10 @@ DbHandler::insertNewRecipient(QString const& name,
     {
         std::cerr << database.lastError().text().toStdString() << std::endl;
     }
+    else
+    {
+        emit itemDataChanged();
+    }
     return b;
 }
 

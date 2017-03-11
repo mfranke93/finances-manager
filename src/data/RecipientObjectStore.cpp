@@ -9,11 +9,14 @@
 RecipientObjectStore::RecipientObjectStore()
 {
     buildList();
+    connect(DbHandler::getInstance(), SIGNAL(itemDataChanged()), this, SLOT(buildList()));
 }
 
 void
 RecipientObjectStore::buildList()
 {
+    beginResetModel();
+    mRecipients.clear();
     QSqlDatabase db = DbHandler::getInstance()->getDatabase();
     QSqlQuery query (db);
     query.prepare("SELECT id, name, address, online FROM Recipient ORDER BY lower(name), lower(address);");
@@ -28,6 +31,8 @@ RecipientObjectStore::buildList()
 
         mRecipients.push_back(std::make_shared<RecipientObject>(id, name, address, online));
     }
+    mSelectedRecipients = mRecipients;
+    endResetModel();
 }
 
 void

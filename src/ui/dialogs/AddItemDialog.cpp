@@ -140,23 +140,6 @@ AddItemDialog::onClickAddRecipient()
     srd.exec();
     return;
     /* not now */
-    AddRecipientDialog d (this, Qt::Dialog);
-    d.setModal(true);
-    d.exec();
-
-    int const result = d.result();
-
-    if (result == QDialog::Accepted)
-    {
-        rebuildRecipientContents();
-    }
-    else if (result == QDialog::Rejected)
-    {
-    }
-    else
-    {
-        std::cerr << "Undefined result state for QDialog: " << result << std::endl;
-    }
 }
 
 void

@@ -5,7 +5,9 @@
 #include <QtWidgets/QTableView>
 #include <ui/delegates/RecipientNameDelegate.h>
 #include <ui/delegates/RecipientAddressDelegate.h>
+#include <data/DbHandler.h>
 #include "SearchRecipientDialog.h"
+#include "AddRecipientDialog.h"
 
 SearchRecipientDialog::SearchRecipientDialog()
 {
@@ -59,10 +61,8 @@ SearchRecipientDialog::SearchRecipientDialog()
     connect(okayButton, SIGNAL(clicked()), this, SLOT(onClickOkay()));
     connect(addButton, SIGNAL(clicked()), this, SLOT(onClickAdd()));
     connect(this, SIGNAL(okayButtonEnabled(bool)), okayButton, SLOT(setEnabled(bool)));
-    // TODO selected index change
     connect(searchResultTable->selectionModel(), SIGNAL(selectionChanged(QItemSelection const&, QItemSelection const&)),
-            SLOT(onRowInTableSelected(QItemSelection const&, QItemSelection const&))
-    );
+            SLOT(onRowInTableSelected(QItemSelection const&, QItemSelection const&)));
     connect(searchBar, SIGNAL(textChanged(QString)), this, SLOT(searchBarContentChanged(QString)));
 }
 
@@ -75,7 +75,30 @@ SearchRecipientDialog::onClickCancel()
 void
 SearchRecipientDialog::onClickAdd()
 {
-    // TODO
+    AddRecipientDialog d (this, Qt::Dialog);
+    d.setModal(true);
+    d.exec();
+
+    int const result = d.result();
+
+    if (result == QDialog::Accepted)
+    {
+        // we do not even need to do anything here
+        // because the object store reloads after
+        // the db is changed.
+
+        // TODO: set added as selected
+    }
+    else if (result == QDialog::Rejected)
+    {
+    }
+    else
+    {
+        std::cerr << "Undefined result state for QDialog: " << result << std::endl;
+    }
+
+    // reset search
+    searchBar->clear();
 }
 
 void

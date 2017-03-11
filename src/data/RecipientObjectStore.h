@@ -12,6 +12,8 @@
 
 class RecipientObjectStore : public QAbstractTableModel
 {
+    Q_OBJECT
+
 public:
     RecipientObjectStore();
     ~RecipientObjectStore() = default;
@@ -22,7 +24,7 @@ public:
     inline int rowCount(QModelIndex const&) const override { return mSelectedRecipients.size(); };
     inline int columnCount(QModelIndex const&) const override { return 4; };
 
-protected:
+protected slots:
     void buildList();
 
 private:
