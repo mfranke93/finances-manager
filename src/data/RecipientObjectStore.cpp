@@ -28,9 +28,6 @@ RecipientObjectStore::buildList()
 
         mRecipients.push_back(std::make_shared<RecipientObject>(id, name, address, online));
     }
-
-    std::printf("%d items in list.\n", mRecipients.size());
-
 }
 
 void

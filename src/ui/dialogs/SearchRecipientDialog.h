@@ -36,10 +36,6 @@ class SearchRecipientDialog : public QDialog
      */
 signals:
     /**
-     * Gets emitted as true iff search bar content is valid.
-     */
-    void searchButtonEnabled(bool);
-    /**
      * Gets emitted as true iff a search result is selected.
      */
     void okayButtonEnabled(bool);
@@ -56,6 +52,7 @@ protected slots:
 
     void recipientIdChanged(int);
     void searchBarContentChanged(QString);
+    void onRowInTableSelected(QItemSelection const&, QItemSelection const&);
 
 protected:
 

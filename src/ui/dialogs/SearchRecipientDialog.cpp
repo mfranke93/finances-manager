@@ -58,7 +58,11 @@ SearchRecipientDialog::SearchRecipientDialog()
     connect(cancelButton, SIGNAL(clicked()), this, SLOT(onClickCancel()));
     connect(okayButton, SIGNAL(clicked()), this, SLOT(onClickOkay()));
     connect(addButton, SIGNAL(clicked()), this, SLOT(onClickAdd()));
+    connect(this, SIGNAL(okayButtonEnabled(bool)), okayButton, SLOT(setEnabled(bool)));
     // TODO selected index change
+    connect(searchResultTable->selectionModel(), SIGNAL(selectionChanged(QItemSelection const&, QItemSelection const&)),
+            SLOT(onRowInTableSelected(QItemSelection const&, QItemSelection const&))
+    );
     connect(searchBar, SIGNAL(textChanged(QString)), this, SLOT(searchBarContentChanged(QString)));
 }
 
@@ -92,7 +96,7 @@ SearchRecipientDialog::recipientIdChanged(int recid)
 {
     this->_recId = recid;
 
-    this->okayButton->setEnabled(recid>=0);
+    emit okayButtonEnabled(recid>=0);
 }
 
 void
@@ -101,5 +105,11 @@ SearchRecipientDialog::searchBarContentChanged(QString content)
     store.search(content);
     searchResultTable->resizeColumnsToContents();
     searchResultTable->repaint();
-    std::printf("Hello\n");
+    recipientIdChanged(-1);
+}
+
+void
+SearchRecipientDialog::onRowInTableSelected(QItemSelection const& newSelection, QItemSelection const& oldSelection)
+{
+    recipientIdChanged(newSelection.indexes().front().data().toInt());
 }
