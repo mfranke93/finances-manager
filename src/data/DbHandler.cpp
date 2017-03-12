@@ -121,3 +121,24 @@ DbHandler::dumpDatabase(QString const& filename) const
     // TODO implement
     std::cout << "Dump database to file " << filename.toStdString() <<" (tba)." << std::endl;
 }
+
+QString
+DbHandler::getRecipientStringFromId(int const recId) const
+{
+    QSqlQuery query (database);
+    query.prepare("SELECT name, address FROM Recipient WHERE id = :id;");
+    query.bindValue(":id", recId);
+    bool const b = query.exec();
+
+    if (b && query.next())
+    {
+        QString const name = query.value("name").toString();
+        QString const address = query.value("address").toString().replace("\n", ", ");
+
+        return name + ". " + address;
+    }
+    else
+    {
+        return QString();
+    }
+}

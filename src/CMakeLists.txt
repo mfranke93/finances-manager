@@ -69,7 +69,7 @@ add_executable(main main.cpp
     ui/tabs/PlotTab.h
     ui/tabs/TableTab.cpp
     ui/tabs/TableTab.h
-    version.h ui/dialogs/SearchRecipientDialog.cpp ui/dialogs/SearchRecipientDialog.h data/RecipientObjectStore.cpp data/RecipientObjectStore.h data/RecipientObject.cpp data/RecipientObject.h ui/delegates/RecipientNameDelegate.cpp ui/delegates/RecipientNameDelegate.h ui/delegates/RecipientAddressDelegate.cpp ui/delegates/RecipientAddressDelegate.h)
+    version.h ui/dialogs/SearchRecipientDialog.cpp ui/dialogs/SearchRecipientDialog.h data/RecipientObjectStore.cpp data/RecipientObjectStore.h data/RecipientObject.cpp data/RecipientObject.h ui/delegates/RecipientNameDelegate.cpp ui/delegates/RecipientNameDelegate.h ui/delegates/RecipientAddressDelegate.cpp ui/delegates/RecipientAddressDelegate.h ui/common/SelectOrAddRecipientButton.cpp ui/common/SelectOrAddRecipientButton.h)
 target_link_libraries(main ${Qt5Widgets_LIBRARIES})
 target_link_libraries(main ${Qt5Sql_LIBRARIES})
 

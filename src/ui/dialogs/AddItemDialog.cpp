@@ -18,6 +18,8 @@ AddItemDialog::AddItemDialog(QWidget * parent, Qt::WindowFlags const& f)
     mainLayout = new QVBoxLayout;
     lineEditLayout = new QHBoxLayout;
     recipientCategoryLayout = new QGridLayout;
+    recipientCategoryLayout->setColumnStretch(0, 1);
+    recipientCategoryLayout->setColumnStretch(1, 3);
     bottomLayout = new QHBoxLayout;
 
     itemName = new QLineEdit;
@@ -27,12 +29,9 @@ AddItemDialog::AddItemDialog(QWidget * parent, Qt::WindowFlags const& f)
     lineEditLayout->addWidget(price, 1);
 
     recipientLabel = new QLabel("Recipient");
-    recipient = new QComboBox;
-    newRecipient = new QPushButton("+");
-    newRecipient->setMaximumWidth(30);
+    selectOrAddRecipientButton = new SelectOrAddRecipientButton;
     recipientCategoryLayout->addWidget(recipientLabel, 0, 0);
-    recipientCategoryLayout->addWidget(recipient, 0, 1);
-    recipientCategoryLayout->addWidget(newRecipient, 0, 2);
+    recipientCategoryLayout->addWidget(selectOrAddRecipientButton, 0, 1, 1, 2);
 
     categoryLabel = new QLabel("Category");
     category = new QComboBox;
@@ -61,11 +60,14 @@ AddItemDialog::AddItemDialog(QWidget * parent, Qt::WindowFlags const& f)
 
     this->connect(this->cancel, SIGNAL(clicked()), this, SLOT(reject()));
     this->connect(this->ok, SIGNAL(clicked()), this, SLOT(onClickOkay()));
-    this->connect(this->newRecipient, SIGNAL(clicked()), this, SLOT(onClickAddRecipient()));
     this->connect(this->newCategory, SIGNAL(clicked()), this, SLOT(onClickAddCategory()));
 
+    /* check if can click okay when values here change */
+    this->connect(this->itemName, SIGNAL(textChanged(QString)), this, SLOT(checkCanAddItem()));
+    this->connect(this->price, SIGNAL(textChanged(QString)), this, SLOT(checkCanAddItem()));
+    this->connect(this->selectOrAddRecipientButton, SIGNAL(selectedRecipientIdChanged()), this, SLOT(checkCanAddItem()));
+
     this->rebuildCategoryContents();
-    this->rebuildRecipientContents();
 }
 
 AddItemDialog::~AddItemDialog()
@@ -91,38 +93,15 @@ AddItemDialog::rebuildCategoryContents()
 }
 
 void
-AddItemDialog::rebuildRecipientContents()
-{
-    this->recipient->clear();
-
-    QSqlQuery query ("SELECT id, name, address FROM Recipient ORDER BY name COLLATE NOCASE ASC;");
-    DbHandler::getInstance()->getDatabase().exec();
-
-    while (query.next())
-    {
-        int id = query.value("id").toInt();
-        QString name = query.value("name").toString();
-        QString address = query.value("address").toString();
-        if (!address.isEmpty())
-        {
-            name += "\n" + address;
-            name.replace("\n", ", ");
-        }
-
-        this->recipient->addItem(name, QVariant(id));
-    }
-}
-
-void
 AddItemDialog::onClickOkay()
 {
     QString const name = this->itemName->text();
-    if (name.isEmpty())
+    if (name.isEmpty() || this->selectOrAddRecipientButton->getSelectedRecipientId() < 0)
     {
         return;
     }
 
-    int const recipientId = this->recipient->currentData().toInt();
+    int const recipientId = this->selectOrAddRecipientButton->getSelectedRecipientId();
     int const categoryId = this->category->currentData().toInt();
     QString const price = this->price->text();
     QDate date = this->dateEdit->selectedDate();
@@ -131,15 +110,6 @@ AddItemDialog::onClickOkay()
     {
         accept();
     }
-}
-
-void
-AddItemDialog::onClickAddRecipient()
-{
-    SearchRecipientDialog srd;
-    srd.exec();
-    return;
-    /* not now */
 }
 
 void
@@ -162,4 +132,16 @@ AddItemDialog::onClickAddCategory()
     {
         std::cerr << "Undefined result state for QDialog: " << result << std::endl;
     }
+}
+
+void
+AddItemDialog::checkCanAddItem()
+{
+    int dummy = 0;
+    QString text = this->price->text();
+    bool const b = (!this->itemName->text().isEmpty())
+                && (this->price->hasAcceptableInput())
+                && (this->selectOrAddRecipientButton->getSelectedRecipientId() >= 0);
+
+    this->ok->setEnabled(b);
 }
