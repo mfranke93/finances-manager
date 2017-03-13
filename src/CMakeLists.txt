@@ -61,15 +61,15 @@ add_executable(main main.cpp
     ui/plotting/graphics/Plottable.h
     ui/table/ExpenditureView.cpp
     ui/table/ExpenditureView.h
-    ui/table/PriceColumnDelegate.cpp 
-    ui/table/PriceColumnDelegate.h
+        ui/delegates/PriceColumnDelegate.cpp
+        ui/delegates/PriceColumnDelegate.h
     ui/tabs/ChartTab.cpp
     ui/tabs/ChartTab.h
     ui/tabs/PlotTab.cpp
     ui/tabs/PlotTab.h
     ui/tabs/TableTab.cpp
     ui/tabs/TableTab.h
-    version.h)
+    version.h ui/dialogs/SearchRecipientDialog.cpp ui/dialogs/SearchRecipientDialog.h data/RecipientObjectStore.cpp data/RecipientObjectStore.h data/RecipientObject.cpp data/RecipientObject.h ui/delegates/RecipientNameDelegate.cpp ui/delegates/RecipientNameDelegate.h ui/delegates/RecipientAddressDelegate.cpp ui/delegates/RecipientAddressDelegate.h ui/common/SelectOrAddRecipientButton.cpp ui/common/SelectOrAddRecipientButton.h)
 target_link_libraries(main ${Qt5Widgets_LIBRARIES})
 target_link_libraries(main ${Qt5Sql_LIBRARIES})
 

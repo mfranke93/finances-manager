@@ -11,7 +11,7 @@
 #include <QtSql/QSqlQuery>
 #include <QtWidgets/QHeaderView>
 #include <data/DbHandler.h>
-#include "PriceColumnDelegate.h"
+#include "ui/delegates/PriceColumnDelegate.h"
 
 class ExpenditureView : public QTableView
 {
