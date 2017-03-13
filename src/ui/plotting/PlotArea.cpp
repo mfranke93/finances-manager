@@ -73,6 +73,12 @@ PlotArea::paintEvent(QPaintEvent * evt) {
 
     // plot
     p->plot(&painter);
+
+    if (firstPaintCycle)
+    {
+        firstPaintCycle = false;
+        emit repaintFinished();
+    }
 }
 
 QString
@@ -116,6 +122,7 @@ PlotArea::reloadData()
 {
     checkZoomLevel();
     emit repaint();
+    emit repaintFinished();
 }
 
 void
