@@ -46,6 +46,7 @@ AddItemDialog::AddItemDialog(QWidget * parent, Qt::WindowFlags const& f)
     dateEdit = new QCalendarWidget;
 
     ok = new QPushButton(tr("OK"));
+    ok->setEnabled(false);
     cancel = new QPushButton(tr("Cancel"));
     bottomLayout->addWidget(this->cancel);
     bottomLayout->addStretch(1);
@@ -137,8 +138,6 @@ AddItemDialog::onClickAddCategory()
 void
 AddItemDialog::checkCanAddItem()
 {
-    int dummy = 0;
-    QString text = this->price->text();
     bool const b = (!this->itemName->text().isEmpty())
                 && (this->price->hasAcceptableInput())
                 && (this->selectOrAddRecipientButton->getSelectedRecipientId() >= 0);
