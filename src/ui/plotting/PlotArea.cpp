@@ -20,11 +20,6 @@ PlotArea::paintEvent(QPaintEvent * evt) {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(QColor(255, 255, 255));
-    painter.fillRect(this->rect().adjusted(marginLeft, marginTop, -marginRight - 1, -marginBottom - 1),
-                     QColor(255, 255, 255));
-
     // scaling factors
     int height = this->size().height() - marginBottom - marginTop;
 
@@ -45,6 +40,25 @@ PlotArea::paintEvent(QPaintEvent * evt) {
     auto scale = p->verticalScaler();
     auto dtiConverter = p->dtiConverter();
 
+    // draw background
+    {
+        QRect rect;
+        rect.setWidth(this->width());
+        rect.setHeight(this->height());
+        painter.fillRect(rect, QColor(240,240,240));
+    }
+
+    // draw plot area background
+    {
+        int const xFirst = (*dtiConverter)(p->xRange().first);
+        int const xLast  = (*dtiConverter)(p->xRange().second);
+        int const width  = xLast - xFirst;
+        int const x      = marginLeft;
+        int const y      = marginTop;
+        QRect rect (x, y, width, height);
+        painter.fillRect(rect, QColor(255, 255, 255));
+    }
+
     // draw grid
     PlotGrid pg(p->xRange(), p->yRange(), dtiConverter, scale);
     pg.plot(&painter);
@@ -54,9 +68,7 @@ PlotArea::paintEvent(QPaintEvent * evt) {
     la.plot(&painter);
 
     // draw x axis labeling: first, last, first of each month
-    PlotBottomBar b(marginBottom, marginLeft, this->height(),
-                    p->xRange(),
-                    dtiConverter);
+    PlotBottomBar b(marginBottom, marginLeft, this->height(), p->xRange(), dtiConverter);
     b.plot(&painter);
 
     // plot
@@ -128,7 +140,7 @@ PlotArea::checkZoomLevel()
     emit canIncrementZoomLevel(zoomLevel<maxZoomLevel);
     emit canDecrementZoomLevel(zoomLevel>0);
     qint64 const days = dateRange.first.daysTo(dateRange.second);
-    setMinimumWidth(dayWidth() * int(days-1) + marginLeft + marginRight + 5);
+    setMinimumWidth(dayWidth() * int(days) + marginLeft + marginRight + 20);
 }
 
 void

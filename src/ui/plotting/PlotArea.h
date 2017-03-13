@@ -64,7 +64,7 @@ private:
 
     const int marginBottom = 20;
     const int marginTop = 5;
-    const int marginRight = 5;
+    const int marginRight = 20;
     const int marginLeft = 60;
 
     inline int const& dayWidth() const { return zoomLevels[zoomLevel]; }
