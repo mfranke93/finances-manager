@@ -3,7 +3,7 @@
 //
 
 #include "ExpenditureView.h"
-#include "PriceColumnDelegate.h"
+#include "ui/delegates/PriceColumnDelegate.h"
 
 ExpenditureView::ExpenditureView(QWidget * parent)
 {
@@ -15,7 +15,8 @@ ExpenditureView::ExpenditureView(QWidget * parent)
     this->setStyleSheet("font: 12px Monospace;");
     this->setModel(this->model);
     this->resizeColumnsToContents();
-    this->resizeRowsToContents();
+    this->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    this->verticalHeader()->setDefaultSectionSize(20);
     this->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     this->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
     this->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -28,8 +29,6 @@ ExpenditureView::ExpenditureView(QWidget * parent)
 
     this->setSortingEnabled(true);
     this->horizontalHeader()->setSortIndicator(2, Qt::SortOrder::AscendingOrder);
-
-    emit onPressReload();
 }
 
 ExpenditureView::~ExpenditureView()
@@ -41,15 +40,13 @@ void
 ExpenditureView::onPressReload()
 {
     this->model->select();
-    this->resizeColumnsToContents();
-    this->resizeRowsToContents();
-    this->verticalScrollBar()->setValue(this->verticalScrollBar()->maximum());
+    this->scrollToBottom();
 }
 
 void
 ExpenditureView::resizeEvent(QResizeEvent * event)
 {
     this->resizeColumnsToContents();
-    this->resizeRowsToContents();
+    this->onPressReload();
     QTableView::resizeEvent(event);
 }

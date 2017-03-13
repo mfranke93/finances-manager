@@ -54,6 +54,7 @@ public slots:
 signals:
     void canDecrementZoomLevel(bool);
     void canIncrementZoomLevel(bool);
+    void repaintFinished();
 
 protected:
     void checkZoomLevel();
@@ -64,7 +65,7 @@ private:
 
     const int marginBottom = 20;
     const int marginTop = 5;
-    const int marginRight = 5;
+    const int marginRight = 20;
     const int marginLeft = 60;
 
     inline int const& dayWidth() const { return zoomLevels[zoomLevel]; }
@@ -79,6 +80,13 @@ private:
     PlotType plotType_;
 
     double maximum, minimum;
+
+    /**
+     * This specifies whether the canvas is painted for the first time.
+     * We need this to scroll to the end after painting for the first
+     * time.
+     */
+    bool firstPaintCycle {true};
 };
 
 

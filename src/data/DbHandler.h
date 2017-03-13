@@ -42,8 +42,10 @@ public:
 
     void dumpDatabase(QString const& filename) const;
 
+    QString getRecipientStringFromId(int const recId) const;
+
 signals:
-    void itemDataChanged(void);
+    void itemDataChanged();
     void dateRangeChanged(std::pair<QDate, QDate>);
 
 private:

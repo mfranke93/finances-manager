@@ -8,6 +8,7 @@
 #include <iostream>
 #include <QtGui/QColor>
 #include <QtGui/QPixmap>
+#include <QtGui/QFont>
 
 class ResourceHandler
 {
@@ -28,6 +29,8 @@ public:
 
     QColor const& getColor(QString const&) const;
     QPixmap const& getIcon(QString const&) const;
+    QFont const& getRecipientNameFont() const { return recipientNameFont; };
+    QFont const& getRecipientAddressFont() const { return recipientAddressFont; };
 
     /**
      * Number of numbered colors, e.g. color04.light/dark
@@ -45,6 +48,9 @@ private:
 
     std::map<QString const, QColor const> colors;
     std::map<QString const, QPixmap const> icons;
+
+    QFont recipientNameFont;
+    QFont recipientAddressFont;
 };
 
 

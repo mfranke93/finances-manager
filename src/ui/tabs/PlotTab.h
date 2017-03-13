@@ -28,6 +28,7 @@ signals:
 
 protected slots:
     void onDataChanged();
+    void onRepaintFinished();
 
 private:
     void rebuildCategories();

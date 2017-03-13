@@ -15,6 +15,7 @@
 #include <QtWidgets/QCalendarWidget>
 #include <QtWidgets/QLabel>
 #include <QtSql/QSqlError>
+#include <ui/common/SelectOrAddRecipientButton.h>
 
 class AddItemDialog : public QDialog
 {
@@ -26,10 +27,15 @@ public:
 
 public slots:
     void rebuildCategoryContents();
-    void rebuildRecipientContents();
     void onClickOkay();
-    void onClickAddRecipient();
     void onClickAddCategory();
+
+protected slots:
+    /**
+     * Check whether inserted data is valid:
+     * price, name, recipient.
+     */
+    void checkCanAddItem();
 
 private:
     QLineEdit * itemName;
@@ -39,13 +45,13 @@ private:
     QLabel * categoryLabel;
 
     QComboBox * category;
-    QComboBox * recipient;
+
+    SelectOrAddRecipientButton * selectOrAddRecipientButton;
 
     QCalendarWidget * dateEdit;
 
     QPushButton * ok;
     QPushButton * cancel;
-    QPushButton * newRecipient;
     QPushButton * newCategory;
 
     QVBoxLayout * mainLayout;

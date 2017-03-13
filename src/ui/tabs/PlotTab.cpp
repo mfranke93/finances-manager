@@ -70,6 +70,8 @@ PlotTab::PlotTab(QWidget * parent)
             dateFilterPane, SLOT(onDateRangeChanged(std::pair<QDate, QDate>)));
     connect(dateFilterPane, SIGNAL(dateRangeChanged()), this, SLOT(onDataChanged()));
 
+    connect(plotArea, SIGNAL(repaintFinished()), this, SLOT(onRepaintFinished()));
+
     rebuildCategories();
     dateFilterPane->onClickReset();
     onDataChanged();
@@ -101,5 +103,10 @@ PlotTab::onDataChanged()
     plotArea->setDateRangeFilters(dateFilterPane->getRange());
     plotArea->setCategoryFilters(sideButtons->getSelected());
     plotArea->reloadData();
+}
+
+void
+PlotTab::onRepaintFinished()
+{
     plotAreaWrapper->horizontalScrollBar()->setValue(plotAreaWrapper->horizontalScrollBar()->maximum());
 }
