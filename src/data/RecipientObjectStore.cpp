@@ -19,15 +19,28 @@ RecipientObjectStore::buildList()
     mRecipients.clear();
     QSqlDatabase db = DbHandler::getInstance()->getDatabase();
     QSqlQuery query (db);
-    query.prepare("SELECT id, name, address, online FROM Recipient ORDER BY lower(name), lower(address);");
+    query.prepare("SELECT Recipient.id AS RecipientId, "
+                        "Recipient.name AS RecipientName, "
+                        "Recipient.address AS RecipientAddress, "
+                        "Recipient.online AS RecipientOnline, "
+                        "COUNT(*) AS times_visited "
+                        "FROM Recipient "
+                        "JOIN Item ON Item.recid = Recipient.id "
+                        "GROUP BY Recipient.id "
+                        "ORDER BY times_visited DESC;");
+
     bool const b = query.exec();
-    if (!b) return;
+    if (!b)
+    {
+        std::cerr << query.lastError().text().toStdString() << std::endl;
+        return;
+    }
     while (query.next())
     {
-        uint32_t const id = query.value("id").toUInt();
-        QString const name = query.value("name").toString();
-        QString const address = query.value("address").toString();
-        bool const online = query.value("online").toBool();
+        uint32_t const id = query.value("RecipientId").toUInt();
+        QString const name = query.value("RecipientName").toString();
+        QString const address = query.value("RecipientAddress").toString();
+        bool const online = query.value("RecipientOnline").toBool();
 
         mRecipients.push_back(std::make_shared<RecipientObject>(id, name, address, online));
     }
