@@ -53,7 +53,8 @@ void
 MenuBar::showAbout()
 {
     char versionString [50];
-    std::sprintf(versionString, "Version %d.%d\nBuild %s %s", VERSION_MAJOR, VERSION_MINOR, __DATE__, __TIME__);
+    std::sprintf(versionString, "Version %d.%d.%d\nBuild %s %s", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO,
+                 __DATE__, __TIME__);
 
     QDialog dialog (this);
     dialog.setWindowTitle("About");
