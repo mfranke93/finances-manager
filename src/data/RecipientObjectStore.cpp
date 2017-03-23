@@ -25,7 +25,7 @@ RecipientObjectStore::buildList()
                         "Recipient.online AS RecipientOnline, "
                         "COUNT(*) AS times_visited "
                         "FROM Recipient "
-                        "JOIN Item ON Item.recid = Recipient.id "
+                        "LEFT JOIN Item ON Item.recid = Recipient.id "
                         "GROUP BY Recipient.id "
                         "ORDER BY times_visited DESC;");
 
