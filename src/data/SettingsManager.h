@@ -9,6 +9,7 @@
 #include <pwd.h>
 
 #include <QtCore/QString>
+#include <ui/plotting/graphics/PlotLineFactory.h>
 
 class SettingsManager
 {
@@ -18,6 +19,9 @@ public:
 
     void setDatabaseLocation(QString const&);
     QString const& databaseLocation();
+
+    void setDefaultPlotType(PlotType const&);
+    PlotType const& defaultPlottype();
 
 protected:
     SettingsManager();
@@ -29,6 +33,7 @@ private:
      * Path to store database at.
      */
     QString mDatabaseLocation;
+    PlotType mDefaultPlotType;
 };
 
 

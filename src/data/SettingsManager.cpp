@@ -16,6 +16,7 @@ SettingsManager::SettingsManager()
     QString const configFolder = userHome + ".finances-manager/";
 
     mDatabaseLocation = QString(configFolder) + "finances.db";
+    mDefaultPlotType  = PlotType::CUMULATIVE_WITH_MINMAX;
     // TODO
 }
 
@@ -40,6 +41,20 @@ void
 SettingsManager::setDatabaseLocation(QString const& dbLocation)
 {
     mDatabaseLocation = dbLocation;
+
+    // TODO: reload?
+}
+
+PlotType const&
+SettingsManager::defaultPlottype()
+{
+    return mDefaultPlotType;
+}
+
+void
+SettingsManager::setDefaultPlotType(PlotType const& pt)
+{
+    mDefaultPlotType = pt;
 
     // TODO: reload?
 }
