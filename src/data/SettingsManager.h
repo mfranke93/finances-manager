@@ -11,17 +11,24 @@
 #include <QtCore/QString>
 #include <ui/plotting/graphics/PlotLineFactory.h>
 
-class SettingsManager
+class SettingsManager : public QObject
 {
+    Q_OBJECT
+
 public:
     static SettingsManager * getInstance();
     ~SettingsManager() = default;
 
-    void setDatabaseLocation(QString const&);
     QString const& databaseLocation();
-
-    void setDefaultPlotType(PlotType const&);
     PlotType const& defaultPlottype();
+
+public slots:
+    void setDatabaseLocation(QString const&);
+    void setDefaultPlotType(PlotType const&);
+
+signals:
+    void databaseLocationChanged(QString);
+    void defaultPlottypeChanged(PlotType);
 
 protected:
     SettingsManager();

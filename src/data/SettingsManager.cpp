@@ -46,8 +46,7 @@ void
 SettingsManager::setDatabaseLocation(QString const& dbLocation)
 {
     mDatabaseLocation = dbLocation;
-
-    // TODO: reload?
+    emit databaseLocationChanged(dbLocation);
 }
 
 PlotType const&
@@ -60,8 +59,7 @@ void
 SettingsManager::setDefaultPlotType(PlotType const& pt)
 {
     mDefaultPlotType = pt;
-
-    // TODO: reload?
+    emit defaultPlottypeChanged(pt);
 }
 
 void

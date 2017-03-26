@@ -23,6 +23,7 @@ private slots:
     inline void closeApplication() { exit(0); };
     void makeDataBackup();
     void showAbout();
+    void openSettings();
 };
 
 

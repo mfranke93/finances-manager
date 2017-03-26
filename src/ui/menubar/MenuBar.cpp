@@ -7,6 +7,7 @@
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QLabel>
+#include <ui/dialogs/SettingsDialog.h>
 #include "MenuBar.h"
 
 MenuBar::MenuBar()
@@ -24,6 +25,7 @@ MenuBar::buildFileMenu()
 
     /******************************/
     menu->addAction("Make data &backup", this, SLOT(makeDataBackup()));
+    menu->addAction("Settings", this, SLOT(openSettings()));
     /******************************/
     menu->addSeparator();
     menu->addAction("&Quit", this, SLOT(closeApplication()), QKeySequence(Qt::KeyboardModifier::ControlModifier | Qt::Key_Q));
@@ -113,4 +115,11 @@ MenuBar::showAbout()
     dialog.layout()->addWidget(label);
 
     dialog.exec();
+}
+
+void
+MenuBar::openSettings()
+{
+    SettingsDialog settingsDialog (this);
+    settingsDialog.exec();
 }
