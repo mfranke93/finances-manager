@@ -25,6 +25,7 @@ public:
 
 protected:
     SettingsManager();
+    void loadConfig(QString const&);
 
 private:
     static SettingsManager * instance;
