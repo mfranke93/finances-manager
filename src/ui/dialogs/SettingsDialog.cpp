@@ -18,7 +18,12 @@ SettingsDialog::SettingsDialog(QWidget *)
     openFileSelectButton->setMaximumWidth(30);
     defaultPlottypeLabel = new QLabel("Plottype:");
     defaultPlottypeCombo = new QComboBox;
-    // TODO: populate combo box
+    {
+        defaultPlottypeCombo->addItem("Cumulative");
+        defaultPlottypeCombo->addItem("Cumulative with MinMax");
+        defaultPlottypeCombo->addItem("Peaks");
+    }
+    defaultPlottypeCombo->setCurrentIndex(static_cast<int>(SettingsManager::getInstance()->defaultPlottype()));
 
     cancelButton = new QPushButton("Cancel");
     okayButton = new QPushButton("Okay");
@@ -42,10 +47,24 @@ SettingsDialog::SettingsDialog(QWidget *)
     topLevelLayout->addItem(bottomButtonLayout);
     setLayout(topLevelLayout);
     setMinimumWidth(640);
+
+    /* signals */
+    connect(SettingsManager::getInstance(), SIGNAL(databaseLocationChanged(QString)),
+            defaultDbLocationEdit, SLOT(setText(QString)));
+    connect(SettingsManager::getInstance(), SIGNAL(defaultPlottypeChanged(PlotType)),
+            defaultPlottypeCombo, SLOT(setCurrentIndex(int)));
+    connect(this, SIGNAL(dbLocationChanged(QString)), SettingsManager::getInstance(),
+            SLOT(setDatabaseLocation(QString)));
+    connect(this, SIGNAL(defaultPlottypeChanged(PlotType)), SettingsManager::getInstance(),
+            SLOT(setDefaultPlotType(PlotType)));
+    connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
+    connect(okayButton, SIGNAL(clicked()), this, SLOT(onPressOkay()));
 }
 
 void
 SettingsDialog::onPressOkay()
 {
-    // TODO
+    emit dbLocationChanged(defaultDbLocationEdit->text());
+    emit defaultPlottypeChanged(static_cast<PlotType>(defaultPlottypeCombo->currentIndex()));
+    accept();
 }
