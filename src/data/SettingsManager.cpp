@@ -21,8 +21,19 @@ SettingsManager::SettingsManager()
     // TODO
 
     // load rc file
-    QString const configFile = configFolder + "config";
-    loadConfig(configFile);
+    mConfigFilePath = configFolder + "config";
+    loadConfig(mConfigFilePath);
+
+    atexit(deallocateSettingsManagerAtExit);
+}
+
+SettingsManager::~SettingsManager()
+{
+    std::ofstream config (mConfigFilePath.toStdString());
+    config << "defaultPlotType " << static_cast<int>(mDefaultPlotType) << std::endl;
+    config << "databaseLocation " << mDatabaseLocation.toStdString() << std::endl;
+
+    config.close();
 }
 
 SettingsManager *
@@ -87,4 +98,10 @@ SettingsManager::loadConfig(QString const& filename)
     }
 
     configFile.close();
+}
+
+void
+deallocateSettingsManagerAtExit()
+{
+    if (SettingsManager::instance != nullptr) delete SettingsManager::instance;
 }

@@ -15,9 +15,11 @@ class SettingsManager : public QObject
 {
     Q_OBJECT
 
+    friend void deallocateSettingsManagerAtExit();
+
 public:
     static SettingsManager * getInstance();
-    ~SettingsManager() = default;
+    ~SettingsManager();
 
     QString const& databaseLocation();
     PlotType const& defaultPlottype();
@@ -42,7 +44,8 @@ private:
      */
     QString mDatabaseLocation;
     PlotType mDefaultPlotType;
+
+    QString mConfigFilePath;
 };
 
-
-
+void deallocateSettingsManagerAtExit();
