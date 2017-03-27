@@ -18,7 +18,6 @@ SettingsManager::SettingsManager()
 
     mDatabaseLocation = QString(configFolder) + "finances.db";
     mDefaultPlotType  = PlotType::CUMULATIVE_WITH_MINMAX;
-    // TODO
 
     // load rc file
     mConfigFilePath = configFolder + "config";
