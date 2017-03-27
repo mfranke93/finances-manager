@@ -12,9 +12,9 @@
 
 enum class PlotType
 {
-    CUMULATIVE,
-    CUMULATIVE_WITH_MINMAX,
-    DAILY_PEAKS
+    CUMULATIVE              = 0,
+    CUMULATIVE_WITH_MINMAX  = 1,
+    DAILY_PEAKS             = 2
 };
 
 class PlotLineFactory

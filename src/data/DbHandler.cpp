@@ -4,13 +4,14 @@
 
 #include <stdlib.h>
 #include "DbHandler.h"
+#include "SettingsManager.h"
 
 DbHandler * DbHandler::instance = nullptr;
 
 DbHandler::DbHandler()
 : database(QSqlDatabase::addDatabase("QSQLITE"))
 {
-    database.setDatabaseName("/home/max/prog/finances-manager/data.db");
+    database.setDatabaseName(SettingsManager::getInstance()->databaseLocation());
     if (!database.open())
     {
         std::cerr << "Could not open database at " << database.databaseName().toStdString() << std::endl;

@@ -28,7 +28,7 @@ class PlotArea : public QWidget
     Q_OBJECT
 
 public:
-    PlotArea(QWidget * parent);
+    PlotArea(QWidget * parent, PlotType pType);
     ~PlotArea() = default;
 
 public slots:
