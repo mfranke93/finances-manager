@@ -3,6 +3,7 @@
 //
 
 #include <data/SettingsManager.h>
+#include <QtWidgets/QFileDialog>
 #include "SettingsDialog.h"
 
 SettingsDialog::SettingsDialog(QWidget *)
@@ -59,6 +60,7 @@ SettingsDialog::SettingsDialog(QWidget *)
             SLOT(setDefaultPlotType(PlotType)));
     connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
     connect(okayButton, SIGNAL(clicked()), this, SLOT(onPressOkay()));
+    connect(openFileSelectButton, SIGNAL(clicked()), this, SLOT(onPressSelectDatabaseFile()));
 }
 
 void
@@ -67,4 +69,12 @@ SettingsDialog::onPressOkay()
     emit dbLocationChanged(defaultDbLocationEdit->text());
     emit defaultPlottypeChanged(static_cast<PlotType>(defaultPlottypeCombo->currentIndex()));
     accept();
+}
+
+void
+SettingsDialog::onPressSelectDatabaseFile()
+{
+    QString const dbFile = QFileDialog::getOpenFileName(this, "Select database",
+            defaultDbLocationEdit->text(), "SQLite3 databases (*.db)");
+    if (!dbFile.isEmpty()) this->defaultDbLocationEdit->setText(dbFile);
 }

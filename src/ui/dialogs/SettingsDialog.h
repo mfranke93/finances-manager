@@ -22,6 +22,7 @@ public:
 
 protected slots:
     void onPressOkay();
+    void onPressSelectDatabaseFile();
 
 signals:
     void dbLocationChanged(QString);
