@@ -5,6 +5,7 @@
 #include <QtWidgets/QAbstractSlider>
 #include <data/ResourceHandler.h>
 #include <ui/plotting/graphics/PlotLineFactory.h>
+#include <data/SettingsManager.h>
 #include "PlotTab.h"
 
 PlotTab::PlotTab(QWidget * parent)
@@ -16,7 +17,7 @@ PlotTab::PlotTab(QWidget * parent)
     sideButtons = new PlotCategoryFilter(this);
 
     plotAreaWrapper = new QScrollArea;
-    plotArea = new PlotArea(plotAreaWrapper);
+    plotArea = new PlotArea(plotAreaWrapper, SettingsManager::getInstance()->defaultPlottype());
     plotAreaWrapper->setWidget(plotArea);
     plotAreaWrapper->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     plotAreaWrapper->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
@@ -35,7 +36,7 @@ PlotTab::PlotTab(QWidget * parent)
         plotStyleComboBox->addItem("Peaks");
     }
     /* cumulative with min/max selected */
-    plotStyleComboBox->setCurrentIndex(1);
+    plotStyleComboBox->setCurrentIndex(static_cast<int>(SettingsManager::getInstance()->defaultPlottype()));
     bottomButtonLayout->addStretch(1);
     bottomButtonLayout->addWidget(plotStyleComboBox);
 

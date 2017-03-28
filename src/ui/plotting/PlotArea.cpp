@@ -6,10 +6,10 @@
 
 int const PlotArea::zoomLevels [] = { 2, 5, 8, 12, 20, 32 };
 
-PlotArea::PlotArea(QWidget * parent)
+PlotArea::PlotArea(QWidget * parent, PlotType pType)
 : QWidget(parent),
   zoomLevel(2),
-  plotType_(PlotType::CUMULATIVE_WITH_MINMAX)
+  plotType_(pType)
 {
     setMouseTracking(true);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
