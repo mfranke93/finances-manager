@@ -12,17 +12,21 @@ AddItemDialog::AddItemDialog(QWidget * parent, Qt::WindowFlags const& f)
 : QDialog(parent, f)
 {
     setWindowTitle(tr("Add item"));
-    resize(500, 200);
+    setMinimumSize(500, 200);
+    setSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::MinimumExpanding);
 
     mainLayout = new QVBoxLayout;
     bottomLayout = new QHBoxLayout;
 
-    addItemRow = new AddItemRow(this);
+    addItemBlock = new AddItemBlock;
+    addItemBlock->setParent(this);
 
     recipientLabel = new QLabel("Recipient");
     selectOrAddRecipientButton = new SelectOrAddRecipientButton;
 
     dateEdit = new QCalendarWidget;
+    dateEdit->setMinimumSize(480, 150);
+    dateEdit->setParent(this);
 
     ok = new QPushButton(tr("OK"));
     ok->setEnabled(false);
@@ -31,7 +35,7 @@ AddItemDialog::AddItemDialog(QWidget * parent, Qt::WindowFlags const& f)
     bottomLayout->addStretch(1);
     bottomLayout->addWidget(this->ok);
 
-    mainLayout->addWidget(addItemRow);
+    mainLayout->addWidget(addItemBlock);
     mainLayout->addWidget(selectOrAddRecipientButton);
     mainLayout->addWidget(dateEdit);
     mainLayout->addItem(bottomLayout);
@@ -42,8 +46,10 @@ AddItemDialog::AddItemDialog(QWidget * parent, Qt::WindowFlags const& f)
     this->connect(this->ok, SIGNAL(clicked()), this, SLOT(onClickOkay()));
 
     /* check if can click okay when values here change */
-    this->connect(this->addItemRow, SIGNAL(contentChanged()), this, SLOT(checkCanAddItem()));
+    this->connect(this->addItemBlock, SIGNAL(contentChanged()), this, SLOT(checkCanAddItem()));
     this->connect(this->selectOrAddRecipientButton, SIGNAL(selectedRecipientIdChanged()), this, SLOT(checkCanAddItem()));
+
+    this->connect(this->addItemBlock, SIGNAL(dialogNeedsResize()), this, SLOT(onNeedResize()));
 }
 
 AddItemDialog::~AddItemDialog()
@@ -54,30 +60,40 @@ AddItemDialog::~AddItemDialog()
 void
 AddItemDialog::onClickOkay()
 {
-    std::tuple<QString, QString, int> const values = addItemRow->getValues();
+    bool success;
 
-    QString const name = std::get<0>(values);
-    if (name.isEmpty() || this->selectOrAddRecipientButton->getSelectedRecipientId() < 0)
+    for (std::tuple<QString, QString, int> const& values : addItemBlock->getAllContents())
     {
-        return;
-    }
+        QString const name = std::get<0>(values);
+        if (name.isEmpty() || this->selectOrAddRecipientButton->getSelectedRecipientId() < 0)
+        {
+            std::fprintf(stderr, "Name empty or no recipient selected:\n%s, %d.\n",
+                    name.toStdString().c_str(), selectOrAddRecipientButton->getSelectedRecipientId());
+            return;
+        }
 
-    int const recipientId = this->selectOrAddRecipientButton->getSelectedRecipientId();
-    int const categoryId = std::get<2>(values);
-    QString const price = std::get<1>(values);
-    QDate date = this->dateEdit->selectedDate();
+        int const recipientId = this->selectOrAddRecipientButton->getSelectedRecipientId();
+        int const categoryId = std::get<2>(values);
+        QString const price = std::get<1>(values);
+        QDate date = this->dateEdit->selectedDate();
 
-    if (DbHandler::getInstance()->insertNewItem(name, recipientId, date, price, categoryId))
-    {
-        accept();
+        success = DbHandler::getInstance()->insertNewItem(name, recipientId, date, price, categoryId);
+        if (!success) reject();
     }
+    accept();
 }
 
 void
 AddItemDialog::checkCanAddItem()
 {
-    bool const b = (this->addItemRow->rowValid())
+    bool const b = (this->addItemBlock->allRowsValid())
                 && (this->selectOrAddRecipientButton->getSelectedRecipientId() >= 0);
 
     this->ok->setEnabled(b);
+}
+
+void
+AddItemDialog::onNeedResize()
+{
+    resize(sizeHint());
 }

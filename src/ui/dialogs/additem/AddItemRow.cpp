@@ -30,6 +30,7 @@ AddItemRow::AddItemRow(QWidget * parent)
     itemLayout->addWidget(itemCategory, 3);
 
     setLayout(itemLayout);
+    setMinimumHeight(20);
 
     connect(itemName, SIGNAL(textChanged(QString)), this, SLOT(onAnyContentChanged()));
     connect(itemPrice, SIGNAL(textChanged(QString)), this, SLOT(onAnyContentChanged()));

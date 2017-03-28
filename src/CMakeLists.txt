@@ -42,6 +42,8 @@ add_executable(main main.cpp
     ui/delegates/RecipientAddressDelegate.h
     ui/delegates/RecipientNameDelegate.cpp
     ui/delegates/RecipientNameDelegate.h
+    ui/dialogs/additem/AddItemBlock.cpp
+    ui/dialogs/additem/AddItemBlock.h
     ui/dialogs/additem/AddItemRow.cpp
     ui/dialogs/additem/AddItemRow.h
     ui/dialogs/AddItemDialog.cpp

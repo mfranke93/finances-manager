@@ -17,6 +17,7 @@
 #include <QtSql/QSqlError>
 #include <ui/common/SelectOrAddRecipientButton.h>
 #include <ui/dialogs/additem/AddItemRow.h>
+#include <ui/dialogs/additem/AddItemBlock.h>
 
 class AddItemDialog : public QDialog
 {
@@ -36,8 +37,10 @@ protected slots:
      */
     void checkCanAddItem();
 
+    void onNeedResize();
+
 private:
-    AddItemRow * addItemRow;
+    AddItemBlock * addItemBlock;
 
     QLabel * recipientLabel;
 
