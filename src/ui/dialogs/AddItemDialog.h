@@ -16,6 +16,8 @@
 #include <QtWidgets/QLabel>
 #include <QtSql/QSqlError>
 #include <ui/common/SelectOrAddRecipientButton.h>
+#include <ui/dialogs/additem/AddItemRow.h>
+#include <ui/dialogs/additem/AddItemBlock.h>
 
 class AddItemDialog : public QDialog
 {
@@ -26,9 +28,7 @@ public:
     ~AddItemDialog();
 
 public slots:
-    void rebuildCategoryContents();
     void onClickOkay();
-    void onClickAddCategory();
 
 protected slots:
     /**
@@ -37,14 +37,12 @@ protected slots:
      */
     void checkCanAddItem();
 
+    void onNeedResize();
+
 private:
-    QLineEdit * itemName;
-    QLineEdit * price;
+    AddItemBlock * addItemBlock;
 
     QLabel * recipientLabel;
-    QLabel * categoryLabel;
-
-    QComboBox * category;
 
     SelectOrAddRecipientButton * selectOrAddRecipientButton;
 
@@ -52,11 +50,8 @@ private:
 
     QPushButton * ok;
     QPushButton * cancel;
-    QPushButton * newCategory;
 
     QVBoxLayout * mainLayout;
-    QHBoxLayout * lineEditLayout;
-    QGridLayout * recipientCategoryLayout;
     QHBoxLayout * bottomLayout;
 };
 
