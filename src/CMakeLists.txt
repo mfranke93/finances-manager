@@ -20,33 +20,41 @@ add_executable(main main.cpp
     data/DbHandler.h
     data/RangeConverter.cpp
     data/RangeConverter.h
+    data/RecipientObject.cpp
+    data/RecipientObject.h
+    data/RecipientObjectStore.cpp
+    data/RecipientObjectStore.h
     data/ResourceHandler.cpp
     data/ResourceHandler.h
-    ui/MainWindow.cpp
+    data/SettingsManager.cpp
+    data/SettingsManager.h
     ui/charts/BarGraph.cpp
     ui/charts/BarGraph.h
     ui/charts/GraphArea.cpp
     ui/charts/GraphArea.h
     ui/common/DateFilterPane.cpp
     ui/common/DateFilterPane.h
-    ui/dialogs/AddCategoryDialog.cpp
-    ui/dialogs/AddCategoryDialog.h
+    ui/common/SelectOrAddRecipientButton.cpp
+    ui/common/SelectOrAddRecipientButton.h
+    ui/delegates/PriceColumnDelegate.cpp
+    ui/delegates/PriceColumnDelegate.h
+    ui/delegates/RecipientAddressDelegate.cpp
+    ui/delegates/RecipientAddressDelegate.h
+    ui/delegates/RecipientNameDelegate.cpp
+    ui/delegates/RecipientNameDelegate.h
+    ui/dialogs/additem/AddItemRow.cpp
+    ui/dialogs/additem/AddItemRow.h
     ui/dialogs/AddItemDialog.cpp
     ui/dialogs/AddItemDialog.h
     ui/dialogs/AddRecipientDialog.cpp
     ui/dialogs/AddRecipientDialog.h
-    ui/menubar/MenuBar.cpp 
+    ui/dialogs/SearchRecipientDialog.cpp
+    ui/dialogs/SearchRecipientDialog.h
+    ui/dialogs/SettingsDialog.cpp
+    ui/dialogs/SettingsDialog.h
+    ui/MainWindow.cpp
+    ui/menubar/MenuBar.cpp
     ui/menubar/MenuBar.h
-    ui/plotting/PlotArea.cpp
-    ui/plotting/PlotArea.h
-    ui/plotting/PlotBottomBar.cpp
-    ui/plotting/PlotBottomBar.h
-    ui/plotting/PlotCategoryFilter.cpp
-    ui/plotting/PlotCategoryFilter.h
-    ui/plotting/PlotGrid.cpp
-    ui/plotting/PlotGrid.h
-    ui/plotting/PlotLeftAxis.cpp
-    ui/plotting/PlotLeftAxis.h
     ui/plotting/graphics/CumulativePlotLine.cpp
     ui/plotting/graphics/CumulativePlotLine.h
     ui/plotting/graphics/DailyChangesPlotLine.cpp
@@ -59,17 +67,26 @@ add_executable(main main.cpp
     ui/plotting/graphics/PlotPoint.cpp
     ui/plotting/graphics/PlotPoint.h
     ui/plotting/graphics/Plottable.h
+    ui/plotting/PlotArea.cpp
+    ui/plotting/PlotArea.h
+    ui/plotting/PlotBottomBar.cpp
+    ui/plotting/PlotBottomBar.h
+    ui/plotting/PlotCategoryFilter.cpp
+    ui/plotting/PlotCategoryFilter.h
+    ui/plotting/PlotGrid.cpp
+    ui/plotting/PlotGrid.h
+    ui/plotting/PlotLeftAxis.cpp
+    ui/plotting/PlotLeftAxis.h
     ui/table/ExpenditureView.cpp
     ui/table/ExpenditureView.h
-        ui/delegates/PriceColumnDelegate.cpp
-        ui/delegates/PriceColumnDelegate.h
     ui/tabs/ChartTab.cpp
     ui/tabs/ChartTab.h
     ui/tabs/PlotTab.cpp
     ui/tabs/PlotTab.h
     ui/tabs/TableTab.cpp
     ui/tabs/TableTab.h
-    version.h ui/dialogs/SearchRecipientDialog.cpp ui/dialogs/SearchRecipientDialog.h data/RecipientObjectStore.cpp data/RecipientObjectStore.h data/RecipientObject.cpp data/RecipientObject.h ui/delegates/RecipientNameDelegate.cpp ui/delegates/RecipientNameDelegate.h ui/delegates/RecipientAddressDelegate.cpp ui/delegates/RecipientAddressDelegate.h ui/common/SelectOrAddRecipientButton.cpp ui/common/SelectOrAddRecipientButton.h data/SettingsManager.cpp data/SettingsManager.h ui/dialogs/SettingsDialog.cpp ui/dialogs/SettingsDialog.h)
+    version.h
+        )
 target_link_libraries(main ${Qt5Widgets_LIBRARIES})
 target_link_libraries(main ${Qt5Sql_LIBRARIES})
 
