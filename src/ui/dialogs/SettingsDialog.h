@@ -23,10 +23,12 @@ public:
 protected slots:
     void onPressOkay();
     void onPressSelectDatabaseFile();
+    void onPressSelectBackupScriptFile();
 
 signals:
     void dbLocationChanged(QString);
     void defaultPlottypeChanged(PlotType);
+    void backupScriptPathChanged(QString);
 
 private:
     QVBoxLayout * topLevelLayout;
@@ -35,14 +37,17 @@ private:
 
     QLabel      * defaultDbLocationLabel;
     QLabel      * defaultPlottypeLabel;
+    QLabel      * backupScriptPathLabel;
 
     QLineEdit   * defaultDbLocationEdit;
     QComboBox   * defaultPlottypeCombo;
+    QLineEdit   * backupScriptPath;
 
     QPushButton * cancelButton;
     QPushButton * okayButton;
 
-    QPushButton * openFileSelectButton;
+    QPushButton * openDbFileSelectButton;
+    QPushButton * openBackupScriptFileSelectButton;
 
 };
 
