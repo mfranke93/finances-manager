@@ -40,8 +40,6 @@ public:
     QSqlDatabase& getDatabase() { return database; }
     bool commit();
 
-    void dumpDatabase(QString const& filename) const;
-
     QString getRecipientStringFromId(int const recId) const;
 
 signals:

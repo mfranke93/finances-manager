@@ -3,7 +3,6 @@
 //
 
 #include "ExpenditureView.h"
-#include "ui/delegates/PriceColumnDelegate.h"
 
 ExpenditureView::ExpenditureView(QWidget * parent)
 {
@@ -40,6 +39,7 @@ void
 ExpenditureView::onPressReload()
 {
     this->model->select();
+    while (model->canFetchMore()) model->fetchMore();
     this->scrollToBottom();
 }
 
