@@ -8,6 +8,8 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QLabel>
 #include <ui/dialogs/SettingsDialog.h>
+#include <data/SettingsManager.h>
+#include <QtCore/QProcess>
 #include "MenuBar.h"
 
 MenuBar::MenuBar()
@@ -46,9 +48,18 @@ MenuBar::buildHelpMenu()
 void
 MenuBar::makeDataBackup()
 {
-    // TODO change to generic user home
-    QString const filename = QFileDialog::getSaveFileName(this, "Save database", "/home/max", "SQL files (*.sql)");
-    DbHandler::getInstance()->dumpDatabase(filename);
+    // call backup script
+    QString dbLocation = SettingsManager::getInstance()->databaseLocation();
+    QString backupScript = SettingsManager::getInstance()->backupScriptPath();
+
+    QString execStr = QString("/usr/bin/urxvt -e zsh -c \"") + backupScript + " " + dbLocation + "\"";
+
+    QProcess process;
+    process.start(execStr);
+    if (!process.waitForFinished(30000))
+    {
+        std::cerr << "Backup timed out (30s)." << std::endl;
+    }
 }
 
 void
