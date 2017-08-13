@@ -22,6 +22,7 @@ protected:
 private slots:
     inline void closeApplication() { exit(0); };
     void makeDataBackup();
+    void restoreDataBackup();
     void showAbout();
     void openSettings();
 };

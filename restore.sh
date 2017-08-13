@@ -2,7 +2,7 @@
 
 if [[ $# -lt 2 ]]
 then
-    echo "Usage: $0 backupfile dblocation"
+    echo "Usage: $0 backupfile output-directory"
     exit 1
 fi
 
@@ -10,17 +10,14 @@ fi
 backup=$1
 
 # second argument is database location
-db=$2
+dir=$2
 
 # decrypt file
-tarfile=/tmp/finances.tar.gz
+tarfile=${dir}/finances.tar.gz
 gpg --decrypt $backup > $tarfile
 
-# backup db
-mv $db $db.old
-
 # unpack archive
-tar xfO $tarfile | sqlite3 $db
+tar xfO $tarfile > ${dir}/restore.sql
 
 # remove tar file
 rm $tarfile

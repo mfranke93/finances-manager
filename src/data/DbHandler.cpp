@@ -136,3 +136,88 @@ DbHandler::getRecipientStringFromId(int const recId) const
         return QString();
     }
 }
+
+void
+DbHandler::restoreDatabaseFromFile(QString const& filename)
+{
+    // read sql query from file
+    QSqlQuery query (database);
+    QFile file (filename);
+    file.open(QFile::ReadOnly);
+
+    database.transaction();
+
+    // drop tables
+    if (!query.exec("DELETE FROM Item;"))
+    {
+        std::fprintf(stderr, "Could not delete from Item.\n");
+        database.rollback();
+        return;
+    }
+    if (!query.exec("DELETE FROM Recipient;"))
+    {
+        std::fprintf(stderr, "Could not delete from Recipient.\n");
+        database.rollback();
+        return;
+    }
+    if (!query.exec("DELETE FROM Category;"))
+    {
+        std::fprintf(stderr, "Could not delete from Category.\n");
+        database.rollback();
+        return;
+    }
+    if (!query.exec("DELETE FROM sqlite_sequence;"))
+    {
+        std::fprintf(stderr, "Could not delete from sqlite_sequence.\n");
+        database.rollback();
+        return;
+    }
+
+    while (!file.atEnd())
+    {
+        QString statement;
+        QString line;
+        bool finished {false};
+        bool lastLineDidNotFinish {false};
+        while (!finished)
+        {
+            // TODO build queries and exeute step by step
+            // only INSERT statements
+            line = file.readLine().trimmed();
+
+            if (line.startsWith("INSERT") || lastLineDidNotFinish)
+            {
+                statement += " ";
+                statement += line;
+                if (line.endsWith(";"))
+                {
+                    lastLineDidNotFinish = false;
+                    // TODO execute
+                    std::printf("STATEMENT> %s\n", statement.toStdString().c_str());
+                    if (!query.exec(statement))
+                    {
+                        std::fprintf(stderr, "Could not insert!\n");
+                        database.rollback();
+                        return;
+                    }
+                    statement.clear();
+                }
+                else
+                {
+                    lastLineDidNotFinish = true;
+                }
+            }
+            else if (line.startsWith("COMMIT"))
+            {
+                finished = true;
+            }
+        }
+    }
+
+    std::printf("done\n");
+    database.commit();
+
+    emit itemDataChanged();
+    emit dateRangeChanged(getDateRange());
+}
+
