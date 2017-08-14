@@ -7,7 +7,14 @@ and a Qt5 UI. The program is written in C++11.
 
 Maintainer: Max Franke <max@mumintroll.org>
 
+Version 1.4.2                                                        ~ v1.4.2 ~
+=============
+Release date: August 14th, 2017
+
+Implemented an internal backup restore, accessible via a button in the menu bar.
+
 Version 1.4.1                                                        ~ v1.4.1 ~
+=============    
 Release date: June 18th, 2017
 
 Fixed a autoscroll issue where adding new items would not scroll all the way
