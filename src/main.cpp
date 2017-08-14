@@ -1,5 +1,5 @@
 #include <QtWidgets/QApplication>
-#include <data/DbHandler.h>
+#include "data/DbHandler.h"
 #include "ui/MainWindow.h"
 
 int main(int argc, char ** argv)

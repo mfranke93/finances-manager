@@ -27,6 +27,7 @@ MenuBar::buildFileMenu()
 
     /******************************/
     menu->addAction("Make data &backup", this, SLOT(makeDataBackup()));
+    menu->addAction("&Restore data backup", this, &MenuBar::restoreDataBackup);
     menu->addAction("Settings", this, SLOT(openSettings()));
     /******************************/
     menu->addSeparator();
@@ -59,6 +60,44 @@ MenuBar::makeDataBackup()
     if (!process.waitForFinished(30000))
     {
         std::cerr << "Backup timed out (30s)." << std::endl;
+    }
+}
+
+void
+MenuBar::restoreDataBackup()
+{
+    // call restore script
+    QString const backupRestoreScript = SettingsManager::getInstance()->backupRestoreScriptPath();
+    QString tmpdir;
+
+    // get backup file
+    QString const backup = QFileDialog::getOpenFileName(this, "Select backup",
+            "", "PGP-encrypted database backup (*.gpg)");
+
+    // create tmpfs to extract data into
+    {
+        QString const execStr = QString("mktemp --directory --tmpdir=/dev/shm");
+        QProcess process;
+        process.start(execStr);
+        process.waitForFinished(30000);
+        tmpdir = QString(process.readAllStandardOutput()).trimmed();
+    }
+
+    // use backup restore script to extract data out to directory
+    {
+        QString const execStr ("/usr/bin/urxvt -e zsh -c \"" + backupRestoreScript + " " + backup + " " + tmpdir + "\"");
+        QProcess process;
+        process.start(execStr);
+        process.waitForFinished();
+    }
+
+    DbHandler::getInstance()->restoreDatabaseFromFile(tmpdir + "/restore.sql");
+    
+    // cleanup tmpfs
+    {
+        QProcess cleanup;
+        cleanup.start("rm -rfv " + tmpdir);
+        cleanup.waitForFinished();
     }
 }
 
