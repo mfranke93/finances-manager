@@ -90,7 +90,6 @@ SettingsManager::backupRestoreScriptPath()
 void
 SettingsManager::setBackupScriptPath(QString const& sc)
 {
-    std::printf("backup changed: %s\n", sc.toStdString().c_str());
     mBackupScriptFile = sc;
     emit backupScriptPathChanged(sc);
 }
@@ -141,7 +140,6 @@ deallocateSettingsManagerAtExit()
 void
 SettingsManager::setBackupRestoreScriptPath(QString const& sc)
 {
-    std::printf("restore changed: %s\n", sc.toStdString().c_str());
     mBackupRestoreScriptFile = sc;
     emit backupRestoreScriptPathChanged(sc);
 }

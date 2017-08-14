@@ -181,10 +181,9 @@ DbHandler::restoreDatabaseFromFile(QString const& filename)
         bool lastLineDidNotFinish {false};
         while (!finished)
         {
-            // TODO build queries and exeute step by step
-            // only INSERT statements
             line = file.readLine().trimmed();
 
+            // only INSERT statements
             if (line.startsWith("INSERT") || lastLineDidNotFinish)
             {
                 statement += " ";
@@ -192,11 +191,10 @@ DbHandler::restoreDatabaseFromFile(QString const& filename)
                 if (line.endsWith(";"))
                 {
                     lastLineDidNotFinish = false;
-                    // TODO execute
-                    std::printf("STATEMENT> %s\n", statement.toStdString().c_str());
                     if (!query.exec(statement))
                     {
-                        std::fprintf(stderr, "Could not insert!\n");
+                        std::fprintf(stderr, "Could not execute \"%s\"!\n",
+                                statement.toStdString().c_str());
                         database.rollback();
                         return;
                     }
@@ -213,8 +211,6 @@ DbHandler::restoreDatabaseFromFile(QString const& filename)
             }
         }
     }
-
-    std::printf("done\n");
     database.commit();
 
     emit itemDataChanged();

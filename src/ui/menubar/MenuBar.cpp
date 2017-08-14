@@ -91,18 +91,6 @@ MenuBar::restoreDataBackup()
         process.waitForFinished();
     }
 
-    // FIXME: temporary cat
-    {
-        QProcess process;
-        QString exec ("cat " + tmpdir + "/restore.sql");
-        std::printf("Starting command '%s'\n", exec.toStdString().c_str());
-        process.start(exec);
-        process.waitForFinished();
-        std::printf("==== \n%s\n", QString(process.readAllStandardOutput()).toStdString().c_str());
-    }
-
-    // TODO: clear database via handler
-    // TODO: execute content of script into database
     DbHandler::getInstance()->restoreDatabaseFromFile(tmpdir + "/restore.sql");
     
     // cleanup tmpfs

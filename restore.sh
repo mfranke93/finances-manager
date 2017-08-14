@@ -12,15 +12,8 @@ backup=$1
 # second argument is database location
 dir=$2
 
-# decrypt file
-tarfile=${dir}/finances.tar.gz
-gpg --decrypt $backup > $tarfile
-
-# unpack archive
-tar xfO $tarfile > ${dir}/restore.sql
-
-# remove tar file
-rm $tarfile
+# decrypt file, unpack archive
+gpg --decrypt $backup | tar --extract --to-stdout --gzip > ${dir}/restore.sql
 
 # wait for user input
 echo -n "Press [Enter] to close this restore session ..."
