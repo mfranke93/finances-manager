@@ -12,6 +12,8 @@
 #include <QtCore/QDate>
 #include <QVariant>
 #include <QObject>
+#include <QFile>
+#include <QTextStream>
 
 class DbHandler : public QObject
 {
@@ -41,6 +43,8 @@ public:
     bool commit();
 
     QString getRecipientStringFromId(int const recId) const;
+
+    void restoreDatabaseFromFile(QString const& fileName);
 
 signals:
     void itemDataChanged();

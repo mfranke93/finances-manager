@@ -32,7 +32,8 @@ SettingsManager::~SettingsManager()
     std::ofstream config (mConfigFilePath.toStdString());
     config << "defaultPlotType " << static_cast<int>(mDefaultPlotType) << std::endl;
     config << "databaseLocation " << mDatabaseLocation.toStdString() << std::endl;
-    config << "backupScriptPath " << mConfigFilePath.toStdString() << std::endl;
+    config << "backupScriptPath " << mBackupScriptFile.toStdString() << std::endl;
+    config << "backupRestoreScriptPath " << mBackupRestoreScriptFile.toStdString() << std::endl;
 
     config.close();
 }
@@ -80,6 +81,12 @@ SettingsManager::backupScriptPath()
     return mBackupScriptFile;
 }
 
+QString const&
+SettingsManager::backupRestoreScriptPath()
+{
+    return mBackupRestoreScriptFile;
+}
+
 void
 SettingsManager::setBackupScriptPath(QString const& sc)
 {
@@ -112,7 +119,12 @@ SettingsManager::loadConfig(QString const& filename)
         else if (token == "backupScriptPath")
         {
             configFile >> token;
-            mConfigFilePath = QString(token.c_str());
+            mBackupScriptFile = QString(token.c_str());
+        }
+        else if (token == "backupRestoreScriptPath")
+        {
+            configFile >> token;
+            mBackupRestoreScriptFile = QString(token.c_str());
         }
     }
 
@@ -123,4 +135,11 @@ void
 deallocateSettingsManagerAtExit()
 {
     if (SettingsManager::instance != nullptr) delete SettingsManager::instance;
+}
+
+void
+SettingsManager::setBackupRestoreScriptPath(QString const& sc)
+{
+    mBackupRestoreScriptFile = sc;
+    emit backupRestoreScriptPathChanged(sc);
 }

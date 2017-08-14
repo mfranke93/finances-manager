@@ -13,7 +13,7 @@
 
 class SettingsManager : public QObject
 {
-Q_OBJECT
+    Q_OBJECT
 
     friend void deallocateSettingsManagerAtExit();
 
@@ -24,16 +24,19 @@ public:
     QString const& databaseLocation();
     PlotType const& defaultPlottype();
     QString const& backupScriptPath();
+    QString const& backupRestoreScriptPath();
 
 public slots:
     void setDatabaseLocation(QString const&);
     void setDefaultPlotType(PlotType const&);
     void setBackupScriptPath(QString const&);
+    void setBackupRestoreScriptPath(QString const&);
 
 signals:
     void databaseLocationChanged(QString);
     void defaultPlottypeChanged(PlotType);
     void backupScriptPathChanged(QString);
+    void backupRestoreScriptPathChanged(QString);
 
 protected:
     SettingsManager();
@@ -54,6 +57,11 @@ private:
      * File for backup script.
      */
     QString mBackupScriptFile;
+
+    /**
+     * File for script to restore from backup.
+     */
+    QString mBackupRestoreScriptFile;
 };
 
 void deallocateSettingsManagerAtExit();
