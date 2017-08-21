@@ -33,13 +33,23 @@ public:
     QFont const& getRecipientAddressFont() const { return recipientAddressFont; };
 
     /**
+     * Get a color whose hue depends on the percentage between the parameters, for rainbow color schemes.
+     * 
+     * \param index     Index of color
+     * \param range     Number of colors to generate, such that 0 ≤ index < range
+     * 
+     * \return          A dark and light version of the color as std::pair
+     */
+    std::pair<QColor, QColor> getRainbowColor(size_t const& index, size_t const& range) const;
+
+    /**
      * Number of numbered colors, e.g. color04.light/dark
      */
-    static constexpr size_t numberedColorRange {20};
+    static constexpr size_t numberedColorRange {32};
 protected:
     void initColors();
 
-    static QColor lightVersion(QColor const&) throw();
+    static QColor lightVersion(QColor const&);
 
 private:
     ResourceHandler();

@@ -58,7 +58,7 @@ void
 GraphArea::resizeEvent(QResizeEvent * evt)
 {
     QWidget::resizeEvent(evt);
-    emit rebuildBars();
+    rebuildBars();
 }
 
 void
@@ -79,12 +79,19 @@ GraphArea::rebuildBars()
     };
 
     int currentX = xOffsetGlobal;
+    size_t count = 0;
     for (auto& it : bars)
     {
         it.second.setPriceScaler(scale);
         it.second.setBoundingRect(QRect(currentX+xOffset/2, yOffset, widthPerBar - xOffset, heightPerBar));
 
         currentX += widthPerBar;
+
+        // colors
+        std::pair<QColor, QColor> const colors = ResourceHandler::getInstance()->getRainbowColor(count++, numBars);
+        QColor const positive = colors.first;
+        QColor const negative = colors.second;
+        it.second.setColors(positive, negative);
     }
 }
 
@@ -95,27 +102,19 @@ GraphArea::addBar(QString const& name, double const& min, double const& max)
     graph.setPriceScaler(scale);
     graph.setBoundingRect(QRect(0, 0, 50, 200));
 
-    const size_t number = (bars.size() % ResourceHandler::numberedColorRange) + 1;
-    char buf[20];
-    std::sprintf(buf, "color%02lu.dark", number);
-    const QColor positive = ResourceHandler::getInstance()->getColor(QString(buf));
-    std::sprintf(buf, "color%02lu.light", number);
-    const QColor negative = ResourceHandler::getInstance()->getColor(QString(buf));
-
-    graph.setColors(positive, negative);
     graph.setRange(min, max);
     if (min < range.first) range.first = min;
     if (max > range.second) range.second = max;
 
     bars.push_back(std::make_pair(name, graph));
 
-    emit rebuildBars();
+    rebuildBars();
 }
 
 void
 GraphArea::reloadEvent()
 {
-    emit rebuildBars();
+    rebuildBars();
 }
 
 void

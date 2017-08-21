@@ -26,7 +26,6 @@ ResourceHandler::ResourceHandler()
 
 QColor
 ResourceHandler::lightVersion(QColor const& color)
-throw()
 {
     return color.lighter(160);
 }
@@ -34,27 +33,7 @@ throw()
 void
 ResourceHandler::initColors()
 {
-    std::map<QString, QColor> cols;
-    constexpr size_t RANGE = numberedColorRange;
-    for (size_t count = 0; count < RANGE; ++count)
-    {
-        char buf[10];
-        std::sprintf(buf, "color%02lu", count+1);
-        constexpr int value = static_cast<int>(0.8 * 256);
-        constexpr int saturation = static_cast<int>(0.7 * 256);
-        const int hue = static_cast<int>(count/ static_cast<double>(RANGE) * 360);
-
-        cols.emplace(std::make_pair(QString(buf), QColor::fromHsv(hue, saturation, value)));
-     }
-
     colors.clear();
-    for (auto& t : cols)
-    {
-        QColor const col  = t.second;
-        QColor const col2 = ResourceHandler::lightVersion(col);
-        colors.emplace(std::make_pair(t.first + ".dark", col));
-        colors.emplace(std::make_pair(t.first + ".light", col2));
-    }
 
     // UI colors
     {
@@ -108,4 +87,17 @@ ResourceHandler::getColor(QString const& str) const
     }
 
     return colors.at(str);
+}
+
+std::pair<QColor, QColor>
+ResourceHandler::getRainbowColor(size_t const& index, size_t const& range) const
+{
+    constexpr int value = static_cast<int>(0.8 * 256);
+    constexpr int saturation = static_cast<int>(0.7 * 256);
+    int const hue = static_cast<int>(index/static_cast<double>(range) * 360);
+
+    QColor const dark = QColor::fromHsv(hue, saturation, value);
+    QColor const light = dark.lighter(160);
+
+    return std::make_pair(dark, light);
 }

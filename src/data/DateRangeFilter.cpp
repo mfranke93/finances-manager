@@ -36,7 +36,6 @@ DateRangeFilter::DateRangeFilter(DateRangeFilter const& other)
 
 void
 DateRangeFilter::setRange(std::pair<QDate, QDate> const& range)
-throw(std::invalid_argument)
 {
     if (range.second.toJulianDay() < range.first.toJulianDay())
     {
@@ -51,7 +50,6 @@ throw(std::invalid_argument)
 
 void
 DateRangeFilter::setRange(QDate const& from, QDate const& to)
-throw(std::invalid_argument)
 {
     setRange(std::make_pair(from, to));
 }
