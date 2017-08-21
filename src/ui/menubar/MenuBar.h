@@ -5,7 +5,6 @@
 #pragma once
 
 #include <QtWidgets/QMenuBar>
-#include "../../version.h"
 
 class MenuBar : public QMenuBar
 {

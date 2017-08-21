@@ -87,7 +87,6 @@ add_executable(main main.cpp
     ui/tabs/PlotTab.h
     ui/tabs/TableTab.cpp
     ui/tabs/TableTab.h
-    version.h
         )
 target_link_libraries(main ${Qt5Widgets_LIBRARIES})
 target_link_libraries(main ${Qt5Sql_LIBRARIES})
