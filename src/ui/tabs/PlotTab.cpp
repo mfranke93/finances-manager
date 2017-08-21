@@ -83,16 +83,28 @@ PlotTab::rebuildCategories()
 {
     sideButtons->clearFilters();
 
+    size_t const range = []() -> size_t
+    {
+        QSqlQuery query (DbHandler::getInstance()->getDatabase());
+        query.exec("SELECT COUNT(name) AS count FROM Category;");
+        if (query.next())
+        {
+            return query.value("count").toInt();
+        }
+        else
+        {
+            throw 1;
+        }
+    }();
+
     QSqlQuery query (DbHandler::getInstance()->getDatabase());
     query.exec("SELECT name FROM Category ORDER BY name ASC;");
-    size_t counter = 1;
-    char buf[15];
+    size_t index = 0;
     while (query.next())
     {
-        QString name = query.value("name").toString();
-        std::sprintf(buf, "color%02lu.dark", counter++);
-        QColor c = ResourceHandler::getInstance()->getColor(QString(buf));
-
+        std::pair<QColor, QColor> const pair = ResourceHandler::getInstance()->getRainbowColor(index++, range);
+        QColor const c = pair.first;
+        QString const name = query.value("name").toString();
         sideButtons->addFilter(name, c);
     }
 }
