@@ -18,8 +18,8 @@ public:
     DateRangeFilter(DateRangeFilter const&);
     DateRangeFilter& operator= (DateRangeFilter const&) = default;
 
-    void setRange(std::pair<QDate, QDate> const&) throw(std::invalid_argument);
-    void setRange(QDate const&, QDate const&) throw(std::invalid_argument);
+    void setRange(std::pair<QDate, QDate> const&); 
+    void setRange(QDate const&, QDate const&);
 
     std::pair<QDate, QDate> const& range() const;
 

@@ -49,7 +49,7 @@ public:
 protected:
     void initColors();
 
-    static QColor lightVersion(QColor const&) throw();
+    static QColor lightVersion(QColor const&);
 
 private:
     ResourceHandler();

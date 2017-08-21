@@ -26,7 +26,6 @@ ResourceHandler::ResourceHandler()
 
 QColor
 ResourceHandler::lightVersion(QColor const& color)
-throw()
 {
     return color.lighter(160);
 }
