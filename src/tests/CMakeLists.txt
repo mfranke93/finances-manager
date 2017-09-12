@@ -16,6 +16,8 @@ add_executable(tests tests.cpp
         ../data/RangeConverter.cpp
         test_datefactory.cpp
         ../data/DateFactory.cpp
+        test_datetostringfactory.cpp
+        ../data/DateToStringFactory.cpp
         )
 
 #target_link_libraries(cdemo m) #link the math library
