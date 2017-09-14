@@ -3,6 +3,7 @@ CREATE TABLE Category (
     name        TEXT NOT NULL,
     UNIQUE (name)
 );
+
 CREATE TABLE Recipient (
     id          INTEGER     PRIMARY KEY AUTOINCREMENT,
     name        TEXT        NOT NULL,
@@ -10,6 +11,7 @@ CREATE TABLE Recipient (
     online      INTEGER     NOT NULL DEFAULT 0      CHECK(online IN (0, 1)),
     UNIQUE(name, address)
 );
+
 CREATE TABLE Item (
     id          INTEGER     PRIMARY KEY AUTOINCREMENT,
     name        TEXT        NOT NULL,
@@ -18,6 +20,7 @@ CREATE TABLE Item (
     price       FLOAT       NOT NULL,
     catid       INTEGER     NOT NULL    REFERENCES Category(id) ON DELETE RESTRICT
 );
+
 CREATE VIEW Expenditures AS
     SELECT  Item.name as Item,
             Category.name as Category, 
@@ -30,3 +33,17 @@ CREATE VIEW Expenditures AS
     JOIN Recipient
         ON Item.recid=Recipient.id
     ORDER BY Date ASC;
+
+CREATE TABLE ItemTemplate (
+    id          INTEGER     PRIMARY KEY AUTOINCREMENT,
+    date        TEXT        NOT NULL,
+    recid       INTEGER     NOT NULL    REFERENCES Recipient(id) ON DELETE RESTRICT
+);
+
+CREATE TABLE SubitemTemplate (
+    id          INTEGER     PRIMARY KEY AUTOINCREMENT,
+    name        TEXT        NOT NULL,
+    price       FLOAT       NOT NULL,
+    catid       INTEGER     NOT NULL    REFERENCES Category(id) ON DELETE RESTRICT,
+    templateid  INTEGER     NOT NULL    REFERENCES ItemTemplate(id) ON DELETE CASCADE
+);
