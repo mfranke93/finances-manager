@@ -16,11 +16,14 @@ TableTab::TableTab(QWidget * parent)
     bottom->addStretch(1);
     this->create = new QPushButton(tr("Create"));
     bottom->addWidget(this->create);
+    this->createFromTemplate = new QPushButton(tr("Create from template"));
+    bottom->addWidget(this->createFromTemplate);
     lay->addItem(bottom);
     this->setLayout(lay);
 
     this->connect(this->reload, SIGNAL(clicked()), this->table, SLOT(onPressReload()) );
     this->connect(this->create, SIGNAL(clicked()), SLOT(onPressCreate()));
+    connect(createFromTemplate, &QPushButton::clicked, this, &TableTab::onPressCreateFromTemplate);
     this->connect(DbHandler::getInstance(), SIGNAL(itemDataChanged()), this->table, SLOT(onPressReload()));
 }
 
@@ -34,8 +37,28 @@ TableTab::~TableTab()
 void
 TableTab::onPressCreate()
 {
+    std::unique_ptr<RecurrentItem> dummy;
+    showAddItemDialog(std::move(dummy));
+}
+
+void
+TableTab::onPressCreateFromTemplate()
+{
+    std::unique_ptr<RecurrentItem> recurrent = std::unique_ptr<RecurrentItem>(new RecurrentItem);
+    recurrent->name = "test";
+    recurrent->date = QDate(2012, 12, 24);
+    recurrent->recipientId = 12;
+    recurrent->categoryId = 1;
+    recurrent->price = "-12.14";
+    showAddItemDialog(std::move(recurrent));
+}
+
+void
+TableTab::showAddItemDialog(std::unique_ptr<RecurrentItem>&& recurrent)
+{
     DbHandler::getInstance()->getDatabase().transaction();
     AddItemDialog d (this, Qt::Dialog);
+    if (recurrent) d.populate(std::move(recurrent));
     d.setModal(true);
     d.exec();
 

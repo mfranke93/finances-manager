@@ -16,6 +16,8 @@ public:
 
     inline int const& getSelectedRecipientId() const { return mSelectedRecipientId; };
 
+    void setSelectedRecipientId(int const& recId);
+
 signals:
     void selectedRecipientIdChanged();
 

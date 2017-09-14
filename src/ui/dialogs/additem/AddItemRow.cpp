@@ -77,3 +77,14 @@ AddItemRow::onAnyContentChanged()
 {
     emit contentChanged();
 }
+
+void 
+AddItemRow::setValues(QString const& name, QString const& price, int const& categoryId)
+{
+    itemName->setText(name);
+    itemPrice->setText(price);
+    
+    int const index = itemCategory->findData(categoryId);
+    if (index != -1) itemCategory->setCurrentIndex(index);
+    else std::fprintf(stderr, "CategoryID %d not found for combo box.\n", categoryId);
+}

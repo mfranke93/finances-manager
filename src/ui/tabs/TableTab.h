@@ -10,6 +10,7 @@
 #include <QtWidgets/QPushButton>
 #include "ui/table/ExpenditureView.h"
 #include "data/DbHandler.h"
+#include "data/RecurrentItemTemplate.h"
 #include "ui/dialogs/AddItemDialog.h"
 
 class TableTab : public QWidget
@@ -22,11 +23,16 @@ public:
 
 protected slots:
     void onPressCreate();
+    void onPressCreateFromTemplate();
+
+protected:
+    void showAddItemDialog(std::unique_ptr<RecurrentItem>&& recurrent);
 
 private:
     ExpenditureView * table;
     QPushButton * reload;
     QPushButton * create;
+    QPushButton * createFromTemplate;
 };
 
 

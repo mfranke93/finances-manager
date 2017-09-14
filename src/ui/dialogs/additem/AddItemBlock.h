@@ -20,6 +20,8 @@ public:
     bool allRowsValid() const;
     std::vector<std::tuple<QString, QString, int>> getAllContents() const;
 
+    void populate(QString const&, QString const&, int const&);
+
 protected slots:
     void newRow();
     void childContentChanged();

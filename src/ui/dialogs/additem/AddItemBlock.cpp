@@ -65,3 +65,18 @@ AddItemBlock::getAllContents() const
     for (auto const& row : rows) vec.push_back(row->getValues());
     return vec;
 }
+
+void
+AddItemBlock::populate(QString const& name, QString const& price, int const& categoryId)
+{
+    while (rows.size() > 1) 
+    {
+        auto row = rows.back();
+        rows.pop_back();
+        delete row;
+    }
+
+    auto row = rows.front();
+    row->setValues(name, price, categoryId);
+    emit contentChanged();
+}
