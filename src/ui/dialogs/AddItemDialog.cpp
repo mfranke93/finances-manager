@@ -103,7 +103,7 @@ AddItemDialog::populate(std::unique_ptr<RecurrentItem>&& recurrent)
 {
     if (recurrent)
     {
-        addItemBlock->populate(recurrent->name, recurrent->price, recurrent->categoryId);
+        addItemBlock->populate(recurrent->subitems);
         dateEdit->setSelectedDate(recurrent->date);
         selectOrAddRecipientButton->setSelectedRecipientId(recurrent->recipientId);
 

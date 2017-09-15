@@ -35,15 +35,17 @@ CREATE VIEW Expenditures AS
     ORDER BY Date ASC;
 
 CREATE TABLE ItemTemplate (
-    id          INTEGER     PRIMARY KEY AUTOINCREMENT,
-    date        TEXT        NOT NULL,
-    recid       INTEGER     NOT NULL    REFERENCES Recipient(id) ON DELETE RESTRICT
+    id              INTEGER     PRIMARY KEY AUTOINCREMENT,
+    name            TEXT        NOT NULL,
+    datetemplate    TEXT        NOT NULL,
+    recid           INTEGER     NOT NULL    REFERENCES Recipient(id) ON DELETE RESTRICT,
+    UNIQUE(name)
 );
 
 CREATE TABLE SubitemTemplate (
-    id          INTEGER     PRIMARY KEY AUTOINCREMENT,
-    name        TEXT        NOT NULL,
-    price       FLOAT       NOT NULL,
-    catid       INTEGER     NOT NULL    REFERENCES Category(id) ON DELETE RESTRICT,
-    templateid  INTEGER     NOT NULL    REFERENCES ItemTemplate(id) ON DELETE CASCADE
+    id              INTEGER     PRIMARY KEY AUTOINCREMENT,
+    nametemplate    TEXT        NOT NULL,
+    price           FLOAT       NOT NULL,
+    catid           INTEGER     NOT NULL    REFERENCES Category(id) ON DELETE RESTRICT,
+    templateid      INTEGER     NOT NULL    REFERENCES ItemTemplate(id) ON DELETE CASCADE
 );

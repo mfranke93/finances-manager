@@ -9,6 +9,7 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QPushButton>
 #include "AddItemRow.h"
+#include "../../../data/RecurrentItemTemplate.h"
 
 class AddItemBlock : public QWidget
 {
@@ -20,7 +21,7 @@ public:
     bool allRowsValid() const;
     std::vector<std::tuple<QString, QString, int>> getAllContents() const;
 
-    void populate(QString const&, QString const&, int const&);
+    void populate(std::list<RecurrentSubitem> const& lstSubs);
 
 protected slots:
     void newRow();

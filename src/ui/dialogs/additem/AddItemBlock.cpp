@@ -67,16 +67,22 @@ AddItemBlock::getAllContents() const
 }
 
 void
-AddItemBlock::populate(QString const& name, QString const& price, int const& categoryId)
+AddItemBlock::populate(std::list<RecurrentSubitem> const& lstSubs)
 {
-    while (rows.size() > 1) 
+    std::for_each(rows.begin(), rows.end(), [&](AddItemRow * row) -> void 
+            { 
+                rowLayout->removeWidget(row);
+                delete row; 
+            });
+    rows.clear();
+
+    for (auto const& item : lstSubs)
     {
-        auto row = rows.back();
-        rows.pop_back();
-        delete row;
+        newRow();
+        rows.back()->setValues(item.name, item.price, item.categoryId);
     }
 
-    auto row = rows.front();
-    row->setValues(name, price, categoryId);
     emit contentChanged();
+    emit dialogNeedsResize();
+    repaint();
 }

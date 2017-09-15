@@ -33,14 +33,14 @@ public:
 public slots:
     void onClickOkay();
 
+    void onNeedResize();
+
 protected slots:
     /**
      * Check whether inserted data is valid:
      * price, name, recipient.
      */
     void checkCanAddItem();
-
-    void onNeedResize();
 
 private:
     AddItemBlock * addItemBlock;

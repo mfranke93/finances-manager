@@ -45,11 +45,26 @@ void
 TableTab::onPressCreateFromTemplate()
 {
     std::unique_ptr<RecurrentItem> recurrent = std::unique_ptr<RecurrentItem>(new RecurrentItem);
-    recurrent->name = "test";
+
     recurrent->date = QDate(2012, 12, 24);
     recurrent->recipientId = 12;
-    recurrent->categoryId = 1;
-    recurrent->price = "-12.14";
+
+    {
+        RecurrentSubitem item;
+        item.name = "test";
+        item.categoryId = 1;
+        item.price = "-12.14";
+        recurrent->subitems.push_back(item);
+    }
+
+    {
+        RecurrentSubitem item;
+        item.name = "test2";
+        item.categoryId = 5;
+        item.price = "100.00";
+        recurrent->subitems.push_back(item);
+    }
+
     showAddItemDialog(std::move(recurrent));
 }
 
@@ -60,6 +75,8 @@ TableTab::showAddItemDialog(std::unique_ptr<RecurrentItem>&& recurrent)
     AddItemDialog d (this, Qt::Dialog);
     if (recurrent) d.populate(std::move(recurrent));
     d.setModal(true);
+    d.show();
+    d.onNeedResize();
     d.exec();
 
     int result = d.result();

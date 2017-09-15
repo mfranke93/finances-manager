@@ -4,13 +4,18 @@
 
 #pragma once
 
-struct RecurrentItem
+struct RecurrentSubitem
 {
     QString name;
-    QDate date;
-    size_t recipientId;
     size_t categoryId;
     QString price;
+};
+
+struct RecurrentItem
+{
+    QDate date;
+    size_t recipientId;
+    std::list<RecurrentSubitem> subitems;
 };
 
 /**
@@ -23,16 +28,11 @@ struct RecurrentItem
 class RecurrentItemTemplate
 {
     public:
-        RecurrentItemTemplate(QString const& nameTemplate,
+        RecurrentItemTemplate(std::list<QString> const& nameTemplate,
                 QString const& dateTemplate,
                 size_t const& recipientId,
-                size_t const& categoryId,
-                QString const& price)
-            : nameFactory(nameTemplate),
-              dateFactory(dateTemplate),
-              recipientId(recipientId),
-              categoryId(categoryId),
-              price(price) {};
+                std::list<size_t> const& categoryId,
+                std::list<QString> const& price);
         ~RecurrentItemTemplate() = default;
         RecurrentItemTemplate(RecurrentItemTemplate const&) = default;
         RecurrentItemTemplate& operator= (RecurrentItemTemplate const&) = default;
@@ -40,9 +40,11 @@ class RecurrentItemTemplate
         RecurrentItem build(QDate const& date) const;
 
     private:
-        RecurrentItemNameFactory const nameFactory;;
         DateFactory const dateFactory;
         size_t  const recipientId;
-        size_t const categoryId;
-        QString const price;
+        std::list<std::tuple<
+            RecurrentItemNameFactory,
+            size_t,
+            QString
+                >> subitemFactory;
 };
