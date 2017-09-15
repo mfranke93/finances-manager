@@ -17,7 +17,7 @@ CREATE TABLE Item (
     name        TEXT        NOT NULL,
     recid       INTEGER     NOT NULL    REFERENCES Recipient(id) ON DELETE RESTRICT,
     date        TEXT        NOT NULL,
-    price       FLOAT       NOT NULL,
+    price       TEXT        NOT NULL,
     catid       INTEGER     NOT NULL    REFERENCES Category(id) ON DELETE RESTRICT
 );
 
@@ -45,7 +45,7 @@ CREATE TABLE ItemTemplate (
 CREATE TABLE SubitemTemplate (
     id              INTEGER     PRIMARY KEY AUTOINCREMENT,
     nametemplate    TEXT        NOT NULL,
-    price           FLOAT       NOT NULL,
+    price           TEXT        NOT NULL,
     catid           INTEGER     NOT NULL    REFERENCES Category(id) ON DELETE RESTRICT,
     templateid      INTEGER     NOT NULL    REFERENCES ItemTemplate(id) ON DELETE CASCADE
 );
