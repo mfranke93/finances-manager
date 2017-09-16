@@ -19,10 +19,24 @@ SelectRecurrentItemTemplateDialog::SelectRecurrentItemTemplateDialog(std::shared
     scroll->setViewport(table);
 
     layout->addWidget(scroll);
+
+    auto cancelLayout = new QHBoxLayout;
+    auto cancelButton = new QPushButton;
+    cancelButton->setText("Cancel");
+    cancelLayout->addWidget(cancelButton, 1);
+    cancelLayout->addStretch(1);
+    layout->addItem(cancelLayout);
+
     setLayout(layout);
+
+    setMinimumSize(300, 400);
+
+    setWindowTitle("Select recurrent item template");
 
     connect(table->selectionModel(), &QItemSelectionModel::selectionChanged,
             this, &SelectRecurrentItemTemplateDialog::onRowInTableSelected);
+    connect(cancelButton, &QPushButton::clicked,
+            this, &SelectRecurrentItemTemplateDialog::reject);
 }
 
 std::shared_ptr<RecurrentItem>
