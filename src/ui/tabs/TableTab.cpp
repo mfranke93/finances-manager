@@ -14,10 +14,11 @@ TableTab::TableTab(QWidget * parent)
     this->reload=new QPushButton(tr("Reload"));
     bottom->addWidget(this->reload);
     bottom->addStretch(1);
-    this->create = new QPushButton(tr("Create"));
-    bottom->addWidget(this->create);
     this->createFromTemplate = new QPushButton(tr("Create from template"));
     bottom->addWidget(this->createFromTemplate);
+    bottom->addItem(new QSpacerItem(5,0));
+    this->create = new QPushButton(tr("Create"));
+    bottom->addWidget(this->create);
     lay->addItem(bottom);
     this->setLayout(lay);
 
