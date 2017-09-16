@@ -37,39 +37,19 @@ TableTab::~TableTab()
 void
 TableTab::onPressCreate()
 {
-    std::unique_ptr<RecurrentItem> dummy;
-    showAddItemDialog(std::move(dummy));
+    std::shared_ptr<RecurrentItem> dummy;
+    showAddItemDialog(dummy);
 }
 
 void
 TableTab::onPressCreateFromTemplate()
 {
-    std::unique_ptr<RecurrentItem> recurrent = std::unique_ptr<RecurrentItem>(new RecurrentItem);
-
-    recurrent->date = QDate(2012, 12, 24);
-    recurrent->recipientId = 12;
-
-    {
-        RecurrentSubitem item;
-        item.name = "test";
-        item.categoryId = 1;
-        item.price = "-12.14";
-        recurrent->subitems.push_back(item);
-    }
-
-    {
-        RecurrentSubitem item;
-        item.name = "test2";
-        item.categoryId = 5;
-        item.price = "100.00";
-        recurrent->subitems.push_back(item);
-    }
-
-    showAddItemDialog(std::move(recurrent));
+    auto temp = SelectRecurrentItemTemplateDialog::getTemplate();
+    if (temp) showAddItemDialog(temp);
 }
 
 void
-TableTab::showAddItemDialog(std::unique_ptr<RecurrentItem>&& recurrent)
+TableTab::showAddItemDialog(std::shared_ptr<RecurrentItem> recurrent)
 {
     DbHandler::getInstance()->getDatabase().transaction();
     AddItemDialog d (this, Qt::Dialog);

@@ -85,6 +85,9 @@ AddItemRow::setValues(QString const& name, QString const& price, int const& cate
     itemPrice->setText(price);
     
     int const index = itemCategory->findData(categoryId);
-    if (index != -1) itemCategory->setCurrentIndex(index);
+    if (index != -1)
+    {
+        itemCategory->setCurrentIndex(index);
+    }
     else std::fprintf(stderr, "CategoryID %d not found for combo box.\n", categoryId);
 }

@@ -57,6 +57,8 @@ add_executable(main main.cpp
     ui/dialogs/AddRecipientDialog.h
     ui/dialogs/SearchRecipientDialog.cpp
     ui/dialogs/SearchRecipientDialog.h
+    ui/dialogs/SelectRecurrentItemTemplateDialog.cpp
+    ui/dialogs/SelectRecurrentItemTemplateDialog.h
     ui/dialogs/SettingsDialog.cpp
     ui/dialogs/SettingsDialog.h
     ui/dialogs/additem/AddItemBlock.cpp

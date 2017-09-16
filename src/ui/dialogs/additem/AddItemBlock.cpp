@@ -75,7 +75,6 @@ AddItemBlock::populate(std::list<RecurrentSubitem> const& lstSubs)
                 delete row; 
             });
     rows.clear();
-
     for (auto const& item : lstSubs)
     {
         newRow();

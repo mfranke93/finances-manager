@@ -28,7 +28,7 @@ public:
     AddItemDialog(QWidget * parent, Qt::WindowFlags const& f);
     ~AddItemDialog();
 
-    void populate(std::unique_ptr<RecurrentItem>&& recurrent);
+    void populate(std::shared_ptr<RecurrentItem> recurrent);
 
 public slots:
     void onClickOkay();

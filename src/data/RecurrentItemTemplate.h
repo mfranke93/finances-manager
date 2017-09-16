@@ -6,6 +6,11 @@
 
 struct RecurrentSubitem
 {
+    RecurrentSubitem() : name(""), categoryId(0), price("0.00") {};
+    RecurrentSubitem(RecurrentSubitem const& other)
+        : name(other.name), categoryId(other.categoryId), price(other.price) {};
+    RecurrentSubitem(RecurrentSubitem&& other)
+        : name(other.name), categoryId(other.categoryId), price(other.price) {};
     QString name;
     size_t categoryId;
     QString price;
@@ -13,6 +18,9 @@ struct RecurrentSubitem
 
 struct RecurrentItem
 {
+    RecurrentItem() : date(QDate()), recipientId(0), subitems() {};
+    RecurrentItem(RecurrentItem const&) = delete;
+    RecurrentItem(RecurrentItem&&) = delete;
     QDate date;
     size_t recipientId;
     std::list<RecurrentSubitem> subitems;
@@ -37,7 +45,7 @@ class RecurrentItemTemplate
         RecurrentItemTemplate(RecurrentItemTemplate const&) = default;
         RecurrentItemTemplate& operator= (RecurrentItemTemplate const&) = default;
 
-        RecurrentItem build(QDate const& date) const;
+        std::shared_ptr<RecurrentItem> build(QDate const& date) const;
 
     private:
         DateFactory const dateFactory;

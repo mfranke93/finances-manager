@@ -27,13 +27,13 @@ RecurrentItemTemplate::RecurrentItemTemplate(
     }
 }
 
-RecurrentItem
+std::shared_ptr<RecurrentItem>
 RecurrentItemTemplate::build(QDate const& date) const
 {
-    RecurrentItem item;
+    auto item = std::make_shared<RecurrentItem>();
     QDate const realdate = dateFactory.build(date);
-    item.date = realdate;
-    item.recipientId = recipientId;
+    item->date = realdate;
+    item->recipientId = recipientId;
 
     for (auto& it : subitemFactory)
     {
@@ -42,7 +42,7 @@ RecurrentItemTemplate::build(QDate const& date) const
         si.categoryId = std::get<1>(it);
         si.price = std::get<2>(it);
 
-        item.subitems.push_back(si);
+        item->subitems.push_back(si);
     }
 
     return item;

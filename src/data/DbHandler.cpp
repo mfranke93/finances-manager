@@ -217,3 +217,58 @@ DbHandler::restoreDatabaseFromFile(QString const& filename)
     emit dateRangeChanged(getDateRange());
 }
 
+std::shared_ptr<std::map<QString, RecurrentItemTemplate>>
+DbHandler::getRecurringTemplates()
+{
+    auto ret = std::make_shared<std::map<QString, RecurrentItemTemplate>>();
+
+    QString const queryStr ("SELECT * FROM ItemTemplate;");
+    QSqlQuery outer (database);
+    if (!outer.exec(queryStr))
+    {
+        std::fprintf(stderr, "Could not execute query: %s\n", database.lastError().text()
+                .toStdString().c_str());
+    }
+    else
+    {
+        while (outer.next())
+        {
+            QString const name = outer.value("name").toString();
+            QString const dateTemplate = outer.value("datetemplate").toString();
+            size_t const recid = outer.value("recid").toInt();
+            int const templateid = outer.value("id").toInt();
+
+            std::list<QString> nameTemplates;
+            std::list<QString> prices;
+            std::list<size_t> catids;
+
+            QSqlQuery inner (database);
+            inner.prepare("SELECT * FROM SubitemTemplate WHERE templateid = :templateid;");
+            inner.bindValue(":templateid", templateid);
+
+            if (inner.exec())
+            {
+                while (inner.next())
+                {
+                    QString const nameTemplate = inner.value("nametemplate").toString();
+                    QString const price        = inner.value("price").toString();
+                    size_t  const catid        = inner.value("catid").toInt();
+
+                    nameTemplates.push_back(nameTemplate);
+                    prices.push_back(price);
+                    catids.push_back(catid);
+                }
+            }
+
+            ret->emplace(name, RecurrentItemTemplate(
+                            nameTemplates,
+                            dateTemplate,
+                            recid,
+                            catids,
+                            prices
+                        ));
+        }
+    }
+
+    return std::move(ret);
+}

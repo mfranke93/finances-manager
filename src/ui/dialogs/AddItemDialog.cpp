@@ -99,7 +99,7 @@ AddItemDialog::onNeedResize()
 }
 
 void
-AddItemDialog::populate(std::unique_ptr<RecurrentItem>&& recurrent)
+AddItemDialog::populate(std::shared_ptr<RecurrentItem> recurrent)
 {
     if (recurrent)
     {

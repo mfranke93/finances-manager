@@ -12,6 +12,7 @@
 #include "data/DbHandler.h"
 #include "data/RecurrentItemTemplate.h"
 #include "ui/dialogs/AddItemDialog.h"
+#include "ui/dialogs/SelectRecurrentItemTemplateDialog.h"
 
 class TableTab : public QWidget
 {
@@ -26,7 +27,7 @@ protected slots:
     void onPressCreateFromTemplate();
 
 protected:
-    void showAddItemDialog(std::unique_ptr<RecurrentItem>&& recurrent);
+    void showAddItemDialog(std::shared_ptr<RecurrentItem> recurrent);
 
 private:
     ExpenditureView * table;
