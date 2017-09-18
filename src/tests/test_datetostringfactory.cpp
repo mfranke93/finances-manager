@@ -1,5 +1,6 @@
 #include "../third_party/catch/catch.hpp"
 #include "../data/DateToStringFactory.h"
+#include "helpers.h"
 
 TEST_CASE("DateToStringFactory::build(QString const&, QDate const&)", "[data]")
 {
@@ -40,6 +41,36 @@ TEST_CASE("DateToStringFactory::build(QString const&, QDate const&)", "[data]")
             test(QDate(2017, 12, 12), "12");
             test(QDate(2017, 12, 31), "31");
             test(QDate(1995, 4, 9), "09");
+        }
+
+        SECTION("\"d,+1d\"")
+        {
+            format = "d,+1d";
+
+            test(QDate(2017, 12, 1), "2");
+            test(QDate(2017, 12, 12), "13");
+            test(QDate(2017, 12, 31), "1");
+            test(QDate(1995, 4, 9), "10");
+        }
+
+        SECTION("\"d,-1d\"")
+        {
+            format = "d,-1d";
+
+            test(QDate(2017, 12, 1), "30");
+            test(QDate(2017, 12, 12), "11");
+            test(QDate(2017, 12, 31), "30");
+            test(QDate(1995, 4, 9), "8");
+        }
+
+        SECTION("\"d,+1w\"")
+        {
+            format = "d,+1w";
+
+            test(QDate(2017, 12, 1), "8");
+            test(QDate(2017, 12, 12), "19");
+            test(QDate(2017, 12, 31), "7");
+            test(QDate(1995, 4, 9), "16");
         }
     }
 
@@ -87,6 +118,39 @@ TEST_CASE("DateToStringFactory::build(QString const&, QDate const&)", "[data]")
             test(QDate(2017, 4, 12), "April");
             test(QDate(2001, 2, 28), "February");
             test(QDate(2001, 10, 28), "October");
+        }
+
+        SECTION("\"m,+1m\"")
+        {
+            format = "m,+1m";
+
+            test(QDate(2016, 12, 21), "1");
+            test(QDate(2013, 4, 2), "5");
+            test(QDate(2017, 4, 12), "5");
+            test(QDate(2001, 2, 28), "3");
+            test(QDate(2001, 10, 28), "11");
+        }
+
+        SECTION("\"mm,+1m\"")
+        {
+            format = "mm,+1m";
+
+            test(QDate(2016, 12, 21), "01");
+            test(QDate(2013, 4, 2), "05");
+            test(QDate(2017, 4, 12), "05");
+            test(QDate(2001, 2, 28), "03");
+            test(QDate(2001, 10, 28), "11");
+        }
+
+        SECTION("\"m,-1m\"")
+        {
+            format = "m,-1m";
+
+            test(QDate(2016, 12, 21), "11");
+            test(QDate(2013, 4, 2), "3");
+            test(QDate(2017, 4, 12), "3");
+            test(QDate(2001, 2, 28), "1");
+            test(QDate(2001, 10, 28), "9");
         }
     }
 
@@ -177,6 +241,21 @@ TEST_CASE("DateToStringFactory::build(QString const&, QDate const&)", "[data]")
             test(QDate(2002, 12, 31), "1");     // ISO 8601
         }
 
+        SECTION("\"w,-2w\"")
+        {
+            format = "w,-2w";
+
+            test(QDate(2012, 3, 14), "9");
+            test(QDate(2011, 12, 9), "47");
+            test(QDate(2010, 11, 12), "43");
+            test(QDate(2003, 7, 1), "25");
+            test(QDate(1999, 2, 4), "3");
+            test(QDate(1999, 1, 8), "52");
+            test(QDate(2004, 12, 31), "51");
+            test(QDate(2000, 1, 1), "50");      // ISO 8601
+            test(QDate(2002, 12, 31), "51");     // ISO 8601
+        }
+
         SECTION("\"ww\"")
         {
             format = "ww";
@@ -219,6 +298,19 @@ TEST_CASE("DateToStringFactory::build(QString const&, QDate const&)", "[data]")
             test(QDate(2017, 9, 15), "Fri");
             test(QDate(2017, 9, 16), "Sat");
             test(QDate(2017, 9, 17), "Sun");
+        }
+
+        SECTION("\"wdd,+2d\"")
+        {
+            format = "wdd,+2d";
+
+            test(QDate(2017, 9, 11), "Wed");
+            test(QDate(2017, 9, 12), "Thu");
+            test(QDate(2017, 9, 13), "Fri");
+            test(QDate(2017, 9, 14), "Sat");
+            test(QDate(2017, 9, 15), "Sun");
+            test(QDate(2017, 9, 16), "Mon");
+            test(QDate(2017, 9, 17), "Tue");
         }
 
         SECTION("\"weekday\"")

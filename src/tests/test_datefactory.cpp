@@ -1,17 +1,6 @@
 #include "../third_party/catch/catch.hpp"
 #include "../data/DateFactory.h"
-
-std::ostream& operator<< (std::ostream& s, QDate const& d)
-{
-    s << d.year() << "-";
-    int const month = d.month();
-    if (month < 10) s << "0";
-    s << std::to_string(month) << "-";
-    int const day = d.day();
-    if (day < 10) s << "0";
-    s << std::to_string(day);
-    return s;
-};
+#include "helpers.h"
 
 TEST_CASE("DateFactory::build(QDate const&)", "[data]")
 {

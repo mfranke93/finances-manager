@@ -5,6 +5,7 @@
 #include <QDate>
 #include "../third_party/catch/catch.hpp"
 #include "../data/DateRangeFilter.h"
+#include "helpers.h"
 
 TEST_CASE("DateRangeFilter::DateRangeFilter(std::pair<QDate, QDate> const&)", "[data]")
 {
