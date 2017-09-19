@@ -12,6 +12,17 @@ namespace templates
     constexpr static char const * const LAST_OF_MONTH { "LOM" };
     constexpr static char const * const LAST_WORKDAY_OF_MONTH { "LWOM" };
     constexpr static char const * const LAST_OF_MONTH_OR_NEXT_WORKDAY { "LOMNW" };
+
+    namespace weekdays 
+    {
+        constexpr static char const * const MONDAY { "Monday" };
+        constexpr static char const * const TUESDAY { "Tuesday" };
+        constexpr static char const * const WEDNESDAY { "Wednesday" };
+        constexpr static char const * const THURSDAY { "Thursday" };
+        constexpr static char const * const FRIDAY { "Friday" };
+        constexpr static char const * const SATURDAY { "Saturday" };
+        constexpr static char const * const SUNDAY { "Sunday" };
+    };
 };
 
 /**
@@ -81,6 +92,15 @@ class DateFactory
          * \return      Last day of month for month in date, or next workday
          */
         QDate lastOfMonthOrNextWorkday(QDate const&) const;
+
+        /**
+         * Set the weekday to the passed one.
+         *
+         * \param       Date
+         * \param       Day of week (1..7) to set
+         * \return      Date, but weekday set to passed DOW in same week
+         */
+        QDate setWeekday(QDate const&, int const&) const;
 
     private:
         /**

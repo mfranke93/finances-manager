@@ -176,4 +176,23 @@ TEST_CASE("DateFactory::build(QDate const&)", "[data]")
         testMonth(2017, 12, 31);
         testMonth(2016, 2, 29);
     }
+
+    SECTION("Set weekday")
+    {
+        auto testWeekday = [](int year, int month, int day, QString expr, int yshould, int mshould, int dshould) -> void
+        {
+            QDate should (yshould, mshould, dshould);
+            QDate now (year, month, day);
+            DateFactory d (expr);
+            REQUIRE(d.build(now) == should);
+        };
+
+        testWeekday(2017, 9, 19, "Monday", 2017, 9, 18);
+        testWeekday(2017, 9, 19, "Tuesday", 2017, 9, 19);
+        testWeekday(2017, 9, 19, "Wednesday", 2017, 9, 20);
+        testWeekday(2017, 9, 19, "Thursday", 2017, 9, 21);
+        testWeekday(2017, 9, 19, "Friday", 2017, 9, 22);
+        testWeekday(2017, 9, 19, "Saturday", 2017, 9, 23);
+        testWeekday(2017, 9, 19, "Sunday", 2017, 9, 24);
+    }
 }

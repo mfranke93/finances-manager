@@ -34,6 +34,14 @@ DateFactory::build(QDate const& now) const
         return lastOfMonthOrNextWorkday(now);
     }
 
+    if (templateString == templates::weekdays::MONDAY ) return setWeekday(now, 1);
+    if (templateString == templates::weekdays::TUESDAY ) return setWeekday(now, 2);
+    if (templateString == templates::weekdays::WEDNESDAY) return setWeekday(now, 3);
+    if (templateString == templates::weekdays::THURSDAY ) return setWeekday(now, 4);
+    if (templateString == templates::weekdays::FRIDAY ) return setWeekday(now, 5);
+    if (templateString == templates::weekdays::SATURDAY ) return setWeekday(now, 6);
+    if (templateString == templates::weekdays::SUNDAY ) return setWeekday(now, 7);
+
     // assume date
     bool okay;
     int dayOfMonth = templateString.toInt(&okay);
@@ -87,3 +95,9 @@ DateFactory::lastOfMonthOrNextWorkday(QDate const& now)  const
     else return lom;
 }
 
+QDate
+DateFactory::setWeekday(QDate const& now, int const& dow) const
+{
+    int const nowDow = now.dayOfWeek();
+    return now.addDays(dow - nowDow);
+}
