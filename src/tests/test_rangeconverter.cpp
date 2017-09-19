@@ -4,6 +4,7 @@
 
 #include "../third_party/catch/catch.hpp"
 #include "../data/RangeConverter.h"
+#include "helpers.h"
 
 TEST_CASE("RangeConverter<double, int>", "[data]")
 {

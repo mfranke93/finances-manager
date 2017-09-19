@@ -9,11 +9,15 @@ set(CMAKE_AUTOMOC ON)
 include_directories(${FINANCES_SOURCE_DIR}/src/tests)
 link_directories(${FINANCES_BINARY_DIR}/src/tests)
 
-add_executable(tests tests.cpp
+add_executable(tests tests.cpp helpers.cpp
         test_daterangefilter.cpp
         ../data/DateRangeFilter.cpp
         test_rangeconverter.cpp
         ../data/RangeConverter.cpp
+        test_datefactory.cpp
+        ../data/DateFactory.cpp
+        test_datetostringfactory.cpp
+        ../data/DateToStringFactory.cpp
         )
 
 #target_link_libraries(cdemo m) #link the math library

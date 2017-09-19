@@ -97,3 +97,20 @@ AddItemDialog::onNeedResize()
 {
     resize(sizeHint());
 }
+
+void
+AddItemDialog::populate(std::shared_ptr<RecurrentItem> recurrent)
+{
+    if (recurrent)
+    {
+        addItemBlock->populate(recurrent->subitems);
+        dateEdit->setSelectedDate(recurrent->date);
+        selectOrAddRecipientButton->setSelectedRecipientId(recurrent->recipientId);
+
+        checkCanAddItem();
+    }
+    else
+    {
+        std::fprintf(stderr, "populate() called with non-active unique_ptr!\n");
+    }
+}
