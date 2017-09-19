@@ -55,6 +55,20 @@ class DateToStringFactory
          */
         QString build(QString const& format, QDate const& date) const;
 
+        /**
+         * Transform a date instance according to the transformation string passed. 
+         *
+         * Examples for the transformation strings are
+         *      +1m             Add one month (keep day of month if possible).
+         *      -2d             Subtract two days
+         *      +1w             Add one week (7 days)
+         *
+         * \param date              Date to transform, in place
+         * \param transformation    Transformation string
+         * \return                  Transformed date
+         */
+        QDate transform(QDate const& date, QString const& transformation) const;
+
     private:
         /**
          * Mapping from format arguments to functions to create QStrings.

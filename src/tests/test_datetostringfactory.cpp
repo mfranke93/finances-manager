@@ -72,6 +72,46 @@ TEST_CASE("DateToStringFactory::build(QString const&, QDate const&)", "[data]")
             test(QDate(2017, 12, 31), "7");
             test(QDate(1995, 4, 9), "16");
         }
+
+        SECTION("\"d,+1w,-7d\"")
+        {
+            format = "d,+1w,-7d";
+
+            test(QDate(2017, 12, 1), "1");
+            test(QDate(2017, 12, 12), "12");
+            test(QDate(2017, 12, 31), "31");
+            test(QDate(1995, 4, 9), "9");
+        }
+
+        SECTION("\"d,+1w,-3d\"")
+        {
+            format = "d,+1w,-3d";
+
+            test(QDate(2017, 12, 1), "5");
+            test(QDate(2017, 12, 12), "16");
+            test(QDate(2017, 12, 31), "4");
+            test(QDate(1995, 4, 9), "13");
+        }
+
+        SECTION("\"d,-12d,+2w\"")
+        {
+            format = "d,-12d,+2w";
+
+            test(QDate(2017, 12, 1), "3");
+            test(QDate(2017, 12, 12), "14");
+            test(QDate(2017, 12, 31), "2");
+            test(QDate(1995, 4, 9), "11");
+        }
+
+        SECTION("\"d,+1d,-1d\"")
+        {
+            format = "d,+1d,-1d";
+
+            test(QDate(2017, 12, 1), "1");
+            test(QDate(2017, 12, 12), "12");
+            test(QDate(2017, 12, 31), "31");
+            test(QDate(1995, 4, 9), "9");
+        }
     }
 
     SECTION("Month")

@@ -137,11 +137,59 @@ DateToStringFactory::DateToStringFactory()
 QString
 DateToStringFactory::build(QString const& format, QDate const& date) const
 {
-    auto it = mapping->find(format);
+    QStringList lst = format.split(QString(","));
+    QString fmt = lst.front();
+    lst.pop_front();
+
+    QDate d (date);
+    for (QString const& s : lst)
+    {
+        d = transform(d, s);
+    }
+
+    auto it = mapping->find(fmt);
     if (it == mapping->end())
     {
         return QString("err: '") + format + "'";
     }
 
-    return mapping->at(format)(date);
+    return (it->second)(d);
+}
+
+QDate
+DateToStringFactory::transform(QDate const& date, QString const& transformation) const
+{
+    QRegExp rx ("^([+-]\\d+)([dwmy])$");
+    int idx = rx.indexIn(transformation);
+    if (idx == -1)
+    {
+        std::fprintf(stderr, "Could not parse transformation: \"%s\"\n",
+                transformation.toStdString().c_str());
+    }
+    QString count = rx.cap(1);
+    QString unit  = rx.cap(2);
+
+    int offset = count.toInt();
+    if (unit == QString("d"))
+    {
+        return date.addDays(offset);
+    }
+    else if (unit == QString("w"))
+    {
+        return date.addDays(7*offset);
+    }
+    else if (unit == QString("m"))
+    {
+        return date.addMonths(offset);
+    }
+    else if (unit == QString("y"))
+    {
+        return date.addYears(offset);
+    }
+    else
+    {
+        std::fprintf(stderr, "Could not parse transformation: \"%s\"\n",
+                transformation.toStdString().c_str());
+        return date;
+    }
 }
