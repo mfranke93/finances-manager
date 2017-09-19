@@ -5,19 +5,20 @@
 #include <QDate>
 #include "../third_party/catch/catch.hpp"
 #include "../data/DateRangeFilter.h"
+#include "helpers.h"
 
 TEST_CASE("DateRangeFilter::DateRangeFilter(std::pair<QDate, QDate> const&)", "[data]")
 {
     SECTION("Constructing with valid values")
     {
         std::pair<QDate, QDate> dateRange = std::make_pair(QDate(2016, 12, 24), QDate(2017, 01, 14));
-        REQUIRE_NOTHROW(DateRangeFilter f (dateRange));
+        REQUIRE_NOTHROW(DateRangeFilter (dateRange));
     }
 
     SECTION("Constructing with invalid values")
     {
         std::pair<QDate, QDate> dateRange = std::make_pair(QDate(2018, 12, 24), QDate(2017, 01, 14));
-        REQUIRE_THROWS_AS(DateRangeFilter f (dateRange), std::invalid_argument);
+        REQUIRE_THROWS_AS(DateRangeFilter (dateRange), std::invalid_argument);
     }
 }
 
@@ -26,14 +27,14 @@ TEST_CASE("DateRangeFilter::DateRangeFilter(QDate const&, QDate const&)", "[data
     SECTION("Constructing with valid values")
     {
         std::pair<QDate, QDate> dateRange = std::make_pair(QDate(2016, 12, 24), QDate(2017, 01, 14));
-        REQUIRE_NOTHROW(DateRangeFilter f (dateRange.first, dateRange.second));
+        REQUIRE_NOTHROW(DateRangeFilter (dateRange.first, dateRange.second));
     }
 
     SECTION("Constructing with invalid values")
     {
         std::pair<QDate, QDate> dateRange = std::make_pair(QDate(2018, 12, 24), QDate(2017, 01, 14));
-        REQUIRE_THROWS_AS(DateRangeFilter f (dateRange.first, dateRange.second), std::invalid_argument);
-        REQUIRE_NOTHROW(DateRangeFilter f (dateRange.second, dateRange.first));
+        REQUIRE_THROWS_AS(DateRangeFilter (dateRange.first, dateRange.second), std::invalid_argument);
+        REQUIRE_NOTHROW(DateRangeFilter (dateRange.second, dateRange.first));
     }
 }
 

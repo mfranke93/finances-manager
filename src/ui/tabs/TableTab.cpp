@@ -14,6 +14,9 @@ TableTab::TableTab(QWidget * parent)
     this->reload=new QPushButton(tr("Reload"));
     bottom->addWidget(this->reload);
     bottom->addStretch(1);
+    this->createFromTemplate = new QPushButton(tr("Create from template"));
+    bottom->addWidget(this->createFromTemplate);
+    bottom->addItem(new QSpacerItem(5,0));
     this->create = new QPushButton(tr("Create"));
     bottom->addWidget(this->create);
     lay->addItem(bottom);
@@ -21,6 +24,7 @@ TableTab::TableTab(QWidget * parent)
 
     this->connect(this->reload, SIGNAL(clicked()), this->table, SLOT(onPressReload()) );
     this->connect(this->create, SIGNAL(clicked()), SLOT(onPressCreate()));
+    connect(createFromTemplate, &QPushButton::clicked, this, &TableTab::onPressCreateFromTemplate);
     this->connect(DbHandler::getInstance(), SIGNAL(itemDataChanged()), this->table, SLOT(onPressReload()));
 }
 
@@ -34,9 +38,26 @@ TableTab::~TableTab()
 void
 TableTab::onPressCreate()
 {
+    std::shared_ptr<RecurrentItem> dummy;
+    showAddItemDialog(dummy);
+}
+
+void
+TableTab::onPressCreateFromTemplate()
+{
+    auto temp = SelectRecurrentItemTemplateDialog::getTemplate();
+    if (temp) showAddItemDialog(temp);
+}
+
+void
+TableTab::showAddItemDialog(std::shared_ptr<RecurrentItem> recurrent)
+{
     DbHandler::getInstance()->getDatabase().transaction();
     AddItemDialog d (this, Qt::Dialog);
+    if (recurrent) d.populate(std::move(recurrent));
     d.setModal(true);
+    d.show();
+    d.onNeedResize();
     d.exec();
 
     int result = d.result();

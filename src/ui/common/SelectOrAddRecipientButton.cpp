@@ -35,3 +35,12 @@ SelectOrAddRecipientButton::onClick()
 
     emit selectedRecipientIdChanged();
 }
+
+void
+SelectOrAddRecipientButton::setSelectedRecipientId(int const& recId)
+{
+    mSelectedRecipientId = recId;
+    setText(DbHandler::getInstance()->getRecipientStringFromId(mSelectedRecipientId));
+    setStyleSheet("color: black; frame: none;");
+    emit selectedRecipientIdChanged();
+}

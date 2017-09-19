@@ -23,6 +23,8 @@ public:
     bool rowValid() const;
     std::tuple<QString, QString, int> getValues() const;
 
+    void setValues(QString const&, QString const&, int const&);
+
 signals:
     void contentChanged();
 

@@ -65,3 +65,23 @@ AddItemBlock::getAllContents() const
     for (auto const& row : rows) vec.push_back(row->getValues());
     return vec;
 }
+
+void
+AddItemBlock::populate(std::list<RecurrentSubitem> const& lstSubs)
+{
+    std::for_each(rows.begin(), rows.end(), [&](AddItemRow * row) -> void 
+            { 
+                rowLayout->removeWidget(row);
+                delete row; 
+            });
+    rows.clear();
+    for (auto const& item : lstSubs)
+    {
+        newRow();
+        rows.back()->setValues(item.name, item.price, item.categoryId);
+    }
+
+    emit contentChanged();
+    emit dialogNeedsResize();
+    repaint();
+}

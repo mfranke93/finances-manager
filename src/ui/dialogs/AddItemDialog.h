@@ -15,9 +15,10 @@
 #include <QtWidgets/QCalendarWidget>
 #include <QtWidgets/QLabel>
 #include <QtSql/QSqlError>
-#include <ui/common/SelectOrAddRecipientButton.h>
-#include <ui/dialogs/additem/AddItemRow.h>
-#include <ui/dialogs/additem/AddItemBlock.h>
+#include "data/RecurrentItemTemplate.h"
+#include "ui/common/SelectOrAddRecipientButton.h"
+#include "ui/dialogs/additem/AddItemRow.h"
+#include "ui/dialogs/additem/AddItemBlock.h"
 
 class AddItemDialog : public QDialog
 {
@@ -27,8 +28,12 @@ public:
     AddItemDialog(QWidget * parent, Qt::WindowFlags const& f);
     ~AddItemDialog();
 
+    void populate(std::shared_ptr<RecurrentItem> recurrent);
+
 public slots:
     void onClickOkay();
+
+    void onNeedResize();
 
 protected slots:
     /**
@@ -36,8 +41,6 @@ protected slots:
      * price, name, recipient.
      */
     void checkCanAddItem();
-
-    void onNeedResize();
 
 private:
     AddItemBlock * addItemBlock;

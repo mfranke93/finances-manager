@@ -15,6 +15,8 @@
 #include <QFile>
 #include <QTextStream>
 
+#include "RecurrentItemTemplate.h"
+
 class DbHandler : public QObject
 {
     Q_OBJECT
@@ -45,6 +47,8 @@ public:
     QString getRecipientStringFromId(int const recId) const;
 
     void restoreDatabaseFromFile(QString const& fileName);
+
+    std::shared_ptr<std::map<QString, RecurrentItemTemplate>> getRecurringTemplates();
 
 signals:
     void itemDataChanged();
