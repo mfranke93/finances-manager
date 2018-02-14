@@ -5,6 +5,12 @@
 #pragma once
 
 #include <QtWidgets/QMenuBar>
+#include <array>
+
+/**
+ * Get an x-terminal-emulator.
+ */
+QString term();
 
 class MenuBar : public QMenuBar
 {

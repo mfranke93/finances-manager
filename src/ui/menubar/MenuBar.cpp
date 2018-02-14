@@ -12,6 +12,45 @@
 #include <QtCore/QProcess>
 #include "MenuBar.h"
 
+QString
+term()
+{
+    static QString installed_terminal_emulator = []() -> QString
+    {
+        std::vector<QString> const terms {
+            "x-terminal-emulator",          // symlink on many systems with update-alternatives installed
+            "st",                           // suckless terminal
+            "termite",
+            "uxterm",                       // xterm-unicode
+            "xterm",
+            "urxvt",                        // rxvt-unicode
+            "rxvt",
+            "konsole",
+            "lxterminal"
+        };
+
+        for (auto const& t : terms)
+        {
+            // check which(1) output
+            QString const execStr ("which " + t);
+            QProcess process;
+            process.start(execStr);
+            process.waitForFinished(30000);
+
+            // if success, return
+            if (process.exitStatus() == QProcess::ExitStatus::NormalExit
+                    && process.exitCode() == 0)
+            {
+                return QString(process.readAllStandardOutput()).trimmed();
+            }
+        }
+
+        // if all else fails, fail
+        return "/bin/false";
+    }();
+    return installed_terminal_emulator;
+}
+
 MenuBar::MenuBar()
 {
     // ctor
@@ -53,7 +92,7 @@ MenuBar::makeDataBackup()
     QString dbLocation = SettingsManager::getInstance()->databaseLocation();
     QString backupScript = SettingsManager::getInstance()->backupScriptPath();
 
-    QString execStr = QString("/usr/bin/urxvt -e zsh -c \"") + backupScript + " " + dbLocation + "\"";
+    QString execStr = QString(term() + " -e zsh -c \"") + backupScript + " " + dbLocation + "\"";
 
     QProcess process;
     process.start(execStr);
@@ -85,7 +124,7 @@ MenuBar::restoreDataBackup()
 
     // use backup restore script to extract data out to directory
     {
-        QString const execStr ("/usr/bin/urxvt -e zsh -c \"" + backupRestoreScript + " " + backup + " " + tmpdir + "\"");
+        QString const execStr (term() + " -e zsh -c \"" + backupRestoreScript + " " + backup + " " + tmpdir + "\"");
         QProcess process;
         process.start(execStr);
         process.waitForFinished();

@@ -1,4 +1,4 @@
-#include <QtWidgets/QApplication>
+#include <QtWidgets>
 #include "data/DbHandler.h"
 #include "ui/MainWindow.h"
 
