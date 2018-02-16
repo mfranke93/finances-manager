@@ -5,6 +5,8 @@ find_package(Qt5Widgets)
 include_directories(Qt5Widgets_INCLUDE_DIR)
 find_package(Qt5Sql)
 include_directories(Qt5Sql_INCLUDE_DIR)
+find_package(Qt5Charts)
+include_directories(Qt5Charts_INCLUDE_DIR)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -102,5 +104,6 @@ add_executable(main main.cpp
         )
 target_link_libraries(main ${Qt5Widgets_LIBRARIES})
 target_link_libraries(main ${Qt5Sql_LIBRARIES})
+target_link_libraries(main ${Qt5Charts_LIBRARIES})
 
 
