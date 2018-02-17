@@ -18,6 +18,8 @@ add_executable(tests tests.cpp helpers.cpp
         ../data/DateFactory.cpp
         test_datetostringfactory.cpp
         ../data/DateToStringFactory.cpp
+        test_filters.cpp
+        ../plotting/Filters.cpp
         )
 
 #target_link_libraries(cdemo m) #link the math library
