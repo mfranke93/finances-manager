@@ -4,16 +4,22 @@
 
 #pragma once
 
+class RawItemFilter
+{
+    public:
+        virtual bool operator()(RawItem const&) = 0;
+};
+
 namespace detail {
     template<bool equalsOk>
-    class DateGreaterThanOrEqual
+    class DateGreaterThanOrEqual : public RawItemFilter
     {
         public:
         DateGreaterThanOrEqual(QDate border_)
             : border(border_) {};
         ~DateGreaterThanOrEqual() = default;
 
-        bool operator()(RawItem const& other)
+        bool operator()(RawItem const& other) override
         {
             if (equalsOk) return other.date >= border;
             return other.date > border;
@@ -24,14 +30,14 @@ namespace detail {
     };
 
     template<bool equalsOk>
-    class DateLessThanOrEqual
+    class DateLessThanOrEqual : public RawItemFilter
     {
         public:
         DateLessThanOrEqual(QDate border_)
             : border(border_) {};
         ~DateLessThanOrEqual() = default;
 
-        bool operator()(RawItem const& other)
+        bool operator()(RawItem const& other) override
         {
             if (equalsOk) return other.date <= border;
             return other.date < border;
@@ -40,6 +46,8 @@ namespace detail {
         private:
         QDate border;
     };
+
+
 }
 
 using DateGreaterThan = detail::DateGreaterThanOrEqual<false>;
