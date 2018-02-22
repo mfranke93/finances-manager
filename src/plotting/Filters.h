@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <memory>
 
 #include "RawItem.h"
 
@@ -15,8 +16,9 @@ namespace detail {
     class DateGreaterThanOrEqual : public RawItemFilter
     {
         public:
-        DateGreaterThanOrEqual(QDate border_)
-            : border(border_) {};
+        DateGreaterThanOrEqual(QDate const& border_)
+            : border(border_) { };
+
         ~DateGreaterThanOrEqual() = default;
 
         bool operator()(RawItem const& other) override
@@ -33,8 +35,8 @@ namespace detail {
     class DateLessThanOrEqual : public RawItemFilter
     {
         public:
-        DateLessThanOrEqual(QDate border_)
-            : border(border_) {};
+        DateLessThanOrEqual(QDate const& border_)
+            : border(border_) { };
         ~DateLessThanOrEqual() = default;
 
         bool operator()(RawItem const& other) override
@@ -46,11 +48,24 @@ namespace detail {
         private:
         QDate border;
     };
-
-
 }
 
 using DateGreaterThan = detail::DateGreaterThanOrEqual<false>;
 using DateGreaterEqual = detail::DateGreaterThanOrEqual<true>;
 using DateLessThan = detail::DateLessThanOrEqual<false>;
 using DateLessEqual = detail::DateLessThanOrEqual<true>;
+
+class DisjunctionFilter : public RawItemFilter
+{
+    public:
+        DisjunctionFilter() = default;
+        ~DisjunctionFilter() = default;
+
+        bool operator()(RawItem const&) override;
+
+        void clear();
+        void addFilter(std::shared_ptr<RawItemFilter>);
+
+    private:
+        std::vector<std::shared_ptr<RawItemFilter>> filters;
+};
