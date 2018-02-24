@@ -35,3 +35,13 @@ ConjunctionFilter::operator()(RawItem const& item)
                 return (*filter)(item);
             });
 }
+
+NegationFilter::NegationFilter(std::shared_ptr<RawItemFilter> filter_)
+:   filter(filter_)
+{}
+
+bool
+NegationFilter::operator()(RawItem const& item)
+{
+    return !(*filter)(item);
+}

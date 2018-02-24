@@ -297,3 +297,36 @@ TEST_CASE("ConjunctionFilter::operator()(QDate const&)", "[plotting]")
         }
     }
 }
+
+TEST_CASE("NegationFilter::operator()(QDate const&)", "[plotting]")
+{
+    RawItem dummy {};
+    auto true_ = std::make_shared<true_type>();
+    auto false_ = std::make_shared<false_type>();
+
+    SECTION("Not true")
+    {
+        NegationFilter f (true_);
+        REQUIRE(!f(dummy));
+    }
+
+    SECTION("Not false")
+    {
+        NegationFilter f (false_);
+        REQUIRE(f(dummy));
+    }
+
+    SECTION("Not not true")
+    {
+        auto f_ = std::make_shared<NegationFilter>(true_);
+        NegationFilter f (f_);
+        REQUIRE(f(dummy));
+    }
+
+    SECTION("Not not false")
+    {
+        auto f_ = std::make_shared<NegationFilter>(false_);
+        NegationFilter f (f_);
+        REQUIRE(!f(dummy));
+    }
+}

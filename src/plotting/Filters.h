@@ -85,3 +85,15 @@ class ConjunctionFilter : public CompoundFilter
 
         bool operator()(RawItem const&) override;
 };
+
+class NegationFilter : public RawItemFilter
+{
+    public:
+        NegationFilter(std::shared_ptr<RawItemFilter>);
+        ~NegationFilter() = default;
+
+        bool operator()(RawItem const&) override;
+
+    private:
+        std::shared_ptr<RawItemFilter> filter;
+};
