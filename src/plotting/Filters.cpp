@@ -13,13 +13,25 @@ DisjunctionFilter::operator()(RawItem const& item)
 }
 
 void
-DisjunctionFilter::clear()
+CompoundFilter::clear()
 {
     filters.clear();
 }
 
 void
-DisjunctionFilter::addFilter(std::shared_ptr<RawItemFilter> filter)
+CompoundFilter::addFilter(std::shared_ptr<RawItemFilter> filter)
 {
     filters.push_back(filter);
+}
+
+bool
+ConjunctionFilter::operator()(RawItem const& item)
+{
+    return std::all_of(filters.begin(),
+            filters.end(),
+            [item](std::shared_ptr<RawItemFilter> filter) -> bool
+            {
+                if (!filter) return false;
+                return (*filter)(item);
+            });
 }

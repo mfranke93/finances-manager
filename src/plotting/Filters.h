@@ -55,17 +55,33 @@ using DateGreaterEqual = detail::DateGreaterThanOrEqual<true>;
 using DateLessThan = detail::DateLessThanOrEqual<false>;
 using DateLessEqual = detail::DateLessThanOrEqual<true>;
 
-class DisjunctionFilter : public RawItemFilter
+class CompoundFilter : public RawItemFilter
+{
+    public:
+        CompoundFilter() = default;
+        virtual ~CompoundFilter() = default;
+
+        void clear();
+        void addFilter(std::shared_ptr<RawItemFilter>);
+
+    protected:
+        std::vector<std::shared_ptr<RawItemFilter>> filters;
+};
+
+class DisjunctionFilter : public CompoundFilter
 {
     public:
         DisjunctionFilter() = default;
         ~DisjunctionFilter() = default;
 
         bool operator()(RawItem const&) override;
+};
 
-        void clear();
-        void addFilter(std::shared_ptr<RawItemFilter>);
+class ConjunctionFilter : public CompoundFilter
+{
+    public:
+        ConjunctionFilter() = default;
+        ~ConjunctionFilter() = default;
 
-    private:
-        std::vector<std::shared_ptr<RawItemFilter>> filters;
+        bool operator()(RawItem const&) override;
 };
