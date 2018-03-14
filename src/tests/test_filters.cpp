@@ -330,3 +330,47 @@ TEST_CASE("NegationFilter::operator()(QDate const&)", "[plotting]")
         REQUIRE(!f(dummy));
     }
 }
+
+TEST_CASE("MonthFilter::operator()(QDate const&)", "[plotting]")
+{
+    std::vector<RawItem> items = {
+        { QDate(2017, 1, 1), 22, 71, 99.26 },
+        { QDate(2017, 1, 2), 32, 22, 12.18 },
+        { QDate(2017, 1, 3), 19, 27, 15.87 },
+        { QDate(2017, 1, 4), 25, 18, 19.54 },
+        { QDate(2017, 2, 5), 22, 12, 50.11 },
+        { QDate(2017, 2, 6), 25, 54, 74.13 },
+        { QDate(2017, 2, 7), 24, 39, 17.16 },
+        { QDate(2017, 2, 8), 20, 22, 05.36 },
+        { QDate(2017, 2, 9), 14, 11, 63.92 },
+        { QDate(2017, 2, 10), 10, 18, 56.0 },
+        { QDate(2017, 3, 11), 15, 77, 57.06 },
+        { QDate(2017, 3, 12), 12, 74, 11.61 },
+        { QDate(2017, 3, 13), 13, 27, 90.11 },
+        { QDate(2017, 3, 14), 12, 19, 67.77 },
+        { QDate(2017, 3, 15), 12, 90, 54.21 },
+        { QDate(2017, 3, 16), 43, 15, 20.17 },
+        { QDate(2017, 4, 17), 46, 26, 59.47 },
+        { QDate(2017, 4, 18), 26, 14, 11.60 },
+        { QDate(2017, 4, 19), 14, 28, 76.70 },
+        { QDate(2017, 4, 20), 16, 61, 8.91 },
+        { QDate(2018, 2, 5), 22, 12, 50.11 },
+        { QDate(2018, 2, 6), 25, 54, 74.13 },
+        { QDate(2018, 2, 7), 24, 39, 17.16 },
+        { QDate(2018, 2, 8), 20, 22, 05.36 },
+        { QDate(2018, 2, 9), 14, 11, 63.92 },
+        { QDate(2018, 2, 10), 10, 18, 56.0 }
+    };
+
+    MonthFilter filter { 2017, 2 };
+    std::vector<RawItem> output;
+
+    std::copy_if(items.begin(), items.end(), std::back_inserter(output), filter);
+
+    REQUIRE(output.size() == 6);
+    REQUIRE(std::all_of(output.begin(), output.end(),
+                [](RawItem const& item) -> bool
+                {
+                    return (item.date.year() == 2017) && (item.date.month() == 2);
+                }));
+}

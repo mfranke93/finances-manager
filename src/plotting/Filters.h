@@ -55,6 +55,19 @@ using DateGreaterEqual = detail::DateGreaterThanOrEqual<true>;
 using DateLessThan = detail::DateLessThanOrEqual<false>;
 using DateLessEqual = detail::DateLessThanOrEqual<true>;
 
+class MonthFilter : public RawItemFilter
+{
+    public:
+        MonthFilter(int year, int month);
+        virtual ~MonthFilter() = default;
+
+        bool operator()(RawItem const&) override;
+
+    private:
+        DateGreaterEqual    currentMonth;
+        DateLessThan        nextMonth;
+};
+
 class CompoundFilter : public RawItemFilter
 {
     public:

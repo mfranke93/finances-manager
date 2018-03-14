@@ -45,3 +45,14 @@ NegationFilter::operator()(RawItem const& item)
 {
     return !(*filter)(item);
 }
+
+MonthFilter::MonthFilter(int year, int month)
+:   currentMonth({year, month, 1}),
+    nextMonth(QDate(year, month, 1).addMonths(1))
+{ }
+
+bool
+MonthFilter::operator()(RawItem const& item)
+{
+    return currentMonth(item) && nextMonth(item);
+}
