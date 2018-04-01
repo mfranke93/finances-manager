@@ -3,12 +3,34 @@
 QtChartTab::QtChartTab()
 :   QWidget(nullptr)
 {
+    chartView = new QChartView;
+    chartView->setRenderHint(QPainter::Antialiasing);
+
+    rebuildPlot();
+
+    setLayout(new QVBoxLayout);
+    layout()->addWidget(chartView);
+}
+
+void
+QtChartTab::rebuildPlot()
+{
+    auto items = DbHandler::getInstance()->getRawItems();
+    std::map<QDate, double> accumulated {};
+    std::for_each(items.begin(), items.end(), [&accumulated](RawItem const& item)
+            {
+                accumulated[item.date] += item.price;
+            });
+
+    using mapentry = typename decltype(accumulated)::value_type;
     QLineSeries * series = new QLineSeries;
-    QTime time (12, 0,0);
-    series->append(QDateTime(QDate(2017,12,31), time).toMSecsSinceEpoch(), 12.3);
-    series->append(QDateTime(QDate(2018,1,1), time).toMSecsSinceEpoch(), 12.4);
-    series->append(QDateTime(QDate(2018,1,2), time).toMSecsSinceEpoch(), 12.2);
-    series->append(QDateTime(QDate(2018,1,3), time).toMSecsSinceEpoch(), 12.15);
+    QTime time (12, 0, 0);
+    double accum {0.0};
+    std::for_each(accumulated.begin(), accumulated.end(), [&series,&time,&accum](mapentry const& v)
+            {
+                accum += v.second;
+                series->append(QDateTime(v.first, time).toMSecsSinceEpoch(), accum);
+            });
 
     QChart * chart = new QChart;
     chart->addSeries(series);
@@ -28,9 +50,5 @@ QtChartTab::QtChartTab()
     chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
 
-    QChartView * chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
-
-    setLayout(new QVBoxLayout);
-    layout()->addWidget(chartView);
+    chartView->setChart(chart);
 }

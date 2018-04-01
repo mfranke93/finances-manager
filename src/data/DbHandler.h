@@ -16,6 +16,7 @@
 #include <QTextStream>
 
 #include "RecurrentItemTemplate.h"
+#include "../plotting/RawItem.h"
 
 class DbHandler : public QObject
 {
@@ -49,6 +50,8 @@ public:
     void restoreDatabaseFromFile(QString const& fileName);
 
     std::shared_ptr<std::map<QString, RecurrentItemTemplate>> getRecurringTemplates();
+
+    std::vector<RawItem> getRawItems();
 
 signals:
     void itemDataChanged();

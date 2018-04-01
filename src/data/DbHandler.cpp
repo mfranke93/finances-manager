@@ -272,3 +272,39 @@ DbHandler::getRecurringTemplates()
 
     return std::move(ret);
 }
+
+std::vector<RawItem>
+DbHandler::getRawItems()
+{
+    int const size = []() -> int
+    {
+        QSqlQuery q ("SELECT COUNT(*) AS size FROM Item;");
+        if (!q.exec()) return 0;
+        else if (!q.next()) return 0;
+        else return q.value("size").toInt();
+    }();
+    std::vector<RawItem> items {};
+    items.reserve(size);
+
+    QString const queryStr {"SELECT date, recid, catid, price FROM Item;"};
+    QSqlQuery query (queryStr);
+
+    if (!query.exec())
+    {
+        std::fprintf(stderr, "Could not query raw items: %s", query.lastError().text().toStdString().c_str());
+        return items;
+    }
+
+    while (query.next())
+    {
+        auto const date = query.value("date").toDate();
+        auto const recid = query.value("recid").toInt();
+        auto const catid = query.value("catid").toInt();
+        auto const price = query.value("price").toDouble();
+
+        RawItem const item { date, recid, catid, price };
+        items.push_back(item);
+    }
+
+    return items;
+}

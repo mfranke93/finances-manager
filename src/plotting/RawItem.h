@@ -5,8 +5,8 @@
 struct RawItem
 {
     QDate           date;
-    uint32_t        recipientId;
-    uint32_t        categoryId;
+    int             recipientId;
+    int             categoryId;
     double          price;
 };
 
