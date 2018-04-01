@@ -10,6 +10,10 @@ QtChartTab::QtChartTab()
 
     setLayout(new QVBoxLayout);
     layout()->addWidget(chartView);
+
+    // connect DbHandler signal
+    connect(DbHandler::getInstance(), &DbHandler::itemDataChanged,
+            this, &QtChartTab::rebuildPlot);
 }
 
 void
