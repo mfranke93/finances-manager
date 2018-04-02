@@ -66,7 +66,7 @@ RecipientObjectStore::search(QString searchTerm)
 }
 
 QVariant
-RecipientObjectStore::data(QModelIndex const& index, int role) const
+RecipientObjectStore::data(QModelIndex const& index, int /*role*/) const
 {
     int const row = index.row();
     int const col = index.column();

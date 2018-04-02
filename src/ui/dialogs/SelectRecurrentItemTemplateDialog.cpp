@@ -59,7 +59,7 @@ SelectRecurrentItemTemplateDialog::getTemplate()
 
 
 void
-SelectRecurrentItemTemplateDialog::onRowInTableSelected(QItemSelection newSelection, QItemSelection oldSelection)
+SelectRecurrentItemTemplateDialog::onRowInTableSelected(QItemSelection newSelection, QItemSelection /*oldSelection*/)
 {
     curSelection = newSelection.indexes().front().data().toString();
     accept();

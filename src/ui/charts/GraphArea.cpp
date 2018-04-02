@@ -12,7 +12,7 @@ GraphArea::GraphArea()
 }
 
 void
-GraphArea::paintEvent(QPaintEvent * evt)
+GraphArea::paintEvent(QPaintEvent * /*evt*/)
 {
     QPainter painter (this);
 

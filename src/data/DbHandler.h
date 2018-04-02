@@ -22,7 +22,7 @@ class DbHandler : public QObject
 {
     Q_OBJECT
 public:
-    static DbHandler * const getInstance()
+    static DbHandler * getInstance()
     {
         if (instance == nullptr)
         {

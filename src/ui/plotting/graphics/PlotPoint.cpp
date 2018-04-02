@@ -27,7 +27,7 @@ PlotPoint::paint(QPainter * const painter) const
 }
 
 void
-PlotPoint::drawLine(QPainter * const painter, PlotPoint const& other, QColor const& color, bool const& drawYRange) const
+PlotPoint::drawLine(QPainter * const painter, PlotPoint const& other, QColor const& /*color*/, bool const& drawYRange) const
 {
     if (drawYRange)
     {

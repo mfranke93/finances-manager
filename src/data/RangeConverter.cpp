@@ -15,7 +15,7 @@ RangeConverter<QDate, int>::operator()(QDate const& date) const
     qreal const scaledQuotient = static_cast<qreal>(targetTotalDifference) * quotient;
     int const scaledToTargetRange = static_cast<int>(scaledQuotient);
     return scaledToTargetRange + toStart;
-};
+}
 
 std::ostream& operator<< (std::ostream& out, RangeConverter<QDate, int>& rc)
 {

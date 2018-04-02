@@ -132,7 +132,7 @@ SearchRecipientDialog::searchBarContentChanged(QString content)
 }
 
 void
-SearchRecipientDialog::onRowInTableSelected(QItemSelection const& newSelection, QItemSelection const& oldSelection)
+SearchRecipientDialog::onRowInTableSelected(QItemSelection const& newSelection, QItemSelection const& /*oldSelection*/)
 {
     recipientIdChanged(newSelection.indexes().front().data().toInt());
 }

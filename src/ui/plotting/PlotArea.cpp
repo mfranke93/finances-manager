@@ -16,7 +16,7 @@ PlotArea::PlotArea(QWidget * parent, PlotType pType)
 }
 
 void
-PlotArea::paintEvent(QPaintEvent * evt) {
+PlotArea::paintEvent(QPaintEvent * /*evt*/) {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 

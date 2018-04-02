@@ -25,6 +25,6 @@ ELSE()
     ADD_DEFINITIONS(-DVERSION_STRING="${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_MICRO}-${VERSION_ADDITIONAL}")
 ENDIF()
 
-set(CMAKE_CXX_FLAGS "-g -Wall -std=c++11")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic -std=c++17 -fno-diagnostics-show-caret")
 add_subdirectory(src)
 add_subdirectory(src/tests)

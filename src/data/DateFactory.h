@@ -22,8 +22,8 @@ namespace templates
         constexpr static char const * const FRIDAY { "Friday" };
         constexpr static char const * const SATURDAY { "Saturday" };
         constexpr static char const * const SUNDAY { "Sunday" };
-    };
-};
+    }
+}
 
 /**
  * Class to create dates from date templates, like 'first of month'.

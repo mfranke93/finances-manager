@@ -6,7 +6,7 @@
 #include <data/DbHandler.h>
 #include "AddRecipientDialog.h"
 
-AddRecipientDialog::AddRecipientDialog(QWidget * parent, Qt::WindowFlags const& f)
+AddRecipientDialog::AddRecipientDialog(QWidget * /*parent*/, Qt::WindowFlags const& /*f*/)
 {
     setWindowTitle(tr("Add recipient"));
     resize(300, 150);

@@ -40,13 +40,13 @@ DateFilterPane::onClickReset()
 }
 
 void
-DateFilterPane::onEndDateChanged(QDate dummy)
+DateFilterPane::onEndDateChanged(QDate /*dummy*/)
 {
     emit dateRangeChanged();
 }
 
 void
-DateFilterPane::onStartDateChanged(QDate dummy)
+DateFilterPane::onStartDateChanged(QDate /*dummy*/)
 {
     emit dateRangeChanged();
 }
@@ -67,7 +67,7 @@ DateFilterPane::getRange() const
 }
 
 void
-DateFilterPane::onDateRangeChanged(std::pair<QDate, QDate> range)
+DateFilterPane::onDateRangeChanged(std::pair<QDate, QDate> /*range*/)
 {
     // TODO cleanup all this mess
 
