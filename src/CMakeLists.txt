@@ -103,6 +103,9 @@ add_executable(main main.cpp
     ui/tabs/TableTab.h
     ui/tabs/QtChartTab.cpp
     ui/tabs/QtChartTab.h
+    plotting/aggregation.cpp
+    plotting/aggregation.h
+    plotting/Filters.h
         )
 target_link_libraries(main ${Qt5Widgets_LIBRARIES})
 target_link_libraries(main ${Qt5Sql_LIBRARIES})

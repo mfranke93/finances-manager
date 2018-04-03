@@ -2,6 +2,7 @@
 #include <QtCharts>
 
 #include "../../data/DbHandler.h"
+#include "../../plotting/aggregation.h"
 
 class QtChartTab : public QWidget
 {

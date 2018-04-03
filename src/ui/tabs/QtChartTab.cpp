@@ -20,20 +20,16 @@ void
 QtChartTab::rebuildPlot()
 {
     auto items = DbHandler::getInstance()->getRawItems();
-    std::map<QDate, double> accumulated {};
-    std::for_each(items.begin(), items.end(), [&accumulated](RawItem const& item)
-            {
-                accumulated[item.date] += item.price;
-            });
+    sum_of_price sum {};
+    group_by_month by_month {};
+    std::map<QDate, double> accumulated = aggregate(items, sum, by_month);
 
     using mapentry = typename decltype(accumulated)::value_type;
     QLineSeries * series = new QLineSeries;
     QTime time (12, 0, 0);
-    double accum {0.0};
-    std::for_each(accumulated.begin(), accumulated.end(), [&series,&time,&accum](mapentry const& v)
+    std::for_each(accumulated.begin(), accumulated.end(), [&series,&time](mapentry const& v)
             {
-                accum += v.second;
-                series->append(QDateTime(v.first, time).toMSecsSinceEpoch(), accum);
+                series->append(QDateTime(v.first, time).toMSecsSinceEpoch(), v.second);
             });
 
     QChart * chart = new QChart;
