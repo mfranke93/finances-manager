@@ -22,7 +22,13 @@ QtChartTab::rebuildPlot()
     auto items = DbHandler::getInstance()->getRawItems();
     sum_of_price sum {};
     group_by_month by_month {};
-    std::map<QDate, double> accumulated = aggregate(items, sum, by_month);
+    auto by_week = [](RawItem const& item) -> QDate
+    {
+        int const day_of_week = item.date.dayOfWeek();
+        int const difference = 1 - day_of_week;
+        return item.date.addDays(difference);
+    };
+    std::map<QDate, double> accumulated = aggregate(items, sum, by_week);
 
     using mapentry = typename decltype(accumulated)::value_type;
     QLineSeries * series = new QLineSeries;

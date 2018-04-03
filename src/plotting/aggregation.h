@@ -7,15 +7,14 @@
 #pragma once
 
 template<typename AggregatorFn,
-    typename RangeFilter>
-std::map<typename RangeFilter::output_type, typename AggregatorFn::output_type>
+    typename RangeFilter,
+    typename range_t = typename std::result_of<RangeFilter(RawItem const&)>::type,
+    typename agg_t   = typename std::result_of<AggregatorFn(std::vector<RawItem> const&)>::type>
+std::map<range_t, agg_t>
 aggregate(std::vector<RawItem> items,
         AggregatorFn agg,
         RangeFilter filter)
 {
-    using range_t = typename RangeFilter::output_type;
-    using agg_t   = typename AggregatorFn::output_type;
-
     std::map<range_t, std::vector<RawItem>> grouped_values {};
     std::map<range_t, agg_t> aggregated_values {};
 
@@ -41,16 +40,12 @@ aggregate(std::vector<RawItem> items,
 
 struct sum_of_price
 {
-    using output_type = double;
-
-    output_type
+    double
     operator()(std::vector<RawItem> const&) const;
 };
 
 struct group_by_month
 {
-    using output_type = QDate;
-
-    output_type
+    QDate
     operator()(RawItem const&) const;
 };
