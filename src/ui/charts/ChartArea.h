@@ -1,6 +1,8 @@
 #include <QtWidgets>
 #include <QtCharts>
 
+#pragma once
+
 class ChartArea : public QChart
 {
 public slots:

@@ -5,6 +5,8 @@
 #include "../../plotting/aggregation.h"
 #include "../charts/ChartArea.h"
 
+#pragma once
+
 class QtChartTab : public QWidget
 {
 public:
