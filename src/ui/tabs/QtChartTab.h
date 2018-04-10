@@ -1,9 +1,7 @@
 #include <QtWidgets>
 #include <QtCharts>
 
-#include "../../data/DbHandler.h"
-#include "../../plotting/aggregation.h"
-#include "../charts/ChartArea.h"
+#include "../charts/ChartAreaFactory.h"
 
 #pragma once
 
