@@ -3,6 +3,7 @@
 
 #include "../../data/DbHandler.h"
 #include "../../plotting/aggregation.h"
+#include "../charts/ChartArea.h"
 
 class QtChartTab : public QWidget
 {

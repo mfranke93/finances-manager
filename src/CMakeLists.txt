@@ -43,6 +43,8 @@ add_executable(main main.cpp
     ui/charts/BarGraph.h
     ui/charts/GraphArea.cpp
     ui/charts/GraphArea.h
+    ui/charts/ChartArea.cpp
+    ui/charts/ChartArea.h
     ui/common/DateFilterPane.cpp
     ui/common/DateFilterPane.h
     ui/common/SelectOrAddRecipientButton.cpp

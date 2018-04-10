@@ -38,7 +38,7 @@ QtChartTab::rebuildPlot()
                 series->append(QDateTime(v.first, time).toMSecsSinceEpoch(), v.second);
             });
 
-    QChart * chart = new QChart;
+    QChart * chart = new ChartArea;
     chart->addSeries(series);
     chart->legend()->hide();
     chart->setTitle("Test");
