@@ -8,8 +8,7 @@
 #include <sys/types.h>
 #include <pwd.h>
 
-#include <QtCore/QString>
-#include <ui/plotting/graphics/PlotLineFactory.h>
+#include <QtCore>
 
 class SettingsManager : public QObject
 {
@@ -22,19 +21,16 @@ public:
     ~SettingsManager();
 
     QString const& databaseLocation();
-    PlotType const& defaultPlottype();
     QString const& backupScriptPath();
     QString const& backupRestoreScriptPath();
 
 public slots:
     void setDatabaseLocation(QString const&);
-    void setDefaultPlotType(PlotType const&);
     void setBackupScriptPath(QString const&);
     void setBackupRestoreScriptPath(QString const&);
 
 signals:
     void databaseLocationChanged(QString);
-    void defaultPlottypeChanged(PlotType);
     void backupScriptPathChanged(QString);
     void backupRestoreScriptPathChanged(QString);
 
@@ -49,7 +45,6 @@ private:
      * Path to store database at.
      */
     QString mDatabaseLocation;
-    PlotType mDefaultPlotType;
 
     QString mConfigFilePath;
 

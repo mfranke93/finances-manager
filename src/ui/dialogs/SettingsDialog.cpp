@@ -19,14 +19,6 @@ SettingsDialog::SettingsDialog(QWidget *)
     openDbFileSelectButton = new QPushButton("...");
     openDbFileSelectButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
     openDbFileSelectButton->setMaximumWidth(30);
-    defaultPlottypeLabel = new QLabel("Plottype:");
-    defaultPlottypeCombo = new QComboBox;
-    {
-        defaultPlottypeCombo->addItem("Cumulative");
-        defaultPlottypeCombo->addItem("Cumulative with MinMax");
-        defaultPlottypeCombo->addItem("Peaks");
-    }
-    defaultPlottypeCombo->setCurrentIndex(static_cast<int>(SettingsManager::getInstance()->defaultPlottype()));
     backupScriptPathLabel = new QLabel("Backup script:");
     backupScriptPath = new QLineEdit(SettingsManager::getInstance()->backupScriptPath());
     openBackupScriptFileSelectButton = new QPushButton("...");
@@ -45,8 +37,6 @@ SettingsDialog::SettingsDialog(QWidget *)
     settingsItemsLayout->addWidget(defaultDbLocationLabel, 1, 1, 1, 1);
     settingsItemsLayout->addWidget(defaultDbLocationEdit, 1, 2, 1, 1);
     settingsItemsLayout->addWidget(openDbFileSelectButton, 1, 3, 1, 1);
-    settingsItemsLayout->addWidget(defaultPlottypeLabel, 2, 1);
-    settingsItemsLayout->addWidget(defaultPlottypeCombo, 2, 2, 1, 2);
     settingsItemsLayout->addWidget(backupScriptPathLabel, 3, 1);
     settingsItemsLayout->addWidget(backupScriptPath, 3, 2);
     settingsItemsLayout->addWidget(openBackupScriptFileSelectButton, 3, 3);
@@ -67,15 +57,11 @@ SettingsDialog::SettingsDialog(QWidget *)
     /* signals */
     connect(SettingsManager::getInstance(), SIGNAL(databaseLocationChanged(QString)),
             defaultDbLocationEdit, SLOT(setText(QString)));
-    connect(SettingsManager::getInstance(), SIGNAL(defaultPlottypeChanged(PlotType)),
-            defaultPlottypeCombo, SLOT(setCurrentIndex(int)));
     connect(SettingsManager::getInstance(), SIGNAL(backupScriptPathChanged(QString)),
             backupScriptPath, SLOT(setText(QString)));
     connect(this, SIGNAL(dbLocationChanged(QString)), SettingsManager::getInstance(),
             SLOT(setDatabaseLocation(QString)));
     connect(this, SIGNAL(defaultPlottypeChanged(PlotType)), SettingsManager::getInstance(),
-            SLOT(setDefaultPlotType(PlotType)));
-    connect(this, SIGNAL(backupScriptPathChanged(QString)), SettingsManager::getInstance(),
             SLOT(setBackupScriptPath(QString)));
     connect(this, &SettingsDialog::backupRestoreScriptPathChanged, SettingsManager::getInstance(),
             &SettingsManager::setBackupRestoreScriptPath);
@@ -92,7 +78,6 @@ void
 SettingsDialog::onPressOkay()
 {
     emit dbLocationChanged(defaultDbLocationEdit->text());
-    emit defaultPlottypeChanged(defaultPlottypeCombo->currentIndex());
     emit dbLocationChanged(defaultDbLocationEdit->text());
     emit backupScriptPathChanged(backupScriptPath->text());
     emit backupRestoreScriptPathChanged(backupRestoreScriptPath->text());

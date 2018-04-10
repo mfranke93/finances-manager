@@ -24,8 +24,6 @@ add_executable(main main.cpp
     data/DateToStringFactory.h
     data/DbHandler.cpp
     data/DbHandler.h
-    data/RangeConverter.cpp
-    data/RangeConverter.h
     data/RecipientObject.cpp
     data/RecipientObject.h
     data/RecipientObjectStore.cpp
@@ -39,10 +37,6 @@ add_executable(main main.cpp
     data/SettingsManager.cpp
     data/SettingsManager.h
     ui/MainWindow.cpp
-    ui/charts/BarGraph.cpp
-    ui/charts/BarGraph.h
-    ui/charts/GraphArea.cpp
-    ui/charts/GraphArea.h
     ui/charts/ChartArea.cpp
     ui/charts/ChartArea.h
     ui/common/DateFilterPane.cpp
@@ -73,34 +67,8 @@ add_executable(main main.cpp
     ui/dialogs/additem/AddItemRow.h
     ui/menubar/MenuBar.cpp
     ui/menubar/MenuBar.h
-    ui/plotting/PlotArea.cpp
-    ui/plotting/PlotArea.h
-    ui/plotting/PlotBottomBar.cpp
-    ui/plotting/PlotBottomBar.h
-    ui/plotting/PlotCategoryFilter.cpp
-    ui/plotting/PlotCategoryFilter.h
-    ui/plotting/PlotGrid.cpp
-    ui/plotting/PlotGrid.h
-    ui/plotting/PlotLeftAxis.cpp
-    ui/plotting/PlotLeftAxis.h
-    ui/plotting/graphics/CumulativePlotLine.cpp
-    ui/plotting/graphics/CumulativePlotLine.h
-    ui/plotting/graphics/DailyChangesPlotLine.cpp
-    ui/plotting/graphics/DailyChangesPlotLine.h
-    ui/plotting/graphics/PlotBar.cpp
-    ui/plotting/graphics/PlotBar.h
-    ui/plotting/graphics/PlotElement.h
-    ui/plotting/graphics/PlotLineFactory.cpp
-    ui/plotting/graphics/PlotLineFactory.h
-    ui/plotting/graphics/PlotPoint.cpp
-    ui/plotting/graphics/PlotPoint.h
-    ui/plotting/graphics/Plottable.h
     ui/table/ExpenditureView.cpp
     ui/table/ExpenditureView.h
-    ui/tabs/ChartTab.cpp
-    ui/tabs/ChartTab.h
-    ui/tabs/PlotTab.cpp
-    ui/tabs/PlotTab.h
     ui/tabs/TableTab.cpp
     ui/tabs/TableTab.h
     ui/tabs/QtChartTab.cpp

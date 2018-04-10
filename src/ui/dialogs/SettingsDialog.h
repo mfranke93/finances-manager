@@ -10,7 +10,6 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QComboBox>
-#include <ui/plotting/graphics/PlotLineFactory.h>
 
 class SettingsDialog : public QDialog
 {
@@ -27,7 +26,6 @@ protected slots:
 
 signals:
     void dbLocationChanged(QString);
-    void defaultPlottypeChanged(int);
     void backupScriptPathChanged(QString);
     void backupRestoreScriptPathChanged(QString);
 
@@ -37,12 +35,10 @@ private:
     QHBoxLayout * bottomButtonLayout;
 
     QLabel      * defaultDbLocationLabel;
-    QLabel      * defaultPlottypeLabel;
     QLabel      * backupScriptPathLabel;
     QLabel      * backupRestoreScriptPathLabel;
 
     QLineEdit   * defaultDbLocationEdit;
-    QComboBox   * defaultPlottypeCombo;
     QLineEdit   * backupScriptPath;
     QLineEdit   * backupRestoreScriptPath;
 

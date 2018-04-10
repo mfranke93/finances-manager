@@ -17,7 +17,6 @@ SettingsManager::SettingsManager()
     QString const configFolder = userHome + ".config/finances-manager/";
 
     mDatabaseLocation = QString(configFolder) + "finances.db";
-    mDefaultPlotType  = PlotType::CUMULATIVE_WITH_MINMAX;
     mBackupScriptFile = QString(configFolder) + "backup.sh";
 
     // load rc file
@@ -30,7 +29,6 @@ SettingsManager::SettingsManager()
 SettingsManager::~SettingsManager()
 {
     std::ofstream config (mConfigFilePath.toStdString());
-    config << "defaultPlotType " << static_cast<int>(mDefaultPlotType) << std::endl;
     config << "databaseLocation " << mDatabaseLocation.toStdString() << std::endl;
     config << "backupScriptPath " << mBackupScriptFile.toStdString() << std::endl;
     config << "backupRestoreScriptPath " << mBackupRestoreScriptFile.toStdString() << std::endl;
@@ -62,19 +60,6 @@ SettingsManager::setDatabaseLocation(QString const& dbLocation)
     emit databaseLocationChanged(dbLocation);
 }
 
-PlotType const&
-SettingsManager::defaultPlottype()
-{
-    return mDefaultPlotType;
-}
-
-void
-SettingsManager::setDefaultPlotType(PlotType const& pt)
-{
-    mDefaultPlotType = pt;
-    emit defaultPlottypeChanged(pt);
-}
-
 QString const&
 SettingsManager::backupScriptPath()
 {
@@ -104,14 +89,7 @@ SettingsManager::loadConfig(QString const& filename)
     while (configFile)
     {
         configFile >> token;
-
-        if (token == "defaultPlotType")
-        {
-            int i;
-            configFile >> i;
-            mDefaultPlotType = static_cast<PlotType>(i);
-        }
-        else if (token == "databaseLocation")
+        if (token == "databaseLocation")
         {
             configFile >> token;
             mDatabaseLocation = QString(token.c_str());
